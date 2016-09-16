@@ -2,6 +2,11 @@ machine:
   python:
     version: 2.7
 
+general:
+  branches:
+    ignore:
+      - master
+
 dependencies:
   override:
     - pip install -r requirements.txt
@@ -12,7 +17,7 @@ test:
 
 deployment:
   release:
-    branch: master
+    branch: develop
     commands:
       - mkdocs build --clean
       - cd site && git init
