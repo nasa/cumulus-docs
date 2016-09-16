@@ -25,5 +25,5 @@ deployment:
       - cd site && git config user.email "info@developmentseed.org"
       - cd site && git add .
       - cd site && git commit -m "CI deploy to master"
-      - cd site && git push --force --quiet "https://${GH_TOKEN}@github.com/cumulus-nasa/cumulus-nasa.github.io" develop:master
+      - cd site && git push --force --quiet "https://${GH_TOKEN}@github.com/cumulus-nasa/cumulus-nasa.github.io" master
       - cd site && rm -rf .git/
