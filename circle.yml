@@ -20,5 +20,5 @@ deployment:
       - cd site && git config user.email "travis@somewhere.com"
       - cd site && git add .
       - cd site && git commit -m "CI deploy to gh-pages"
-      - cd site && git push --force --quiet origin master:gh-pages
+      - cd site && git push --force --quiet git@github.com:cumulus-nasa/cumulus-nasa.github.io master:gh-pages
       - cd site && rm -rf .git/
