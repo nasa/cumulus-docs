@@ -21,9 +21,9 @@ deployment:
     commands:
       - mkdocs build --clean
       - cd site && git init
-      - cd site && git config user.name "Travis-CI"
-      - cd site && git config user.email "travis@somewhere.com"
+      - cd site && git config user.name "Circle-CI"
+      - cd site && git config user.email "info@developmentseed.org"
       - cd site && git add .
-      - cd site && git commit -m "CI deploy to gh-pages"
-      - cd site && git push --force --quiet "https://${GH_TOKEN}@github.com/cumulus-nasa/cumulus-nasa.github.io" master:gh-pages
+      - cd site && git commit -m "CI deploy to master"
+      - cd site && git push --force --quiet "https://${GH_TOKEN}@github.com/cumulus-nasa/cumulus-nasa.github.io" develop:master
       - cd site && rm -rf .git/
