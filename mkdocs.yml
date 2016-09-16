@@ -1,0 +1,29 @@
+site_name: Cumulus
+site_description: 'A cloud-based data ingest, archive, distribution and management prototype'
+site_author: 'Development Seed'
+site_url: 'https://github.com/cumulus-nasa/cumulus-nasa.github.io'
+copyright: 'Copyright (c) 2016'
+docs_dir: 'docs'
+theme: 'material'
+repo_name: 'cumulus-nasa.github.io'
+repo_url: 'https://github.com/cumulus-nasa/cumulus-nasa.github.io'
+
+pages:
+- Intro: 'index.md'
+- Setup: 'setup.md'
+- Dockerize: 'dockerize.md'
+
+
+extra:
+  version: '0.1.0'
+  palette:
+    primary: 'indigo'
+    accent: 'light blue'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  author:
+    github: 'developmentseed'
+    twitter: 'developmentseed'
+
+
