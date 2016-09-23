@@ -9,7 +9,10 @@ repo_name: 'cumulus-nasa.github.io'
 repo_url: 'https://github.com/cumulus-nasa/cumulus-nasa.github.io'
 
 pages:
-- Intro: 'index.md'
+- Home: 'index.md'
+- Introduction: 'intro.md'
+- Approach: 'ta.md'
+- Team: 'team.md'
 - Setup: 'setup.md'
 - Dockerize: 'dockerize.md'
 
@@ -27,3 +30,4 @@ extra:
     twitter: 'developmentseed'
 
 
+extra_css: [styles/extra.css]
