@@ -19,12 +19,9 @@ pages:
 
 extra:
   version: 1.0
-  palette:
-    primary: 'indigo'
-    accent: 'light blue'
   font:
-    text: 'Roboto'
-    code: 'Roboto Mono'
+    text: 'Open Sans'
+    code: 'Open Sans'
   author:
     github: 'cumulus-nasa'
     twitter: 'developmentseed'
