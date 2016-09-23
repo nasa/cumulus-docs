@@ -1,7 +1,7 @@
-.palette-primary-indigo .footer, .palette-primary-indigo .header {
+.header, .footer {
   background: #2276ac;
 }
 
-.palette-primary-indigo .article table th {
+.article table th {
   background-color: #ACCEF7;
 }
