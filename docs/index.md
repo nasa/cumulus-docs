@@ -11,11 +11,3 @@ The prototype is primarily developed on Amazon Web Services (AWS). This document
 This is a minimum viable product (MVP). In phase I, the platform is specifically designed to work with HS3 collections and it does not support others collections.
 
 The platform relies on multiple AWS services that have to be configured separately before all pieces can work together. In future phases, the deployment will use AWS CloudFormation service to automatically create and configure all the services needed.
-
-### Table of Content
-
-- [Introduction](intro)
-- [Technical Approach](ta.md)
-- [Team](team)
-- [Setup](setup)
-

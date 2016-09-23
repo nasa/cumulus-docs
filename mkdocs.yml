@@ -11,15 +11,14 @@ repo_url: 'https://github.com/cumulus-nasa/cumulus-nasa.github.io'
 
 pages:
 - Home: 'index.md'
-- Introduction: 'intro.md'
 - Technical Approach: 'ta.md'
 - Team: 'team.md'
 - Setup: 'setup.md'
-- Dockerize: 'dockerize.md'
+- Docker Images: 'docker.md'
 
 
 extra:
-  version: '0.1.0'
+  version: 1.0
   palette:
     primary: 'indigo'
     accent: 'light blue'

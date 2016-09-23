@@ -187,6 +187,13 @@
           <!-- Article content -->
           {{ content }}
 
+          {% if not page_title %}
+            <h3 id="table-of-content">Table of Content</h3>
+            {% for nav_item in nav %}
+              {% include "toc.html" %}
+            {% endfor %}
+          {% endif %}
+
           <!-- Copyright and theme information -->
           <aside class="copyright" role="note">
 
