@@ -1,8 +1,8 @@
 # Cumulus
 
-**Current Phase:** 1
-**DAACs Covered:** GHRC
-**Collections Covered:** HS3
+- **Current Phase:** 1
+- **DAACs Covered:** GHRC
+- **Collections Covered:** HS3
 
 Cumulus is a cloud-based data ingest, archive, distribution and management prototype for NASA's future Earth science data streams
 
