@@ -2,7 +2,7 @@
 
 *[Last Updated: July, 2016] This document requires further updates*
 
-Our proposed approach is designed to build a Cumulus prototype platform that can be used to prove concept viability; provide a testbed to see potential implementation issues early on; and serve as a base to build on in future phases.
+Our proposed approach is to build a Cumulus prototype platform that can be used to prove concept viability, provide a testbed to see potential implementation issues early on, and serve as a base to build on in future phases.
 
 The major components of the Cumulus prototype system are:
 
