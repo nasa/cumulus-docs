@@ -4,7 +4,7 @@ Collections and granules are concepts within NASA's data mangement systems. Spec
 
 #### How do I create or edit a collection in Cumulus?
 
-This can be accomplished via the Dashboard, from the main page (for creating a new collection) or from the collection page (for editing).
+This can be accomplished via the Dashboard, from the main page (for creating a new collection, this'll be implemented in Phase 2) or from the collection page (for editing).
 
 #### How do I delete granules?
 
