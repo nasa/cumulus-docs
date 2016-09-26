@@ -1,10 +1,10 @@
 # Dockerizing Data Processing
 
-The software used for processing data amongst DAAC's is developed in a variety of languages, and with different sets of dependencies and build environments. To standardize processing, Docker allows us to provide an environment (called an image) to meet the needs of any processing software, while running on the kernel of the host server (in this case, an EC2 instance). Thi lightweight virtualization does not carry the overhead of any additional VM, providing near instant startup and the ability run any dockerized process as a command line call.
+The software used for processing data amongst DAAC's is developed in a variety of languages, and with different sets of dependencies and build environments. To standardize processing, Docker allows us to provide an environment (called an image) to meet the needs of any processing software, while running on the kernel of the host server (in this case, an EC2 instance). Thi lightweight virtualization does not carry the overhead of any additional VM, providing near-instant startup and the ability run any dockerized process as a command-line call.
 
 ## Using Docker
 
-Docker iamges are run using the Docker command and can be used to build a Docker image form a Dockerfile, fetch an existing image from a remote repository, or run an existing image. In Cumulus, docker-compose is used to help developers by making it easy to build images locally and test them.
+Docker iamges are run using the `docker` command and can be used to build a Docker image from a Dockerfile, fetch an existing image from a remote repository, or run an existing image. In Cumulus, `docker-compose` is used to help developers by making it easy to build images locally and test them.
 
 To run a command using docker-compose use:
 
@@ -18,7 +18,7 @@ where *commmand* is one of
 
 ### The Docker Registry
 
-Docker images that are built can be stored in the cloud in a Docker registry. Currently we are using the AWS Docker Registry, called ECR. To access these images, you must first log in using your AWS credentials. The AWS CLI provides a command to get the proper login string to be used to login. Use this command to generate the login command and execute it.
+Docker images that are built can be stored in the cloud in a Docker registry. Currently we are using the AWS Docker Registry, called ECR. To access these images, you must first log in using your AWS credentials, and use AWS CLI to get the proper login string:
 
 ```
 # install awscli
@@ -28,33 +28,34 @@ $ pip install awscli
 $ aws ecr get-login --region us-east-1 | source /dev/stdin
 ```
 
-As long as you have permissions to access the NASA Cumulus AWS account, this will allow you to pull images from the repository, and push rebuilt or new images. Docker-compose may also be used to push images.
+As long as you have permissions to access the NASA Cumulus AWS account, this will allow you to pull images from AWS ECR, and push rebuilt or new images there as well. Docker-compose may also be used to push images.
 
     $ docker-compose push
     
-Which will push the built image. Note that the image built by docker-compose is the :latest tag, and will overwrite the :latest tagged docker image on the registry.  This file should be updated to push to a different tag if overwriting is not desired. Note that CircleCI normally takes are of automatically building and deploying images for production, although these instructions are useful for development.
+Which will push the built image to AWS ECR. Note that the image built by docker-compose will have is the `:latest` tag, and will overwrite the `:latest` tagged docker image on the registry.  This file should be updated to push to a different tag if overwriting is not desired.
+
+In normal use-cases, though, CircleCI takes care of this building and deploying process, as far as production.
 
 ### Source Control and Versions
 
-All the code necessary for processing a data collection, and the code used to create a Docker image for it is contained within a single GitHub repository, following the naming convention docker-*dataname*, where *dataname* is the short name of the data collection. The git 'develop' branch is the current development version, 'master' is the latest release version, and a git tag exists for each tagged version (e.g., v0.1.3). 
-Docker images can have multipled tagged versions. The Docker images in the registry follow this same convention.  A docker image tagged as 'develop' is an image of the development branch. 'latest' is the master brach, and thus the latest tagged version, with an additional tagged image for each version tagged in the git repository.
+All the code necessary for processing a data collection, and the code used to create a Docker image for it, is contained within a single GitHub repository, following the naming convention `docker-${dataname}`, where `dataname` is the collection's short name. The git `develop` branch is the current development version, `master` is the latest release version, and a git tag exists for each tagged version (e.g., `v0.1.3`).
 
-The generation of the released tagged images are created and deployed automatically with Circle-CI, the continuous integration system used by Cumulus. When new commits are merged to a branch, the appropriate Docker image is built, tested, and deployed to the Docker registry. More on testing below.
+Docker images can have multiple tagged versions. The Docker images in the registry follow this same convention. A Docker image tagged as 'develop' is an image of the development branch. 'latest' is the master brach, and thus the latest tagged version, with an additional tagged image for each version tagged in the git repository.
+
+The generation of the released tagged images are created and deployed automatically with Circle-CI, the continuous integration system used by Cumulus. When new commits are merged into a branch, the appropriate Docker image is built, tested, and deployed to the Docker registry. More on testing below.
 
 ## Docker Images
 
-The base docker image and an example data docker image are described here.
-
 ### docker-base
 
-Docker images are built in layers, allowing lower level dependencies to be shared as docker layers among more than one child layer. A base docker image is provided then includes some dependenceis shared among the current HS3 data processing codes. This includes, but is not limited to, NetCDF liraries, AWS Cli, Python, Git, as well as py-cumulus. Py-cumulus is a collection of Python utilities that are used in the main python-based processing scripts. The docker-base repository is used to generate new images that are then stored in the AWS Docker registry (ECR).
+Docker images are built in layers, allowing common dependencies to be shared to child Docker images. A base docker image is provided that includes some dependencies shared among the current HS3 data processing codes. This includes NetCDF liraries, AWS Cli, Python, Git, as well as py-cumulus, a collection of Python utilities that are used in the processing scripts. The docker-base repository is used to generate new images that are then stored in AWS ECR.
 
-The docker-base image can be interacted with by calling running it in interactive mode, since the default entrypoint to the image is a bash shell.
+The docker-base image can be interacted with by running it in interactive mode (ie, `docker run -it docker-base`, since the default "entrypoint" to the image is a bash shell.
 
 
-### docker-data: docker-hs3-avaps
+### docker-data example: docker-hs3-avaps
 
-To create a new processing stream for a data collection, a Dockerfile is used to specify what additional dependencies may be required, and to build them in that environment, if necessary. An example Dockerfile is shown here, for the hs3-avaps data collection.
+To create a new processing stream for a data collection, a Dockerfile is used to specify what additional dependencies may be required, and to build them in that environment, if necessary. An example Dockerfile is shown here, for the hs3avaps collection.
 
 ```
 # cumulus processing Dockerfile: docker-hs3-avaps
@@ -70,12 +71,12 @@ RUN apt-get install -y nco libhdf5-dev
 # compile code
 RUN gcc convert/hs3cpl2nc.c -o _convert -I/usr/include/hdf5/serial -L/usr/include/x86_64-linux-gnu -lnetcdf -lhdf5_serial
 
-# TODO - input and output directories will be Data Pipeline staging dir env vars
+# input and output directories will be Data Pipeline staging dir env vars
 ENTRYPOINT ["/work/process.py"]
 CMD ["input", "output"]
 ```
 
-When this Dockerfile is built, docker will first use the latest cumulus-base image, fetching it if necessary. It will then copy the entire repository (the processing required for a single data collection is a repository) to the /work directory which will now contain all the code necessary to process this data. In thie case, a C file is compiled to convert the supplied hdf5 files to NetCDF files. Note that this also requires installing the system libraries nco and libhdf5-dev via apt-get to compile the conversion routine. Lastly, the Dockerfile sets the entry point to the processing handler, so that this command is run when the image is run, and it expects two arguments to be handed to it: 'input' and 'output' meaning the input and output directories.
+When this Dockerfile is built, docker will first use the latest cumulus-base image. It will then copy the entire GitHub repository (the processing required for a single data collection is a repository) to the `/work` directory which will now contain all the code necessary to process this data. In thie case, a C file is compiled to convert the supplied hdf5 files to NetCDF files. Note that this also requires installing the system libraries `nco` and `libhdf5-dev` via `apt-get`. Lastly, the Dockerfile sets the entrypoint to the processing handler, so that this command is run when the image is run. It expects two arguments to be handed to it: 'input' and 'output' meaning the input and output directories.
 
 ## Process Handler
 
@@ -83,7 +84,7 @@ All of the processing is managed through a handler, which is called when the doc
 
 ### Py-cumulus
 
-THe py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Use import to use any of the modules in py-cumulus, currently:
+THe py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Currently, there are three modules:
 
     import cumulus.logutils
     import cumulus.metadata
@@ -151,7 +152,7 @@ After setting up logging the code has a for-loop for processing any matching hdf
 
 1) convert to NetCDF with a C script
 2) validate the output (in this case just check for existence) 
-3) use 'ncatted' program to update the resulting file to be CF-compliant
+3) use 'ncatted' to update the resulting file to be CF-compliant
 4) write out metadata generated for this file
 
 ## Process Testing
@@ -174,9 +175,9 @@ Where collection-name is the name of the data collection, such as 'avaps', or 'c
 │       ├── HS3_CPL_OP_12203a_20120906.nc.meta.xml
 ```
 
-Contained in the input directory are all the set of all possible data files, while the output directory is what is expected. In this case the hdf5 files are converted to NetCDF files and XML metadata files are generated.
+Contained in the input directory are all possible sets of data files, while the output directory is the expected result of processing. In this case the hdf5 files are converted to NetCDF files and XML metadata files are generated.
 
-The docker image for a process can be used on the retrieved test data. First create a test-output direcoty in the newly created data directory.
+The docker image for a process can be used on the retrieved test data. First create a test-output directory in the newly created data directory.
 
     $ mkdir data/test-output
     
@@ -184,10 +185,8 @@ Then run the docker image using docker-compose.
 
     $ docker-compose run test
     
-This will process the data in the data/input directory and put the output into data/test-output. Repositories also include Python based tests which will validate this newly created output to the contents of data/output. Run Python nose to run the included tests.
+This will process the data in the data/input directory and put the output into data/test-output. Repositories also include Python based tests which will validate this newly created output to the contents of data/output. Use Python's Nose tool to run the included tests.
 
     $ nosetests
     
 If the data/test-output directory validated against the contents of data/output the tests will be successful, otherwise an error will be reported.
-
-    
