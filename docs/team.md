@@ -11,8 +11,8 @@ There are multiple parties involved in the project. For the full list, refer to 
 
 ### Developers @developmentseed
 
-- @scisco Alireza Jazayeri (lead)
-- @matthewhanson Matthew Hanson
-- @mileswwatkins Miles Watkins
-- @felskia Ali Felski
-- @drewbo Drew Bollinger
+- Drew Bollinger (@drewbo)
+- Ali Felski (@felskia)
+- Matthew Hanson (@matthewhanson)
+- Alireza Jazayeri (@scisco)
+- Miles Watkins (@mileswwatkins)
