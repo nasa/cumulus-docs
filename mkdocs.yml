@@ -11,6 +11,7 @@ repo_url: 'https://github.com/cumulus-nasa/cumulus-nasa.github.io'
 
 pages:
 - Home: 'index.md'
+- How To: 'howto.md'
 - Components: 'components.md'
 - Docker Images: 'docker.md'
 - Technical Approach: 'ta.md'
