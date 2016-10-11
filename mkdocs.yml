@@ -14,6 +14,7 @@ pages:
 - How To: 'howto.md'
 - Components: 'components.md'
 - Docker Images: 'docker.md'
+- API: 'api.md'
 - Technical Approach: 'ta.md'
 - FAQs: 'faqs.md'
 - Team: 'team.md'
