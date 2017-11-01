@@ -56,7 +56,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
 **Add new deployment to `<daac>-deploy/deployer/config.yml`:**
 
     <deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
-      prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources
+      prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
       stackName: <stack-name>   # name of the deployer stack in CloudFormation
       buckets:
         internal: <internal-bucket-name>  # Previously created internal bucket name.
@@ -74,7 +74,7 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
     <deployment-name>:
-      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources
+      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH deployer prefix
       stackName: <stack-name> # name of the iam stack in CloudFormation
       buckets:
         internal: <internal-bucket-name>
@@ -101,9 +101,7 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
 
 **Change AWS Access Keys**
 
-* Create Access Keys for AssumeRole user
-* Export access keys:
-
+Create Access Keys for AssumeRole user in IAM, then export the access keys:
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission)
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission)
@@ -114,7 +112,7 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
 **Add new deployment to `<daac>-deploy/config/config.yml`:**
 
     <deployment-name>:
-      stackName: <stack-name> # name of the Cumulus stack in CloudFormation
+      stackName: <stack-name> # name of the Cumulus stack in CloudFormation, MUST START WITH deployer/iam Prefix
       buckets:
         internal: <internal-bucket-name>
         private: <private-bucket-name>
@@ -261,9 +259,10 @@ To deploy modifications to a single lambda package:
 
 Configure dashboard:
 
-* Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
+Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
 
-* Update `const altApiRoot` in `app/scripts/config.js`:
+Update `const altApiRoot` in `app/scripts/config.js`:
+
 
       const altApiRoot = {
         podaac: 'https//cumulus.ds.io/api/podaac/',
@@ -273,15 +272,25 @@ Configure dashboard:
       }
 
 
-* Build Dashboard and go to dist directory:
+Build Dashboard and go to dist directory:
+
 
       $ DS_TARGET=<deployment> npm run staging
       $ cd dist
 
 ### Dashboard Deployment
 
-* Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
+Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
 
       $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
 
-* Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
+Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
+
+### EarthData Login Set up
+
+The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
+Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
+
+* `<API-Gateway-backend-invoke-URL>/auth/login`
+* `<API-Gateway-distribution-invoke-URL>/redirect`
+* `<Dashboard-S3-Endpoint-URL>`
