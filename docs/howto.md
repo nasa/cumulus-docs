@@ -285,3 +285,12 @@ Configure dashboard:
       $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
 
 * Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
+
+### EarthData Login Set up
+
+The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
+Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
+
+* `<API-Gateway-backend-invoke-URL>/auth/login`
+* `<API-Gateway-distribution-invoke-URL>/redirect`
+* `<Dashboard-S3-Endpoint-URL>`
