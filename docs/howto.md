@@ -56,7 +56,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
 **Add new deployment to `<daac>-deploy/deployer/config.yml`:**
 
     <deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
-      prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources
+      prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
       stackName: <stack-name>   # name of the deployer stack in CloudFormation
       buckets:
         internal: <internal-bucket-name>  # Previously created internal bucket name.
@@ -74,7 +74,7 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
     <deployment-name>:
-      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources
+      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH deployer prefix
       stackName: <stack-name> # name of the iam stack in CloudFormation
       buckets:
         internal: <internal-bucket-name>
@@ -114,7 +114,7 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
 **Add new deployment to `<daac>-deploy/config/config.yml`:**
 
     <deployment-name>:
-      stackName: <stack-name> # name of the Cumulus stack in CloudFormation
+      stackName: <stack-name> # name of the Cumulus stack in CloudFormation, MUST START WITH deployer/iam Prefix
       buckets:
         internal: <internal-bucket-name>
         private: <private-bucket-name>
