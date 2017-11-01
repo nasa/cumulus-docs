@@ -101,9 +101,7 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
 
 **Change AWS Access Keys**
 
-* Create Access Keys for AssumeRole user
-* Export access keys:
-
+Create Access Keys for AssumeRole user in IAM, then export the access keys:
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission)
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission)
@@ -261,9 +259,10 @@ To deploy modifications to a single lambda package:
 
 Configure dashboard:
 
-* Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
+Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
 
-* Update `const altApiRoot` in `app/scripts/config.js`:
+Update `const altApiRoot` in `app/scripts/config.js`:
+
 
       const altApiRoot = {
         podaac: 'https//cumulus.ds.io/api/podaac/',
@@ -273,18 +272,19 @@ Configure dashboard:
       }
 
 
-* Build Dashboard and go to dist directory:
+Build Dashboard and go to dist directory:
+
 
       $ DS_TARGET=<deployment> npm run staging
       $ cd dist
 
 ### Dashboard Deployment
 
-* Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
+Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
 
       $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
 
-* Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
+Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
 
 ### EarthData Login Set up
 
