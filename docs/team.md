@@ -1,16 +1,12 @@
 # Team
 
-### Project leads
+### Cumulus Core Team
 
-- Ian Schuler (ian@developmentseed.org)
-- Katie Baynes (kathleen.baynes@nasa.gov)
-- Rahul Ramachandran (rahul.ramachandran@nasa.gov)
-- Dan Pilone (dan@element84.com)
-
-### Developers @developmentseed
-
-- Drew Bollinger (@drewbo)
 - Ali Felski (@felskia)
 - Matthew Hanson (@matthewhanson)
+- Marc Huffnagle(@yjpa7145)
 - Alireza Jazayeri (@scisco)
-- Miles Watkins (@mileswwatkins)
+- Katherine Kelly (@kkelly51)
+- James Norton (@indiejames)
+- Patrick Quinn (@bilts)
+- Seth Vincent (@ethvincent)

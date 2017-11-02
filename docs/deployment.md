@@ -1,4 +1,6 @@
-# How to
+# How to Deploy Cumulus
+
+This is a guide for deploying a new instance of Cumulus.
 
 ----
 ## Deploy Cumulus
