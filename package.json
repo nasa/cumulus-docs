@@ -1,0 +1,27 @@
+{
+  "name": "cumulus-nasa.github.io",
+  "version": "1.0.0",
+  "description": "Documentation for the Cumulus Project",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "serve": "gitbook serve",
+    "build": "gitbook build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cumulus-nasa/cumulus-nasa.github.io.git"
+  },
+  "author": "Cumulus Authors",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cumulus-nasa/cumulus-nasa.github.io/issues"
+  },
+  "homepage": "https://github.com/cumulus-nasa/cumulus-nasa.github.io#readme",
+  "devDependencies": {
+    "gitbook-cli": "^2.3.2"
+  }
+}
