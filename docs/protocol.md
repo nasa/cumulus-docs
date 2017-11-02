@@ -18,7 +18,7 @@ This document describes the Cumulus configuration file and the messages that are
 The Cumulus configuration file defines everything needed to describe an instance of Cumulus. This includes:
 
 * **Provider configuration** - A list of providers and settings that apply at the provider level.
-* **Workflows** - The Step Functions defined using the [AWS Step Function State Language](http://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language.html#amazon-states-language).
+* **Workflows** - The Step Functions defined using the [AWS Step Function State Language](http://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html).
 * **Collections** - Settings specific for ingesting data for a collection. This includes:
   * **Workflow** - a reference to a workflow at the top level that will allow ingesting the collection.
   * **Triggers** - Settings indicating how an ingest is started for a collection.
