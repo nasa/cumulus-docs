@@ -3,7 +3,7 @@
 ### Local Setup
 
     $ npm install
-    $ npm serve
+    $ npm run serve
 
 ### Add a new page
 
