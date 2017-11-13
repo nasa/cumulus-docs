@@ -72,15 +72,15 @@ Repeat the above step for each bucket to be created.
 
 Using the AWS management console:
 
-[AWS management console](../images/aws_main_selection.png)
+![AWS management console](../images/aws_main_selection.png)
 
 Select "S3" (under the storage heading):
 
-[Bucket Button](../images/bucket_button.png)
+![Bucket Button](../images/bucket_button.png)
 
 This will open the "Create bucket" dialogue window:
 
-[Create Bucket Dialogue](../images/create_bucket_dialogue.png)
+![Create Bucket Dialogue](../images/create_bucket_dialogue.png)
 
 Add the approrpiate bucket name, select the region you'll be using, then set properties/permissions as is appropriate for your AWS environemnt (or use defaults in case of a single-user test installation), then click "Create" in the lower left to create your bucket.
 
