@@ -4,14 +4,13 @@ This is a guide for deploying a new instance of Cumulus.
 
 ----
 ## Deploy Cumulus
-### Linux/MacOS Requirements:
+### Linux Requirements:
 - zip
 - sha1sum
 - node >= 7.10
 - npm
 - yarn
-
-**Note** : To utilzie the AWS command line tool, you'll need to have a python environment and install the AWS package.  Details can be found here: https://docs.aws.amazon.com/cli/latest/userguide/installing.html
+  -- This is being called via package.json, we could just bootstrap without yarn as well.  a.k.a. "Why yarn?"
 
 ### Credentials
 
@@ -34,62 +33,24 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
 
     $ cd ..
     $ git clone https://github.com/cumulus-nasa/lpdaac-deploy
-    $ cd lpdaac-deploy
+    $ cd <daac>-deploy
     $ npm install
 
 ### Prepare AWS
 
 **Create S3 Buckets:**
 
-The following s3 buckets should be created (replacing prefix with whatever you'd like):
+### TODO(DCUM-45): Walkthrough on creating buckets via web interface
+### TODO(DCUM-45): Walkthrough/example creating bucket via command line:
 
-* (prefix)-internal
-* (prefix)-private
-* (prefix)-protected
-* (prefix)-public
+* <daac prefix>-internal
+* <daac prefix>-private
+* <daac prefix>-protected
+* <daac prefix>-public
 
-**Please note**: s3 bucket object names are global across all users/locations/etc, meaning you should be certain your bucket name is unique.
+`e.g. https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html`
 
-These buckets can be created by utilizing the AWS command line utility or the web interfece.
-
-###### Command line
-
-Using the [AWS command line tool](https://aws.amazon.com/cli/) [create-bucket](https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html) s3 subcommand:
-
-```
-:0 ->aws s3api create-bucket --bucket foobar-internal
-{
-    "Location": "/foobar-internal"
-}
-```
-
-Please note security settings and other bucket options can be set via the options listed in the s3api documentation.
-
-Repeat the above step for each bucket to be created.
-
-
-###### Web interface
-
-Using the AWS management console:
-
-[AWS management console](../images/aws_main_selection.png)
-
-Select "S3" (under the storage heading):
-
-[Bucket Button](../images/bucket_button.png)
-
-This will open the "Create bucket" dialogue window:
-
-[Create Bucket Dialogue](../images/create_bucket_dialogue.png)
-
-Add the approrpiate bucket name, select the region you'll be using, then set properties/permissions as is appropriate for your AWS environemnt (or use defaults in case of a single-user test installation), then click "Create" in the lower left to create your bucket.
-
-Repeat the above steps for each bucket to be created.
-
-
-
-
-
+aws s3api--acl private --bucket <name>
 
 **Set Access Keys**
 
@@ -99,7 +60,12 @@ Repeat the above steps for each bucket to be created.
     $ export AWS_REGION=us-east-1
 
 
+#### TODO: aws login, info on checking ~/.aws/credentials*
+
+
 ### Create Deployer
+
+#### TODO: Add commentary on permissions experience we found at NSIDC
 
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
@@ -112,12 +78,20 @@ __All deployments in the various config.yml files inherit from the `default` dep
         internal: <internal-bucket-name>  # Previously created internal bucket name.
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket
 
+#### TODO -- what's with the cumulus-data-shared bucket business?
+
 **Deploy `deployer` stack**
 
     $ kes cf upsert --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
 
 Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`
 
+
+#### TODO: Do we *always* have to target the local kes?
+
+#### TODO: Describe what success looks like. (e.g. go to CF process monitoring, etc)
+
+#### TODO: Note that Deployer versus IAM stack name *must* be different.   The roles are assigned to a "stack".
 
 ### Create IAM Roles
 
@@ -136,6 +110,13 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
 
     $ kes cf upsert --kes-folder iam --deployment <deployment-name> --region <region>
 
+
+
+#### TODO:  Flush setting assume role policy out -- this is not obvious from the README *at all*
+###### See: https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html
+
+
+
 Assign `sts:AssumeRole` policy to new or existing user via Policy:
 
     {
@@ -149,6 +130,10 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
         ]
     }
 
+
+#### (NOT DOCUMENT TASK)  TODO:  move config to app in template (?)   Ask aliresa
+
+
 **Change AWS Access Keys**
 
 Create Access Keys for AssumeRole user in IAM, then export the access keys:
@@ -158,6 +143,10 @@ Create Access Keys for AssumeRole user in IAM, then export the access keys:
     $ export AWS_REGION=us-east-1
 
 ### Create Cumulus Stack
+
+**#### TODO -- maaaaaayyyyybbeee it's not a good idea to use a large instance in the default cumulus template for the ES instance
+**#### TODO - we really need to document the es/iams portion of the template settings
+**#### TODO - document how to find the iams
 
 **Add new deployment to `<daac>-deploy/config/config.yml`:**
 
@@ -173,9 +162,12 @@ Create Access Keys for AssumeRole user in IAM, then export the access keys:
         lambdaProcessingRoleArn: <arn:iam-cumulus-lambda-processing-role>
         stepRoleArn: <arn:iam-cumulus-steprole>
         instanceProfile: <arn:iam-cumulus-ecs-role>
+
+** #### TODO -- note CMR optional, and ignorable for initial install
+
       cmr:
         username: <insert and change as needed>  # password is set in .env
-        provider: <insert and change as needed>
+            provider: <insert and change as needed>
         clientId: <insert and change as needed>
       distribution:        # Update after first deploy with API Gateway endpoint
         endpoint: <API-Gateway-distribution-invoke-URL>
@@ -189,6 +181,8 @@ Create Access Keys for AssumeRole user in IAM, then export the access keys:
 
 Change `config/.env`:
 
+ #### TODO:   Whyyyyy cmr username in config and .env?
+
     CMR_USERNAME=<cmrusername>
     CMR_PASSWORD=<cmrpassword>
     EARTHDATA_CLIENT_ID=<clientid>
@@ -198,9 +192,7 @@ Change `config/.env`:
 
 * config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
 
-
-
-
+### TODO - add new stack creation instead of upserts.   Again, note app not config for final docs
 
 ----
 ## Update Cumulus deployment
@@ -215,8 +207,6 @@ Change `config/.env`:
     $ kes cf upsert --kes-folder config --region <region> --deployment <deployment-name> --role <arn:deployerRole>
 
 Monitor deployment via the AWS CloudFormation Stack Details page reports (esp. "Events" and "Resources" sections) for creation failure.
-
-
 
 
 
@@ -298,6 +288,8 @@ To deploy modifications to a single lambda package:
 
 * dashboard (Enable "Properties" -> "Static Website Hosting", point to `index.html`)
 
+#### TODO2: this is achievable via aws command line.   Document both.
+
 ### Install dashboard
 
     $ cd ..
@@ -311,6 +303,10 @@ Configure dashboard:
 
 Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
 
+#### TODO2:  Is this necessary?
+
+
+#### TODO2: make sure this hasn't changed again Update to apps/scrips/config/config.js
 Update `const altApiRoot` in `app/scripts/config.js`:
 
 
@@ -322,8 +318,9 @@ Update `const altApiRoot` in `app/scripts/config.js`:
       }
 
 
-Build Dashboard and go to dist directory:
 
+#### TODO2:  PC LOAD LETTER?   What's a DS_TARGET?   It appears we're not even using the stupid thing.  WHYYYYY.
+Build Dashboard and go to dist directory:
 
       $ DS_TARGET=<deployment> npm run staging
       $ cd dist
@@ -344,3 +341,5 @@ Create an application on EarthData (URS or UAT depending on your target environm
 * `<API-Gateway-backend-invoke-URL>/auth/login`
 * `<API-Gateway-distribution-invoke-URL>/redirect`
 * `<Dashboard-S3-Endpoint-URL>`
+
+#### TODO2 : upsert is depreciated?
