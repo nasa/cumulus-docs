@@ -50,6 +50,7 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
     $ export AWS_REGION=us-east-1
 
+If you don't want to set environment variables, access keys can be stored locally via the AWS CLI. [More information here.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ### Create Deployer
 
@@ -221,7 +222,7 @@ E.g.: node.js sample for '../cumulus/cumulus/tasks/sample-lambda' in the cumulus
 
 For non-node.js lambda code (e.g. python) uploaded as a .zip to an S3 bucket:
 
-    - name: PyLambda                      
+    - name: PyLambda
       handler: <file.py>.<function>               # eg:  lambda_handler.handler for lambda_handler.py with:  def handler(event, context):
       timeout: <ms>
       s3Source:
