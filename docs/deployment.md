@@ -4,11 +4,14 @@ This is a guide for deploying a new instance of Cumulus.
 
 ----
 ## Deploy Cumulus
-### Linux Requirements:
+### Linux/MacOS Requirements:
 - zip
 - sha1sum
 - node >= 7.10
 - npm
+- yarn
+
+**Note** : To utilize the AWS command line tool, you'll need to have a python environment and install the AWS package.  Details can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
 
 ### Credentials
 
@@ -38,10 +41,19 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
 
 **Create S3 Buckets:**
 
-* internal
-* private
-* protected
-* public
+The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
+
+* ```<prefix>-internal```
+* ```<prefix>-private```
+* ```<prefix>-protected```
+* ```<prefix>-public```
+
+
+**Please note**: s3 bucket object names are global across all users/locations/etc, meaning you should be certain your bucket name is unique.
+
+These buckets can be created by utilizing the AWS command line utility or the web interfece.
+
+See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket
 
 **Set Access Keys**
 
