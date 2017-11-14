@@ -54,7 +54,7 @@ If you don't want to set environment variables, access keys can be stored locall
 
 ### Create Deployer
 
-The `deployer` configuration sets up an IAM role that is used for local development. This role mimics the permissions used for NGAP.
+The `deployer` configuration sets up an IAM role with permissions for deploying the cumulus stack.
 
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
