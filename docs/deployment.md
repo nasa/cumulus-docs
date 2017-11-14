@@ -89,7 +89,17 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
 
     $ kes cf upsert --kes-folder iam --deployment <deployment-name> --region <region>
 
-Assign `sts:AssumeRole` policy to new or existing user via Policy:
+If the IAM deployment command  succeeds, you should see 4 new roles in the IAM Managment Console:
+
+* ```<stack-name>-ecs```
+* ```<stack-name>-lambda-api-gateway```
+* ```<stack-name>-lambda-processing```
+* ```<stack-name>-steprole```
+
+The same information can be obtained from the AWS command line: ```aws iam list-roles```
+
+
+**Assign `sts:AssumeRole` policy to new or existing user via Policy:**
 
     {
         "Version": "2012-10-17",
