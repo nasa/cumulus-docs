@@ -197,8 +197,61 @@ Change `config/.env`:
 
 Monitor deployment via the AWS CloudFormation Stack Details page reports (esp. "Events" and "Resources" sections) for creation failure.
 
+----
+## Deploy Cumulus Dashboard
+
+### Prepare AWS
+
+**Create S3 bucket:**
+
+* dashboard (Enable "Properties" -> "Static Website Hosting", point to `index.html`)
+
+### Install dashboard
+
+    $ cd ..
+    $ git clone https://github.com/cumulus-nasa/cumulus-dashboard/
+    $ cd cumulus-dashboard
+    $ npm install
+
+### Dashboard Configuration
+
+Configure dashboard:
+
+Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
+
+Update `const altApiRoot` in `app/scripts/config.js`:
 
 
+      const altApiRoot = {
+        podaac: 'https//cumulus.ds.io/api/podaac/',
+        ghrc: 'https://cumulus.ds.io/api/ghrc/',
+        lpdaac: 'https://cumulus.ds.io/api/lpdaac/',
+        <deployment-name>: <API-Gateway-backend-invoke-URL> # Ensure '/' at end.
+      }
+
+
+Build Dashboard and go to dist directory:
+
+
+      $ DS_TARGET=<deployment> npm run staging
+      $ cd dist
+
+### Dashboard Deployment
+
+Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
+
+      $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
+
+Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
+
+### EarthData Login Set up
+
+The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
+Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
+
+* `<API-Gateway-backend-invoke-URL>/auth/login`
+* `<API-Gateway-distribution-invoke-URL>/redirect`
+* `<Dashboard-S3-Endpoint-URL>`
 
 
 ----
@@ -265,63 +318,3 @@ To deploy all changes to /tasks/ and lambdas.yml:
 To deploy modifications to a single lambda package:
 
     $ kes lambda <LambdaName> --kes-folder config --deployment <deployment-name> --role <arn:deployerRole>
-
-
-
-
-
-----
-## Deploy Cumulus Dashboard
-
-### Prepare AWS
-
-**Create S3 bucket:**
-
-* dashboard (Enable "Properties" -> "Static Website Hosting", point to `index.html`)
-
-### Install dashboard
-
-    $ cd ..
-    $ git clone https://github.com/cumulus-nasa/cumulus-dashboard/
-    $ cd cumulus-dashboard
-    $ npm install
-
-### Dashboard Configuration
-
-Configure dashboard:
-
-Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, upsert if necessary.
-
-Update `const altApiRoot` in `app/scripts/config.js`:
-
-
-      const altApiRoot = {
-        podaac: 'https//cumulus.ds.io/api/podaac/',
-        ghrc: 'https://cumulus.ds.io/api/ghrc/',
-        lpdaac: 'https://cumulus.ds.io/api/lpdaac/',
-        <deployment-name>: <API-Gateway-backend-invoke-URL> # Ensure '/' at end.
-      }
-
-
-Build Dashboard and go to dist directory:
-
-
-      $ DS_TARGET=<deployment> npm run staging
-      $ cd dist
-
-### Dashboard Deployment
-
-Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
-
-      $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
-
-Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
-
-### EarthData Login Set up
-
-The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
-Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
-
-* `<API-Gateway-backend-invoke-URL>/auth/login`
-* `<API-Gateway-distribution-invoke-URL>/redirect`
-* `<Dashboard-S3-Endpoint-URL>`
