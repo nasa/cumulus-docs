@@ -54,6 +54,8 @@ If you don't want to set environment variables, access keys can be stored locall
 
 ### Create Deployer
 
+The `deployer` configuration sets up an IAM role that is used for local development. This role mimics the permissions used for NGAP.
+
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
 **Add new deployment to `<daac>-deploy/deployer/config.yml`:**
@@ -65,7 +67,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
         internal: <internal-bucket-name>  # Previously created internal bucket name.
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket
 
-**Deploy `deployer` stack**
+**Deploy `deployer` stack**[^1]
 
     $ kes cf upsert --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
 
@@ -73,6 +75,8 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
 
 
 ### Create IAM Roles
+
+The `iam` configuration creates 4 roles used internally by the cumulus stack.
 
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
@@ -85,7 +89,7 @@ Note: If global `kes` commands do not work, your `npm install` of the `<daac>-de
         protected: <protected-bucket-name>
         public: <public-bucket-name>
 
-**Deploy `iam` stack**
+**Deploy `iam` stack**[^1]
 
     $ kes cf upsert --kes-folder iam --deployment <deployment-name> --region <region>
 
@@ -101,6 +105,8 @@ Assign `sts:AssumeRole` policy to new or existing user via Policy:
             }
         ]
     }
+
+[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
 
 **Change AWS Access Keys**
 
