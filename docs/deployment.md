@@ -115,7 +115,12 @@ If the IAM deployment command  succeeds, you should see 4 new roles in the IAM M
 The same information can be obtained from the AWS command line: ```aws iam list-roles```
 
 
-**Assign `sts:AssumeRole` policy to new or existing user via Policy:**
+**Assign `sts:AssumeRole` policy to new or existing user:**
+
+Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) assign the sts:AssumeRole policy to your chosen user.
+
+This user will be used to deploy Cumulus.
+
 
     {
         "Version": "2012-10-17",
