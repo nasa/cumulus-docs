@@ -57,10 +57,11 @@ See [creating s3 buckets](./create_bucket.md) for more information on how to cre
 
 **Set Access Keys**
 
-    (Access keys for user with IAM Create-User Permission)
+Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user with IAM Create-User permissions, then export the access keys:
+
     $ export AWS_ACCESS_KEY_ID=<AWS access key>
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
-    $ export AWS_REGION=us-east-1
+    $ export AWS_REGION=<region>
 
 If you don't want to set environment variables, access keys can be stored locally via the AWS CLI. [More information here.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
@@ -147,11 +148,11 @@ This user will be used to deploy Cumulus.
 
 **Change AWS Access Keys**
 
-Create Access Keys for AssumeRole user in IAM, then export the access keys:
+Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for AssumeRole user in IAM, then export the access keys:
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission)
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission)
-    $ export AWS_REGION=us-east-1
+    $ export AWS_REGION=<region>
 
 ### Create Cumulus Stack
 
