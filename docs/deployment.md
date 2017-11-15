@@ -85,6 +85,16 @@ __All deployments in the various config.yml files inherit from the `default` dep
 
 Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`
 
+A successful completion will result in output similar to:
+
+    $ kes cf upsert --kes-folder deployer --deployment default --region us-east-1
+    Template saved to deployer/cloudformation.yml
+    Uploaded: s3://<bucket-name>/<stack-name>/cloudformation.yml
+    Waiting for the CF operation to complete
+    CF operation is in state of CREATE_COMPLETE
+
+This will result in the creation of a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`.
+
 
 ### Create IAM Roles
 
