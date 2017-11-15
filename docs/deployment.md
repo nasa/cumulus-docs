@@ -157,6 +157,18 @@ Create Access Keys for AssumeRole user in IAM, then export the access keys:
 
 **Add new deployment to `<daac>-deploy/config/config.yml`:**
 
+The various configuration sections are described below with a sample config.yml at the end.    It's not nessicary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
+
+#### Buckets
+
+The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
+
+#### IAM roles
+
+Add the ARNs for each of the four roles created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
+
+#### Sample config.yml
+
     <deployment-name>:
       stackName: <stack-name> # name of the Cumulus stack in CloudFormation, MUST START WITH deployer/iam Prefix
       buckets:
@@ -193,8 +205,6 @@ Change `config/.env`:
 ### Best Practices
 
 * config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
-
-
 
 
 
