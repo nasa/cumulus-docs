@@ -207,21 +207,14 @@ Change `config/.env`:
 
 * config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
 
-
-
 ----
-## Update Cumulus deployment
+### Deploy Cumulus
 
-(Require Access Keys for user with IAM Permissions)
-
-    $ kes cf upsert --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
-    $ kes cf upsert --kes-folder iam --deployment <deployment-name> --region <region> # e.g. us-east-1
-
-(Requires Access Keys for user with sts:AssumeRole Permission)
+Once the preceeding configuration steps have completed, run the following to deploy cumulus:
 
     $ kes cf upsert --kes-folder config --region <region> --deployment <deployment-name> --role <arn:deployerRole>
 
-Monitor deployment via the AWS CloudFormation Stack Details page reports (esp. "Events" and "Resources" sections) for creation failure.
+You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home)
 
 ----
 ## Deploy Cumulus Dashboard
@@ -270,7 +263,7 @@ Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
 
 Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
 
-### EarthData Login Set up
+### EarthData Login Setup
 
 The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
 Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
@@ -278,6 +271,21 @@ Create an application on EarthData (URS or UAT depending on your target environm
 * `<API-Gateway-backend-invoke-URL>/auth/login`
 * `<API-Gateway-distribution-invoke-URL>/redirect`
 * `<Dashboard-S3-Endpoint-URL>`
+
+
+----
+## Updating Cumulus deployment
+
+Once deployed for the first time, any future updates to the role/stack configuration files/version of Cumulus can be upserted and will update the appropriate portions of the stack as needed.
+
+## Update Roles
+
+    $ kes cf upsert --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
+    $ kes cf upsert --kes-folder iam --deployment <deployment-name> --region <region> # e.g. us-east-1
+
+## Update Cumulus
+
+    $ kes cf upsert --kes-folder config --region <region> --deployment <deployment-name> --role <arn:deployerRole>
 
 
 ----
