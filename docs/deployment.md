@@ -78,7 +78,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
       stackName: <stack-name>   # name of the deployer stack in CloudFormation
       buckets:
         internal: <internal-bucket-name>  # Previously created internal bucket name.
-      shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket
+      shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
 **Deploy `deployer` stack**[^1]
 
