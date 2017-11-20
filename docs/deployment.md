@@ -20,9 +20,10 @@ This is a guide for deploying a new instance of Cumulus.
 * CMR Password
 * EarthData Client login credentials (username & password)
 
+
 ### Prepare `cumulus` Repo
 
-    $ git clone https://github.com/cumulus-nasa/cumulus
+    $ git clone git@github.com:cumulus-nasa/cumulus.git
     $ cd cumulus
     $ npm install
     $ npm run ybootstrap
@@ -30,12 +31,12 @@ This is a guide for deploying a new instance of Cumulus.
 
 Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
 
-### Prepare `<daac>-deploy` Repo (e.g. `lpdaac-deploy`)
+### Prepare your DAAC's Repo.
 
-** Note - to function correctly the deployment configuraiton root *must* be at the same root as the cumulus main project directory
+**Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
     $ cd ..
-    $ git clone https://github.com/cumulus-nasa/<daac>-deploy
+    $ git clone git@github.com:cumulus-nasa/template-deploy <daac>-deploy
     $ cd <daac>-deploy
     $ npm install
 
