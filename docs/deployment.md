@@ -108,26 +108,26 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
     <deployment-name>:
-      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH deployer prefix
-      stackName: <stack-name> # name of the iam stack in CloudFormation
+      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH prefix in deployer stack
+      stackName: <stack-name> # name of this iam stack in CloudFormation (e.g. <prefix>-iams)
       buckets:
-        internal: <internal-bucket-name>
-        private: <private-bucket-name>
-        protected: <protected-bucket-name>
-        public: <public-bucket-name>
+        internal: <prefix>-internal
+        private: <prefix>-private
+        protected: <prefix>-protected
+        public: <prefix>-public
 
 **Deploy `iam` stack**[^1]
 
     $ kes cf deploy --kes-folder iam --deployment <deployment-name> --region <region>
 
-If the IAM deployment command  succeeds, you should see 4 new roles in the IAM Managment Console:
+If the IAM deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
 
-* ```<stack-name>-ecs```
-* ```<stack-name>-lambda-api-gateway```
-* ```<stack-name>-lambda-processing```
-* ```<stack-name>-steprole```
+* `<stack-name>-ecs`
+* `<stack-name>-lambda-api-gateway`
+* `<stack-name>-lambda-processing`
+* `<stack-name>-steprole`
 
-The same information can be obtained from the AWS command line: ```aws iam list-roles```
+The same information can be obtained from the AWS command line: `aws iam list-roles`
 
 
 **Assign `sts:AssumeRole` policy to new or existing user:**
