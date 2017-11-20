@@ -7,11 +7,11 @@ This is a guide for deploying a new instance of Cumulus.
 ### Linux/MacOS Requirements:
 - zip
 - sha1sum
-- node >= 7.10
-- npm
-- yarn
+- [node >= 6.9.5, < 8](https://nodejs.org/en/)
+- [npm](https://www.npmjs.com/get-npm)
+- [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
-**Note** : To utilize the AWS command line tool, you'll need to have a python environment and install the AWS package.  Details can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
+**Note** : To use the AWS command line tool, you'll need to have a python environment and install the AWS CLI package.  Details can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
 
 ### Credentials
 
