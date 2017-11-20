@@ -48,29 +48,29 @@ Note: The npm install command will add the [kes](http://devseed.com/kes/) utilit
 
 The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
 
-* ```<prefix>-internal```
-* ```<prefix>-private```
-* ```<prefix>-protected```
-* ```<prefix>-public```
+* `<prefix>-internal`
+* `<prefix>-private`
+* `<prefix>-protected`
+* `<prefix>-public`
 
 
-**Please note**: s3 bucket object names are global across all users/locations/etc, meaning you should be certain your bucket name is unique.
+**Note**: s3 bucket object names are global across all users/locations/etc, otherwise bucket creation may fail.
 
 These buckets can be created by utilizing the AWS command line utility or the web interfece.
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket
 
-**Set Access Keys**
+**Set Access Keys:**
 
-Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user with IAM Create-User permissions, then export the access keys:
+Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for a user with IAM Create-User permissions, then export the access keys:
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key>
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
-    $ export AWS_REGION=<region>
+    $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
 
 If you don't want to set environment variables, access keys can be stored locally via the AWS CLI. [More information here.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
-### Create Deployer
+### Create a Deployer
 
 The `deployer` configuration sets up an IAM role with permissions for deploying the cumulus stack.
 
@@ -80,14 +80,14 @@ __All deployments in the various config.yml files inherit from the `default` dep
 
     <deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
       prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
-      stackName: <stack-name>   # name of the deployer stack in CloudFormation (e.g. <prefix>-iam-deployer)
+      stackName: <stack-name>   # name of this deployer stack in CloudFormation (e.g. <prefix>-deployer)
       buckets:
-        internal: <internal-bucket-name>  # Previously created internal bucket name.
+        internal: <prefix>-internal  # Previously created internal bucket name
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
 **Deploy `deployer` stack**[^1]
 
-    $ kes cf upsert --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
+    $ kes cf deploy --kes-folder deployer --deployment <deployment-name> --region <region>
 
 Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`
 
