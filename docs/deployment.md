@@ -180,7 +180,7 @@ Add the ARNs for each of the four roles created in the [Create IAM Roles](create
 
 #### ecs
 
-Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default instalations.
+Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default installations.
 
 #### Sample config.yml
 
@@ -247,7 +247,7 @@ Once the preceeding configuration steps have completed, run the following to dep
 You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home), this step takes a few minutes.
 
 
-Successful run has output resembling:
+A successful completion will result in output similar to:
 
 	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment daac --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
 	Generating keys. It might take a few seconds!
@@ -289,6 +289,11 @@ Successful run has output resembling:
 	Uploading Workflow Input Templates
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/HelloWorldWorkflow.json
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
+
+### Update URS application
+
+TODO: https://nsidc.org/jira/browse/DCUM-79  Short how to URS documentation, describing how to add the urls above.
+
 
 
 ----
