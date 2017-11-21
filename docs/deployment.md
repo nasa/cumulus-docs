@@ -167,7 +167,9 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 ### Create Cumulus Stack
 
-The `cumulus` project contains default example configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.   To configure, copy the example template from `cumulus/packages/deployment/app.example` to your `<daac>-deploy` project's root as `./app` (i.e. `cp -r ../cumulus/packages/deployment/app.example ./app`).
+The `cumulus` project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template direcotry to your project.
+
+    $ cp -r ../cumulus/packages/deployment/app.example ./app
 
 
 **update `<daac>-deploy/app/config.yml`**
@@ -214,7 +216,7 @@ Configuration for the Amazon EC2 Container Service (ECS) instance.   This should
 
 		 urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
 
-		 # if not specified the value of the apigatewy backend endpoint is used
+		 # if not specified the value of the apigateway backend endpoint is used
 		 # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
 
 		 # if not specified the value of the apigateway dist url is used
