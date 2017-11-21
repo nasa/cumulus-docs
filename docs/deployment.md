@@ -59,7 +59,7 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 * `<prefix>-public`
 
 
-**Note**: s3 bucket object names are global across all users/locations/etc, otherwise bucket creation may fail.
+**Note**: s3 bucket object names are global and must be unique across all users/locations/etc.
 
 These buckets can be created by utilizing the AWS command line utility or the web interfece.
 
