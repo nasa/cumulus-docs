@@ -167,7 +167,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 ### Create Cumulus Stack
 
-The `cumulus` project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template direcotry to your project.
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template direcotry to your project.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
@@ -334,18 +334,19 @@ replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.
 
     apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
+**Note**  evironmental variables are available during the build:`DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js`.
+
 
 Build the Dashboard.
 
-
-      $ DS_TARGET=<deployment> npm run staging
+      $ npm run build
 
 
 ### Dashboard Deployment
 
 Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
 
-      $ aws s3 sync . s3://<dashboard-bucket-name> --acl public-read
+      $ aws s3 sync dist s3://<prefix>-dashboard --acl public-read
 
 Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
 
