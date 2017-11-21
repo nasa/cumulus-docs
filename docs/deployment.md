@@ -303,12 +303,16 @@ TODO: https://nsidc.org/jira/browse/DCUM-79  Short how to URS documentation, des
 
 **Create S3 bucket:**
 
-* dashboard (Enable "Properties" -> "Static Website Hosting", point to `index.html`)
+* Create it, e.g. `<prefix>-dashboard`.
+* Configure the bucket to host a website:
+  * AWS console:  "Properties" -> "Static Website Hosting", point to `index.html`
+  * CLI: `aws s3 website s3://<prefix>-dashboard --index-document index.html`
+* The bucket's url will be `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or you can find it on the AWS console via "Properties" -> "Static website hosting" -> "Endpoint"
 
 ### Install dashboard
 
-    $ cd ..
-    $ git clone https://github.com/cumulus-nasa/cumulus-dashboard/
+    from your root deploy directory
+    $ git clone git@github.com:cumulus-nasa/cumulus-dashboard
     $ cd cumulus-dashboard
     $ npm install
 
@@ -316,24 +320,19 @@ TODO: https://nsidc.org/jira/browse/DCUM-79  Short how to URS documentation, des
 
 Configure dashboard:
 
-Ensure `<daac>-deploy/config/config.yml` has updated `distribution` and `backend` sections for your deployment, deploy if necessary.
 
-Update `const altApiRoot` in `app/scripts/config.js`:
+Update config in `app/scripts/config/config.js`:
 
+replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^2]
 
-      const altApiRoot = {
-        podaac: 'https//cumulus.ds.io/api/podaac/',
-        ghrc: 'https://cumulus.ds.io/api/ghrc/',
-        lpdaac: 'https://cumulus.ds.io/api/lpdaac/',
-        <deployment-name>: <API-Gateway-backend-invoke-URL> # Ensure '/' at end.
-      }
+    apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
 
-Build Dashboard and go to dist directory:
+Build the Dashboard.
 
 
       $ DS_TARGET=<deployment> npm run staging
-      $ cd dist
+
 
 ### Dashboard Deployment
 
@@ -434,5 +433,8 @@ To deploy modifications to a single lambda package:
     $ kes lambda <LambdaName> --kes-folder config --deployment <deployment-name> --role <arn:deployerRole>
 
 
+### Footnotes:
 
 [^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
+
+[^2]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
