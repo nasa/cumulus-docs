@@ -38,6 +38,11 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
     $ cd ..
     $ git clone git@github.com:cumulus-nasa/template-deploy <daac>-deploy
     $ cd <daac>-deploy
+
+	# the next two steps are TBD (and would be used to create your own repository)
+	$ git remote set-url origin git@github.com:cumulus-nasa/<daac>-deploy
+	$ git push origin master
+
     $ npm install
 
 Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
