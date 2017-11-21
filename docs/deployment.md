@@ -246,6 +246,51 @@ Once the preceeding configuration steps have completed, run the following to dep
 
 You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home), this step takes a few minutes.
 
+
+Successful run has output resembling:
+
+	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment daac --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
+	Generating keys. It might take a few seconds!
+	Keys Generated
+	keys uploaded to S3
+
+	  adding: sf-starter/ (stored 0%)
+	  adding: sf-starter/index.js (deflated 85%)
+
+
+	  adding: daac-ops-api/ (stored 0%)
+	  adding: daac-ops-api/index.js (deflated 85%)
+
+
+	  adding: sf-sns-broadcast/ (stored 0%)
+	  adding: sf-sns-broadcast/index.js (deflated 85%)
+
+
+	  adding: hello-world/ (stored 0%)
+	  adding: hello-world/index.js (deflated 85%)
+
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/hello-world.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/sf-starter.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/sf-sns-broadcast.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/daac-ops-api.zip
+	Template saved to app/cloudformation.yml
+	Uploaded: s3://daac-internal/daac-cumulus/cloudformation.yml
+	Waiting for the CF operation to complete
+	CF operation is in state of CREATE_COMPLETE
+
+	Here are the important URLs for this deployment:
+
+	Distribution:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/
+	Add this url to URS:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect
+
+	Api:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/
+	Add this url to URS:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token
+
+	Uploading Workflow Input Templates
+	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/HelloWorldWorkflow.json
+	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
+
+
 ----
 ## Deploy Cumulus Dashboard
 
