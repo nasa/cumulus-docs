@@ -78,7 +78,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
 
 **Add new deployment to `<daac>-deploy/deployer/config.yml`:**
 
-    <deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
+    <deployer-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
       prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
       stackName: <stack-name>   # name of this deployer stack in CloudFormation (e.g. <prefix>-deployer)
       buckets:
@@ -87,7 +87,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
 
 **Deploy `deployer` stack**[^1]
 
-    $ kes cf deploy --kes-folder deployer --deployment <deployment-name> --region <region>
+    $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
 
 Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`
 
@@ -107,7 +107,7 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
 
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
-    <deployment-name>:
+    <iam-deployment-name>:
       prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH prefix in deployer stack
       stackName: <stack-name> # name of this iam stack in CloudFormation (e.g. <prefix>-iams)
       buckets:
@@ -118,7 +118,7 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
 
 **Deploy `iam` stack**[^1]
 
-    $ kes cf deploy --kes-folder iam --deployment <deployment-name> --region <region>
+    $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
 If the IAM deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
 
@@ -182,9 +182,10 @@ Config for the amazon container service instance.   This shouldn't need to be ch
 
 #### Sample config.yml
 
-    <deployment-name>:                      ### The name of your deployment
-      stackName: change-me-cumulus          ### The name of the cumulus stack
-      stackNameNoDash: ChangeMeCumulus      ### Camelcased stack name with dashes removed
+	 <cumulus-deployment-name>:
+	   stackName: <prefix>-cumulus
+	   stackNameNoDash: <Prefix>Cumulus
+
 
       apiStage: dev
 
@@ -232,11 +233,11 @@ Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
 
 Once the preceeding configuration steps have completed, run the following to deploy cumulus (from your template root):
 
-    $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <deployment-name> --role <arn:deployerRole>
-    $ kes cf deploy --kes-folder app --region us-east-1 --template ../cumulus/packages/deployment/app/ --deployment jk1 --role arn:aws:iam::893015583569:role/jk1-cumulus-deployer-DeployerRole-9PZELLWUPBCL
+    $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <cumulus-deployment-name> --role <arn:deployerRole>
 
 
-You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home)
+
+You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home), this step takes a few minutes.
 
 ----
 ## Deploy Cumulus Dashboard
