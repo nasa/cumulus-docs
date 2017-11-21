@@ -91,7 +91,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
         internal: <prefix>-internal  # Previously created internal bucket name
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
-**Deploy `deployer` stack**[^1]
+**Deploy `deployer` stack**[^stack]
 
     $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
 
@@ -122,7 +122,7 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
         protected: <prefix>-protected
         public: <prefix>-public
 
-**Deploy `iam` stack**[^1]
+**Deploy `iam` stack**[^stack]
 
     $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
@@ -294,9 +294,19 @@ A successful completion will result in output similar to:
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/HelloWorldWorkflow.json
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
 
-### Update URS application
 
-TODO: https://nsidc.org/jira/browse/DCUM-79  Short how to URS documentation, describing how to add the urls above.
+### Setup EarthData Login
+
+The cumulus stack is expected to authenticate with URS. Create and register a new application using UAT if you didn't modify the template.
+
+[How to Register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application)
+
+Use the Distribution API url returned from the stack deployment as the redirect, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
+Be sure to note the Client ID after clicking `Register Application`
+Add the redirect for the distribution URL as well. e.g. `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`.[^earthdata]
+
+
+
 
 
 
@@ -327,7 +337,7 @@ Configure dashboard:
 
 Update config in `app/scripts/config/config.js`:
 
-replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^2]
+replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^apiroot]
 
     apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
@@ -345,16 +355,14 @@ Deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
 
       $ aws s3 sync dist s3://<prefix>-dashboard --acl public-read
 
-Open Dashboard: Dashboard-Bucket -> "Properties" -> "Static Website Hosting" -> "Endpoint" URL
 
-### EarthData Login Setup
 
-The following steps will allow you to set up EarthData login and redirects for the Cumulus dashboard.
-Create an application on EarthData (URS or UAT depending on your target environment) with the following redirect URIs:
+You should be able to visit the dashboard website at `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or find the url
+`<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint"
 
-* `<API-Gateway-backend-invoke-URL>/auth/login`
-* `<API-Gateway-distribution-invoke-URL>/redirect`
-* `<Dashboard-S3-Endpoint-URL>`
+
+
+
 
 
 ----
@@ -438,8 +446,11 @@ To deploy modifications to a single lambda package:
     $ kes lambda <LambdaName> --kes-folder config --deployment <deployment-name> --role <arn:deployerRole>
 
 
+
 ### Footnotes:
 
-[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
+[^stack]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
 
-[^2]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
+[^earthdata]: To add another redirect URIs to your application. On EarthData home page, select "My Applications" Scroll down to "Application Administration" and use the edit icon for your application.  Then Manage -> Redirect URIs.
+
+[^apiroot]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
