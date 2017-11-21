@@ -162,12 +162,12 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 ### Create Cumulus Stack
 
-The Cumulus project contains default configration values at cumulus//packages/deployment/app/*yml, however these need to be changed.   To override/add new values, copy the example template from cumulus//packages/deployment/app.example to your template project's root as `./app` (e.g.`cp -r ../cumulus//packages/deployment/app.example ./app).
+The `cumulus` project contains default example configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.   To configure, copy the example template from `cumulus/packages/deployment/app.example` to your `<daac>-deploy` project's root as `./app` (i.e. `cp -r ../cumulus/packages/deployment/app.example ./app`).
 
 
-**update app/config.yml**
+**update `<daac>-deploy/app/config.yml`**
 
-The various configuration sections are described below with a sample config.yml at the end.    It's not nessicary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
+The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
 
 #### buckets
 
@@ -180,7 +180,7 @@ Add the ARNs for each of the four roles created in the [Create IAM Roles](create
 
 #### ecs
 
-Config for the amazon container service instance.   This shouldn't need to be changed for default instalations
+Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default instalations.
 
 #### Sample config.yml
 
@@ -188,38 +188,43 @@ Config for the amazon container service instance.   This shouldn't need to be ch
 	   stackName: <prefix>-cumulus
 	   stackNameNoDash: <Prefix>Cumulus
 
+	   apiStage: dev
 
-      apiStage: dev
+	   ecs:
+		 instanceType: t2.micro
+		 desiredInstances: 0
 
-      ecs:
-        instanceType: t2.micro              ### ecs instance size
-        desiredInstances: 0
+	  buckets:
+		 internal: <prefix>-internal
+		 private: <prefix>-private
+		 protected: <prefix>-protected
+		 public: <prefix>-public
 
-     buckets:
-        internal: change-me
-        private: change-me
-        protected: change-me
-        public: change-me
+	   iams:
+		 ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
+		 lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
+		 lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
+		 stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
+		 instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
 
-    iams:
-        ecsRoleArn: arn:aws:iam::<aws-account-id>:role/ghrc-cumulus-ecs
-        lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/ghrc-cumulus-lambda-api-gateway
-        lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/ghrc-cumulus-lambda-processing
-        stepRoleArn: arn:aws:iam::<aws-account-id>:role/ghrc-cumulus-steprole
-        instanceProfile: null
+		 urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
 
-        urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
+		 # if not specified the value of the apigatewy backend endpoint is used
+		 # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
 
-        # if not specified the value of the apigatewy backend endpoint is used
-        # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
+		 # if not specified the value of the apigateway dist url is used
+		 # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
-        # if not specified the value of the apigateway dist url is used
-        # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
-        dashboard_url: https://dashboard-url/ #make sure to include the trailing slash
 
-### Set up environment:
+***TODO***: Figure out why we set `instanceProfile: null` right now (menno mentioned it in slack https://eosdis.slack.com/archives/G76M787MZ/p1510864560000389)
+
+
+### Set up the environment file:
+
 Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
+
+***TODO***: Sidebar instructions for creating EARTHDATA\_CLIENT\_ID & PASSWORD
 
     CMR_PASSWORD=cmrpassword
     EARTHDATA_CLIENT_ID=clientid
@@ -377,3 +382,7 @@ To deploy all changes to /tasks/ and lambdas.yml:
 To deploy modifications to a single lambda package:
 
     $ kes lambda <LambdaName> --kes-folder config --deployment <deployment-name> --role <arn:deployerRole>
+
+
+
+[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
