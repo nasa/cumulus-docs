@@ -130,12 +130,11 @@ If the IAM deployment command  succeeds, you should see 4 new roles in the [IAM 
 The same information can be obtained from the AWS command line: `aws iam list-roles`
 
 
-**Assign `sts:AssumeRole` policy to new or existing user:**
+### Assign an `sts:AssumeRole` policy to a new or existing user:
 
-Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) assign the sts:AssumeRole policy to your chosen user.
+Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy cumulus.
 
-This user will be used to deploy Cumulus.
-
+This AssumeRole policy, when applied to a user, allows the user to act with the permissions described by the DeployerRole.
 
     {
         "Version": "2012-10-17",
@@ -148,15 +147,18 @@ This user will be used to deploy Cumulus.
         ]
     }
 
-[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
+Replace the `<arn:DeployerRole>` with value created when you deployed the deployer stack. The cli command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
+
+
 
 **Change AWS Access Keys**
 
-Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for AssumeRole user in IAM, then export the access keys:
+Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM, then export the access keys:
 
-    $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission)
-    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission)
+    $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
+    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
     $ export AWS_REGION=<region>
+
 
 ### Create Cumulus Stack
 
