@@ -269,12 +269,12 @@ Successful run has output resembling:
 	  adding: hello-world/ (stored 0%)
 	  adding: hello-world/index.js (deflated 85%)
 
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/hello-world.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/sf-starter.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/sf-sns-broadcast.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/HASHNUMBERS/daac-ops-api.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/hello-world.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-starter.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-sns-broadcast.zip
+	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/daac-ops-api.zip
 	Template saved to app/cloudformation.yml
-	Uploaded: s3://daac-internal/daac-cumulus/cloudformation.yml
+	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/cloudformation.yml
 	Waiting for the CF operation to complete
 	CF operation is in state of CREATE_COMPLETE
 
