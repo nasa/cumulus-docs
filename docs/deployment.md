@@ -61,9 +61,9 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 
 **Note**: s3 bucket object names are global and must be unique across all users/locations/etc.
 
-These buckets can be created by utilizing the AWS command line utility or the web interfece.
+These buckets can be created with the AWS command line utility or the web interfece.
 
-See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket
+See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
 **Set Access Keys:**
 
@@ -73,7 +73,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
     $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
 
-If you don't want to set environment variables, access keys can be stored locally via the AWS CLI. [More information here.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ### Create a Deployer
 
@@ -176,20 +176,20 @@ The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains defaul
 
 The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
 
-#### buckets
+###### buckets
 
 The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
 
-#### iams
+###### iams
 
 Add the ARNs for each of the four roles created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
 
-#### ecs
+###### ecs
 
 Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default installations.
 
-#### Sample config.yml
+###### Sample config.yml
 
 	 <cumulus-deployment-name>:
 	   stackName: <prefix>-cumulus
@@ -223,8 +223,6 @@ Configuration for the Amazon EC2 Container Service (ECS) instance.   This should
 		 # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
 
-
-***TODO***: Figure out why we set `instanceProfile: null` right now (menno mentioned it in slack https://eosdis.slack.com/archives/G76M787MZ/p1510864560000389)
 
 
 ### Set up the environment file:
