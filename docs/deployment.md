@@ -23,11 +23,12 @@ This is a guide for deploying a new instance of Cumulus.
 
 ### Prepare `cumulus` Repo
 
-    $ git clone git@github.com:cumulus-nasa/cumulus.git
+    $ git clone https://github.com/cumulus-nasa/cumulus.git
     $ cd cumulus
     $ npm install
     $ npm run ybootstrap
     $ npm run build
+
 
 Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
 
@@ -36,11 +37,11 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
 **Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
     $ cd ..
-    $ git clone git@github.com:cumulus-nasa/template-deploy <daac>-deploy
+    $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
     $ cd <daac>-deploy
 
 	# the next two steps are TBD (and would be used to create your own repository)
-	$ git remote set-url origin git@github.com:cumulus-nasa/<daac>-deploy
+	$ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
 	$ git push origin master
 
     $ npm install
@@ -75,7 +76,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
-### Create a Deployer
+### Create a deployer role
 
 The `deployer` configuration sets up an IAM role with permissions for deploying the cumulus stack.
 
@@ -167,7 +168,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 ### Create Cumulus Stack
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template direcotry to your project.
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template directory to your project.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
@@ -235,10 +236,8 @@ Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
+Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
 
-### Best Practices
-
-* config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
 
 ----
 ### Deploy Cumulus
@@ -317,7 +316,7 @@ TODO: https://nsidc.org/jira/browse/DCUM-79  Short how to URS documentation, des
 ### Install dashboard
 
     from your root deploy directory
-    $ git clone git@github.com:cumulus-nasa/cumulus-dashboard
+    $ git clone https://github.com/cumulus-nasa/cumulus-dashboard
     $ cd cumulus-dashboard
     $ npm install
 
@@ -335,14 +334,14 @@ replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.
 **Note**  evironmental variables are available during the build:`DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js`.
 
 
-Build the Dashboard.
+Build the dashboard:
 
       $ npm run build
 
 
 ### Dashboard Deployment
 
-Deploy dashboard to s3 bucket from the `cumulus-dashboard/dist` directory:
+Deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
 
       $ aws s3 sync dist s3://<prefix>-dashboard --acl public-read
 
