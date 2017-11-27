@@ -91,7 +91,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
         internal: <prefix>-internal  # Previously created internal bucket name
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
-**Deploy `deployer` stack**[^stack]
+**Deploy `deployer` stack**[^1]
 
     $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
 
@@ -122,7 +122,7 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
         protected: <prefix>-protected
         public: <prefix>-public
 
-**Deploy `iam` stack**[^stack]
+**Deploy `iam` stack**[^1]
 
     $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
@@ -183,7 +183,7 @@ The config buckets should map to the same names you used when creating buckets i
 
 ###### iams
 
-Add the ARNs for each of the four roles created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
+Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
 
 ###### ecs
@@ -226,23 +226,35 @@ Configuration for the Amazon EC2 Container Service (ECS) instance.   This should
 
 
 
-### Set up the environment file:
+#### Set up an environment file:
 
 Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
-
-***TODO***: Sidebar instructions for creating EARTHDATA\_CLIENT\_ID & PASSWORD
 
     CMR_PASSWORD=cmrpassword
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
-Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
+To begin with deploying "Hello World" you can leave CMR_PASSWORD unchanged as you won't use the CMR system.  You will need to have an `EARTHDATA_CLIENT_ID` and `EARTHDATA_CLIENT_PASSWORD` if you want to login to the application.  You can use any url for the redirect URL, as it will be updated in a later step. Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
+
+
+
+
+
+##### Earthdata Login
+
+The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). Create and register a new application. If you didn't modify the template you will use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov). Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application). in the `.env` file, replace `clientid` and `clientpassword` with the newly generated values.
+
+
+#### Best Practices
+
+* config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
 
 
 ----
-### Deploy Cumulus
+### Deploy the Cumulus stack
 
-Once the preceeding configuration steps have completed, run the following to deploy cumulus (from your template root):
+Once the preceeding configuration steps have completed, run the following to deploy cumulus from your `<daac>-deploy` root directory:
+
 
     $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <cumulus-deployment-name> --role <arn:deployerRole>
 
@@ -295,18 +307,13 @@ A successful completion will result in output similar to:
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
 
 
-### Setup EarthData Login
+Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.
 
-The cumulus stack is expected to authenticate with URS. Create and register a new application using UAT if you didn't modify the template.
+#### Update Earthdata Application.
 
-[How to Register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application)
-
-Use the Distribution API url returned from the stack deployment as the redirect, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
-Be sure to note the Client ID after clicking `Register Application`
-Add the redirect for the distribution URL as well. e.g. `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`.[^earthdata]
-
-
-
+You will need to add two redirect urls to your Earthdata login application.
+login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
+And add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
 
 
 
@@ -337,7 +344,7 @@ Configure dashboard:
 
 Update config in `app/scripts/config/config.js`:
 
-replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^apiroot]
+replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^2]
 
     apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
@@ -449,8 +456,8 @@ To deploy modifications to a single lambda package:
 
 ### Footnotes:
 
-[^stack]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
+[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
 
-[^earthdata]: To add another redirect URIs to your application. On EarthData home page, select "My Applications" Scroll down to "Application Administration" and use the edit icon for your application.  Then Manage -> Redirect URIs.
+[^2]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
 
-[^apiroot]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
+[^3]: To add another redirect URIs to your application. On EarthData home page, select "My Applications" Scroll down to "Application Administration" and use the edit icon for your application.  Then Manage -> Redirect URIs.
