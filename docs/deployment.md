@@ -234,7 +234,9 @@ Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
-To begin with deploying "Hello World" you can leave CMR_PASSWORD unchanged as you won't use the CMR system.  You will need to have an `EARTHDATA_CLIENT_ID` and `EARTHDATA_CLIENT_PASSWORD` if you want to login to the application.  You can use any url for the redirect URL, as it will be updated in a later step. Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
+To begin with deploying "Hello World" you can leave CMR_PASSWORD unchanged as you won't use the CMR system.  You will need to have an `EARTHDATA_CLIENT_ID` and `EARTHDATA_CLIENT_PASSWORD` if you want to login to the application.  You can use any url for the redirect URL, as it will be updated in a later step.
+
+Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
 
 
 
