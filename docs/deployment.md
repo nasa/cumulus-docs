@@ -35,7 +35,7 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
 
 ### Prepare your DAAC's Repo.
 
-If you already are working with an existing `<daac>-deploy` project this step can be skipped if you have the appropriate configuration setup.
+If you already are working with an existing `<daac>-deploy` repository this step can be skipped if you have the appropriate configuration setup.
 
 **Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
@@ -46,7 +46,7 @@ If you already are working with an existing `<daac>-deploy` project this step ca
 
 Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template directory to your project.
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Begin by copying the template directory to your project, you will modify it for you daac specific needs later.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
@@ -115,7 +115,7 @@ A successful completion will result in output similar to:
     Waiting for the CF operation to complete
     CF operation is in state of CREATE_COMPLETE
 
-This will result in the creation of a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`.
+This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`.
 
 ### Create IAM Roles
 
