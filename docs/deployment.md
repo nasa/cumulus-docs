@@ -171,7 +171,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
 The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template directory to your project.
 
-If you already are working with an existing <daac>-deploy project this step can be skipped if you have the appropriate configuration setup, however you'll still need to update the existing app/config.yml if cumulus has been updated since the existing project was created/configured.
+If you already are working with an existing `<daac>-deploy` project this step can be skipped if you have the appropriate configuration setup, however you'll still need to update the existing app/config.yml if cumulus has been updated since the existing project was created/configured.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
