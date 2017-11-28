@@ -448,11 +448,11 @@ For non-node.js lambda code (e.g. python) uploaded as a .zip to an S3 bucket:
 
 To deploy all changes to /tasks/ and lambdas.yml:
 
-    $ kes cf deploy --kes-folder config --region <region> --deployment <deployment-name> --role <arn:deployerRole>
+    $ kes cf deploy --kes-folder app --template ../cumulus/packages/deployment/app --region <region> --deployment <deployment-name> --role <arn:deployerRole>
 
 To deploy modifications to a single lambda package:
 
-    $ kes lambda <LambdaName> --kes-folder config --deployment <deployment-name> --role <arn:deployerRole>
+    $ kes lambda <LambdaName> --kes-folder app --template ../cumulus/packages/deployment/app --deployment <deployment-name> --role <arn:deployerRole>
 
 
 
