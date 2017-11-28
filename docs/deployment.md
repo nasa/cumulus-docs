@@ -253,12 +253,6 @@ Be sure that `.env` is `.gitignore`-d so that it is not included in your reposit
 
 The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). Create and register a new application. If you didn't modify the template you will use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov). Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application). in the `.env` file, replace `clientid` and `clientpassword` with the newly generated values.
 
-
-#### Best Practices
-
-* config.yml should override fields in new deployments, refer to security credentials via .env (which is gitignored) and include a default.
-
-
 ----
 ### Deploy the Cumulus stack
 
