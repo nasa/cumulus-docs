@@ -35,19 +35,28 @@ Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_rea
 
 ### Prepare your DAAC's Repo.
 
+If you already are working with an existing `<daac>-deploy` project this step can be skipped if you have the appropriate configuration setup.
+
 **Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
     $ cd ..
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
     $ cd <daac>-deploy
-
-	# the next two steps are TBD (and would be used to create your own repository)
-	$ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
-	$ git push origin master
-
     $ npm install
 
 Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
+
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template directory to your project.
+
+    $ cp -r ../cumulus/packages/deployment/app.example ./app
+
+[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track daac-specific configuraiton changes:
+
+    $ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
+	$ git push origin master
+
+You can then add/commit changes as needed.
+
 
 ### Prepare AWS
 
@@ -167,14 +176,9 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
     $ export AWS_REGION=<region>
 
 
-### Create Cumulus Stack
+### Configure Cumulus Stack
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values at `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  Copy the template directory to your project.
-
-If you already are working with an existing `<daac>-deploy` project this step can be skipped if you have the appropriate configuration setup, however you'll still need to update the existing app/config.yml if cumulus has been updated since the existing project was created/configured.
-
-    $ cp -r ../cumulus/packages/deployment/app.example ./app
-
+This updates the file copied in the [Prepare your DAAC's Repo](#prepare-your-daacs-repo) step.
 
 **update `<daac>-deploy/app/config.yml`**
 
