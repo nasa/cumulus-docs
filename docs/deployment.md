@@ -127,7 +127,7 @@ This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/Us
 
 ### Create IAM Roles
 
-The `iam` configuration creates 4 roles used internally by the cumulus stack.
+The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the cumulus stack.
 
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
@@ -144,14 +144,16 @@ The `iam` configuration creates 4 roles used internally by the cumulus stack.
 
     $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
-If the IAM deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
+If the `iam` deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
 
 * `<stack-name>-ecs`
 * `<stack-name>-lambda-api-gateway`
 * `<stack-name>-lambda-processing`
 * `<stack-name>-steprole`
 
-The same information can be obtained from the AWS command line: `aws iam list-roles`
+The same information can be obtained from the AWS CLI command: `aws iam list-roles`.
+
+The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed frmo the AWS CLI command: `aws iam list-instance-profiles`.
 
 
 ### Assign an `sts:AssumeRole` policy to a new or existing user:
