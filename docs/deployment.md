@@ -250,7 +250,7 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 #### Set up an environment file:
 
-Copy `app/.env.sample to .env` and add CMR/earthdata client credentials:
+Copy `app/.env.sample to app/.env` and add CMR/earthdata client credentials:
 
     CMR_PASSWORD=cmrpassword
     EARTHDATA_CLIENT_ID=clientid
