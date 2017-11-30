@@ -207,6 +207,10 @@ Add the ARNs for each of the four roles and one instanceProfile created in the [
 
 Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default installations.
 
+###### users
+
+List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
+
 ###### Sample config.yml
 
 	 <cumulus-deployment-name>:
@@ -240,8 +244,9 @@ Configuration for the Amazon EC2 Container Service (ECS) instance.   This should
 		 # if not specified the value of the apigateway dist url is used
 		 # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
-
-
+      users:
+        - username: <user>
+        - username: <user2>
 
 #### Set up an environment file:
 
