@@ -383,10 +383,7 @@ Deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
 
 
 You should be able to visit the dashboard website at `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or find the url
-`<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint"
-
-
-
+`<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint" and login with a user that you configured for access in the [Configure Cumulus Stack](#configure-cumulus-stack) step.
 
 
 
