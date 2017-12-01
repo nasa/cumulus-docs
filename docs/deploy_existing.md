@@ -243,9 +243,9 @@ The various configuration sections are described below with a sample `config.yml
 
 ###### vpc
 
-You probably already have at least 1 vpc associated with your existing deployment, but its subnets can be transitory in nature depending on what kind of load balancing and/or docker activities are taking place at a given time. Thus, you must identify at least one persistent subnet to use as a subnet ID (you may only specify one). Navigate to  [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the Availibility Zones (probably us-east-1a) and note the "Availibility Zone" (e.g., us-east-1a). Next, visit [AWS VPC](https://console.aws.amazon.com/vpc/home) and click on "Subnets". Copy the 'VPC' value into 'vpcId' and the appropriate 'Subnet ID' value, based on the Availability Zone value you just saw on the Auto Scaling Groups page, into 'subnets'. If you have no vpc and/or subnets, do not include the vpc section in your new configuration.
+You probably already have at least 1 vpc associated with your existing deployment, but its subnets can be transitory in nature depending on what kind of load balancing and/or docker activities are taking place at a given time. Thus, you must identify at least one persistent subnet to use as a subnet ID (you may only specify one). Navigate to  [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the "Availibility Zone" (e.g., us-east-1a). Next, visit [AWS VPC](https://console.aws.amazon.com/vpc/home) and click on "Subnets". Copy the 'VPC' value into 'vpcId' and the appropriate 'Subnet ID' value, based on the Availability Zone value you just saw on the Auto Scaling Groups page, into 'subnets'. If you have no vpc and/or subnets, do not include the vpc section in your new configuration.
 
-**Note** : If you see the error "The availability zones of the specified subnets and the Auto Scaling group do not match" in AWS > CloudFormation > Stacks > Stack Detail > Events appear while this stack is being deployed, it means you've chosen a subnet that isn't correct; this could be due to load balancing happening at different times. Try to pick the "1a" subnet, which seems to serve as some sort of default, if you have multiples to choose from.
+**Note** : If you see the error "The availability zones of the specified subnets and the Auto Scaling group do not match" in AWS > CloudFormation > Stacks > Stack Detail > Events appears while this stack is being deployed, it means you've chosen a subnet that isn't correct; this could be due to load balancing happening at different times. Try to use the approach above (but if this fails, you can try picking the "1a" subnet, which seems to serve as some sort of default).
 
 ###### buckets
 
@@ -261,7 +261,7 @@ If your existing deployment does not require these values, you may omit this sec
 
 ###### ecs
 
-Configuration for the Amazon EC2 Container Service (ECS) instance. These values will depend on the nature of your existing deployment's ECS needs (i.e., what kind of docker items are included with your deployment). `instanceType` specifies attributes of the container such as its size; see [EC2 Instance Types](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) for more information. `desiredInstances` should currently be set to 0, or else Cloud Formation may never finish creating the new cumulus stack due to a current bug with existing Cumulus docker images. The `docker` items are needed so the stack can source the appropriate docker images from dockerhub.
+Configuration for the Amazon EC2 Container Service (ECS) instance. These values will depend on the nature of your existing deployment's ECS needs (i.e., what kind of docker items are included with your deployment). `instanceType` specifies attributes of the container such as its size; see [EC2 Instance Types](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) for more information. **`desiredInstances` should currently be set to 0, or else Cloud Formation may never finish creating the new cumulus stack due to a current bug with existing Cumulus docker images.** The `docker` items are needed so the stack can source the appropriate docker images from dockerhub.
 
 ###### users
 
@@ -273,8 +273,8 @@ Copy and paste this section from the `<default>` section at the top of the file,
 
 ###### Sample config.yml
 
-	 <cumulus-deployment-name>:
-	   stackName: <prefix>-cumulus
+         <cumulus-deployment-name>:
+           stackName: <prefix>-cumulus
            bucketPrefix: <prefix>
 
            vpc:                         # Do not include this section if you have no 
@@ -282,27 +282,27 @@ Copy and paste this section from the `<default>` section at the top of the file,
              subnets:
                - subnet-<hash>          # try the "1a" subnet when you have a choice
 
- 	   buckets:
+           buckets:
              internal: <prefix>-internal
-	     private: <prefix>-private
-	     protected: <prefix>-protected
-	     public: <prefix>-public
+             private: <prefix>-private
+             protected: <prefix>-protected
+             public: <prefix>-public
 
-	   iams:
-	     ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
-	     lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
-	     lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
-	     stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
-	     instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
+           iams:
+             ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
+             lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
+             lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
+             stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
+             instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
 
            cmr:
              username: '{{CMR_USERNAME}}'        # Set in .env or use a placeholder
              provider: '{{CMR_PROVIDER}}'        # Set in .env or use a placholder
              clientId: '{{EARTHDATA_CLIENT_ID}}' # Set in .env or use a placeholder
 
-	   ecs:
+           ecs:
              instanceType: <varies>              # Dependent on needs of your existing deployment
-	     desiredInstances: 0                 # Should be zero currently due to bugs in docker
+             desiredInstances: 0                 # Should be zero currently due to bugs in docker
              docker:
                username: '{{DOCKER_EMAIL}}'      # Set in .env
                password: '{{DOCKER_PASSWORD}}'   # Set in .env
@@ -316,11 +316,11 @@ Copy and paste this section from the `<default>` section at the top of the file,
 
            urs_url: https://uat.urs.earthdata.nasa.gov/ # Make sure to include the trailing slash
 
-     	   # if not specified the value of the apigateway backend endpoint is used
-	   # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
+           # if not specified the value of the apigateway backend endpoint is used
+           # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
 
-	   # if not specified the value of the apigateway dist url is used
-	   # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
+           # if not specified the value of the apigateway dist url is used
+           # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
 
 ----
@@ -329,71 +329,71 @@ Copy and paste this section from the `<default>` section at the top of the file,
 Once the preceeding configuration steps have completed, run the following to deploy cumulus from your `<daac>-deploy` root directory:
 
 
-    $ ./node_modules/kes/bin/cli.js cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <prefix> --role <arn:deployerRole>
+    $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <prefix> --role <arn:deployerRole>
 
 
-You need to monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home); this step is currently buggy and prone to errors. 
+**You need to monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home); this step is currently buggy and prone to errors.**
 
-If you see this error: 
-"The availability zones of the specified subnets and the Auto Scaling group do not match" -- This means you chose the wrong subnet for your vpc. All but one of the subnets are transitory, only existing when various load balancing and/or docker operations are taking place. Thus, you must choose the one and only persistent subnet. Navigate to [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the Availibility Zones (probably us-east-1a). Use that information in conjunction with [AWS VPC > Subnets](https://console.aws.amazon.com/vpc/home) to select the subnet ID corresponding to the correct availability zone (e.g., the subnet for "us-east-1a".
+**If you see this error**: 
+__"The availability zones of the specified subnets and the Auto Scaling group do not match"__ -- This means you chose the wrong subnet for your vpc. All but one of the subnets are transitory, only existing when various load balancing and/or docker operations are taking place. Thus, you must choose the one and only persistent subnet. Navigate to [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the Availibility Zones (probably us-east-1a). Use that information in conjunction with [AWS VPC > Subnets](https://console.aws.amazon.com/vpc/home) to select the subnet ID corresponding to the correct availability zone (e.g., the subnet for "us-east-1a".
 
-If the deployment isn't failing but is taking a long time, navigate to [AWS ECS](https://console.aws.amazon.com/ecs/home) and then to "Clusters". Identify the new cluster associated with your <prefix> app deployment and click on it. It probably says in the table "Desired tasks 1", or some other non-zero number, and "Running tasks 0". You should update the cluster to change "Number of tasks" to 0, or else you will receive (eventually) an error such as "Service arn:aws:ecs:us-east-1:numbers:service/<prefix>-cumulus-<ECS service name> did not stabilize" and your app deployment will fail. 
+**If the deployment isn't failing but is taking a long time**, navigate to [AWS ECS](https://console.aws.amazon.com/ecs/home) and then to "Clusters". Identify the new cluster associated with your <prefix> app deployment and click on it. The summary table (shown at bottom) for the cluster probably says "Desired tasks 1", or some other non-zero number, and "Running tasks 0". Click Update, then update the cluster to change "Number of tasks" to 0, or else you will receive (eventually) an error such as __"Service arn:aws:ecs:us-east-1:numbers:service/<prefix>-cumulus-<ECS service name> did not stabilize"__ and your app deployment will fail. 
 
-If you did the above and the deployment is still taking a long time, be patient and let it continue to run. It will eventually time out and fail if it's in a state where it can't complete.
+If you did the above and the deployment is still taking a long time, be patient and let it continue to run. It will eventually time out and fail if it's in a state where it can't complete, possibly giving you useful information as to why.
 
 **Note** : If the stack fails to be created, AWS might not be able to automatically delete it for you even if you attempt to do so using the AWS console. The cause appears to be an inability to delete named State Machines that this stack created. The names of the specific state machines can be gathered from the "Events" section of the stack's output on the AWS CloudFormation Console; you can then (carefully) manually delete the specified State Machines, thus readying AWS for the next attempt.
 
 A successful completion will result in output similar to:
 
-	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment daac --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
-	Generating keys. It might take a few seconds!
-	Keys Generated
-	keys uploaded to S3
+```
+$ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment daac --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
+Generating keys. It might take a few seconds!
+Keys Generated
+keys uploaded to S3
 
-	  adding: sf-starter/ (stored 0%)
-	  adding: sf-starter/index.js (deflated 85%)
-
-
-	  adding: daac-ops-api/ (stored 0%)
-	  adding: daac-ops-api/index.js (deflated 85%)
+  adding: sf-starter/ (stored 0%)
+  adding: sf-starter/index.js (deflated 85%)
 
 
-	  adding: sf-sns-broadcast/ (stored 0%)
-	  adding: sf-sns-broadcast/index.js (deflated 85%)
+  adding: daac-ops-api/ (stored 0%)
+  adding: daac-ops-api/index.js (deflated 85%)
 
 
-	  adding: hello-world/ (stored 0%)
-	  adding: hello-world/index.js (deflated 85%)
-
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/hello-world.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-starter.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-sns-broadcast.zip
-	Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/daac-ops-api.zip
-	Template saved to app/cloudformation.yml
-	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/cloudformation.yml
-	Waiting for the CF operation to complete
-	CF operation is in state of CREATE_COMPLETE
-
-	Here are the important URLs for this deployment:
-
-	Distribution:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/
-	Add this url to URS:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect
-
-	Api:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/
-	Add this url to URS:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token
-
-	Uploading Workflow Input Templates
-	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/HelloWorldWorkflow.json
-	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
+  adding: sf-sns-broadcast/ (stored 0%)
+  adding: sf-sns-broadcast/index.js (deflated 85%)
 
 
-Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.
+  adding: hello-world/ (stored 0%)
+  adding: hello-world/index.js (deflated 85%)
+
+Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/hello-world.zip
+Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-starter.zip
+Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/sf-sns-broadcast.zip
+Uploaded: s3://daac-internal/daac-cumulus/lambdas/<HASHNUMBERS>/daac-ops-api.zip
+Template saved to app/cloudformation.yml
+Uploaded: s3://<prefix>-internal/<prefix>-cumulus/cloudformation.yml
+Waiting for the CF operation to complete
+CF operation is in state of CREATE_COMPLETE
+
+Here are the important URLs for this deployment:
+
+Distribution:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/
+Add this url to URS:  https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect
+
+Api:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/
+Add this url to URS:  https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token
+
+Uploading Workflow Input Templates
+Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/HelloWorldWorkflow.json
+Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
+```
+
+__Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.__
 
 #### Update Earthdata Application.
 
-You will need to add two redirect urls to your Earthdata login application.
-login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
-And add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
+You will need to add two redirect urls given as output in the app deployment step to your Earthdata login application.
+Login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token` and `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
 
 
 
@@ -413,7 +413,8 @@ And add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazona
 
 ### Install dashboard
 
-    from your root deploy directory
+from your root deploy directory:
+
     $ git clone https://github.com/cumulus-nasa/cumulus-dashboard
     $ cd cumulus-dashboard
     $ npm install
@@ -435,13 +436,13 @@ Build the dashboard:
 
       $ npm run build
 
-**Note** : If you get an error from this about Problem clearing the cache: EACCES: permission denied, rmdir '/tmp/gulp-cache/default', this probably means the files at that location, and/or the folder, are owned by someone else. A dirty workaround for this is to edit the file `cumulus-dashboard/node_modules/gulp-cache/index.js` and alter the value of the line `var fileCache = new Cache({cacheDirName: 'gulp-cache'});` to something like, say, `var fileCache = new Cache({cacheDirName: '<prefix>-cache'});`. Now gulp-cache will be able to write to /tmp/<prefix>-cache/default, and the error should go away.
+**Note** : If you get an error from this about __Problem clearing the cache: EACCES: permission denied, rmdir '/tmp/gulp-cache/default'__, this probably means the files at that location, and/or the folder, are owned by someone else (or some other factor prevents you from writing there). A dirty workaround for this is to edit the file `cumulus-dashboard/node_modules/gulp-cache/index.js` and alter the value of the line `var fileCache = new Cache({cacheDirName: 'gulp-cache'});` to something like, say, `var fileCache = new Cache({cacheDirName: '<prefix>-cache'});`. Now gulp-cache will be able to write to `/tmp/<prefix>-cache/default`, and the error should go away.
 
-##r Dashboard Deployment
+##Dashboard Deployment
 
-**In order to deploy the dashboard, unless your deployment user already has elevated privileges, you will have to reload/re-export the environment variables for your AWS 'admin' user's account (the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY_ID, and AWS_REGION). If you do not do this, you will see error messages complaining about "Upload Failed....access denied."
+**In order to deploy the dashboard, unless your deployment user already has elevated privileges, you will have to reload/re-export the environment variables for your AWS 'admin' user's account** (the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY_ID, and AWS_REGION). __If you do not do this, you will see error messages complaining about "Upload Failed....access denied."__
 
-**Source the higher-privileged AWS user credential set, then deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
+**Source the higher-privileged AWS user credential set, then deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:**
 
       $ aws s3 sync dist s3://<prefix>-dashboard --acl public-read
 
@@ -449,7 +450,8 @@ Build the dashboard:
 You should be able to visit the dashboard website at `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or find the url
 `<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint"
 
-**Note** : If the dashboard sends you to an Earthdata Login page that has an error reading "Invalid request, please verify the client status or redirect_uri before resubmitting", this means you've either forgotten to update one or more of your EARTHDATA_CLIENT_ID, EARTHDATA_CLIENT_PASSWORD, or APIROOT environmental variables (see above), or you haven't placed the correct values in them, or you've forgotten to add both the "redirect" and "token" URL to the Earthdata Application.
+**Note** : If the dashboard sends you to an Earthdata Login page that has an error reading __"Invalid request, please verify the client status or redirect_uri before resubmitting"__, this means you've either forgotten to update one or more of your EARTHDATA_CLIENT_ID, EARTHDATA_CLIENT_PASSWORD, or APIROOT environmental variables (see above), or you haven't placed the correct values in them, or you've forgotten to add both the "redirect" and "token" URL to the Earthdata Application.
+
 **Note** : There is odd caching behavior associated with the dashboard and Earthdata Login at this point in time that can cause the above error to reappear on the Earthdata Login page loaded by the dashboard even after fixing the cause of the error. If you experience this, attempt to access the dashboard in a new incognito/private browser window, and it should work.
 
 
