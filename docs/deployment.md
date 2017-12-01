@@ -15,10 +15,12 @@ The process involves:
 ## Deploy Cumulus
 ### Linux/MacOS Requirements:
 - zip
-- sha1sum
+- sha1sum or md5sha1sum
 - [node >= 6.9.5, < 8](https://nodejs.org/en/)
 - [npm](https://www.npmjs.com/get-npm)
 - [yarn](https://yarnpkg.com/lang/en/docs/install/)
+- aws (AWS command line utility)
+- python
 
 **Note** : To use the AWS command line tool, you'll need to have a python environment and install the AWS CLI package.  Details can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
 
@@ -30,26 +32,43 @@ The process involves:
 * EarthData Client login credentials (username & password)
 
 
-### Prepare `cumulus` Repo
+### Make local copy of `cumulus` Repo and prepare it.
 
+    Clone Repository
     $ git clone https://github.com/cumulus-nasa/cumulus.git
+
+    Change Directory to the Repository root
     $ cd cumulus
+
+    Run npm install to install local build dependencies
     $ npm install
+
+    Use ybootstrap to complete the install and configuration of the local build environment and dependencies
     $ npm run ybootstrap
+
+    Build the cumulus applications
     $ npm run build
 
 
 Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
+This can be fixed by 'DOING THIS?'.
 
-### Prepare your DAAC's Repo.
+### Prepare your DAAC Configuration Repo.
 
 If you already are working with an existing `<daac>-deploy` repository this step can be skipped if you have the appropriate configuration setup.
 
 **Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
+    Go to the same directory level as the cumulus repo download
     $ cd ..
+
+    Clone template-deply repo and name appropriately for your DAAC or organization.
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
+
+    Enter repoistory root directory
     $ cd <daac>-deploy
+
+    Install packages with npm
     $ npm install
 
 Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
@@ -58,17 +77,31 @@ The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains defaul
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
-[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track daac-specific configuraiton changes:
+### [Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track daac-specific configuraiton changes:
 
     $ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
 	$ git push origin master
 
-You can then add/commit changes as needed.
+You can then [add/commit](https://help.github.com/articles/adding-a-file-to-a-repository-using-the-command-line/) changes as needed.
 
 
-### Prepare AWS
+### Prepare AWS configuration
+
+**Set Access Keys:**
+
+Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for a user with IAM Create-User permissions, then export the access keys:
+
+    $ export AWS_ACCESS_KEY_ID=<AWS access key>
+    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
+    $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
+
+If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+
 
 **Create S3 Buckets:**
+These buckets can be created with the AWS command line utility or the web interfece.
+
+See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
 The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
 
@@ -80,19 +113,6 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 
 **Note**: s3 bucket object names are global and must be unique across all users/locations/etc.
 
-These buckets can be created with the AWS command line utility or the web interfece.
-
-See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
-
-**Set Access Keys:**
-
-Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for a user with IAM Create-User permissions, then export the access keys:
-
-    $ export AWS_ACCESS_KEY_ID=<AWS access key>
-    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
-    $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
-
-If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ### Create a deployer role
 
@@ -105,15 +125,18 @@ __All deployments in the various config.yml files inherit from the `default` dep
     <deployer-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
       prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
       stackName: <stack-name>   # name of this deployer stack in CloudFormation (e.g. <prefix>-deployer)
+      stackNameNoDash: <DashlessStackName>	# a stack name that will be identifiable as being associated with stack-name which contains no dashes
       buckets:
         internal: <prefix>-internal  # Previously created internal bucket name
       shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
 **Deploy `deployer` stack**[^1]
 
+    kes is a templating and deploying utility that is installed locally as part of the cumulus deployment. Use it to deploy your configurations to AWS.
+
     $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
 
-Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`
+Note: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`.  It may be useful to add this to your PATH environment variable.
 
 A successful completion will result in output similar to:
 
