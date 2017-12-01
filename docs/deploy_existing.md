@@ -438,7 +438,7 @@ Build the dashboard:
 
 **Note** : If you get an error from this about __Problem clearing the cache: EACCES: permission denied, rmdir '/tmp/gulp-cache/default'__, this probably means the files at that location, and/or the folder, are owned by someone else (or some other factor prevents you from writing there). A dirty workaround for this is to edit the file `cumulus-dashboard/node_modules/gulp-cache/index.js` and alter the value of the line `var fileCache = new Cache({cacheDirName: 'gulp-cache'});` to something like, say, `var fileCache = new Cache({cacheDirName: '<prefix>-cache'});`. Now gulp-cache will be able to write to `/tmp/<prefix>-cache/default`, and the error should go away.
 
-##Dashboard Deployment
+Dashboard Deployment:
 
 **In order to deploy the dashboard, unless your deployment user already has elevated privileges, you will have to reload/re-export the environment variables for your AWS 'admin' user's account** (the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY_ID, and AWS_REGION). __If you do not do this, you will see error messages complaining about "Upload Failed....access denied."__
 
