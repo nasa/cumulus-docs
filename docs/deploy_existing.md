@@ -19,9 +19,9 @@ The process involves:
 - git
 - [node >= 6.9.5, < 8](https://nodejs.org/en/)
 - [npm](https://www.npmjs.com/get-npm)
-- [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
 **Note** : To use the AWS command line tool, you'll need to have a python environment and install the AWS CLI package.  Details can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
+
 **Note** : You can perform a local installation of nodejs, including npm, by following the "node-and-npm-in-30-seconds.sh" variant of the instructions at https://gist.github.com/isaacs/579814 -- do not perform the last step, since npm will be installed along with node.
 
 ### Credentials
@@ -56,6 +56,7 @@ The process involves:
    * For example, an "admin"-type user
    * You will need a username and password to log onto the [AWS console](https://console.aws.amazon.com/console/home)
    * Also obtain the "access key" and "secret access key"
+
 **Note** : The secret access key is shown only upon creation of the account. Although it can be regenerated, doing so will disrupt any existing operations that depend upon it.
 * Choose a short string `<prefix>` to use in order to consistently identify the new namespace and its resources
 * Identify which specific branches of the repositories listed above you should work with by consulting their owners (generally either DevSeed or NSIDC)
@@ -68,9 +69,10 @@ The process involves:
     $ npm install
     $ npm run bootstrap
     $ npm run build
-**Note ** : Optionally, after `$ cd cumulus`, perform `$ git checkout branch <branch name>` if you've been told to use a branch other than master.
 
-Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
+**Note** : Optionally, after `$ cd cumulus`, perform `$ git checkout branch <branch name>` if you've been told to use a branch other than master.
+
+**Note** : In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
 
 ### Prepare your DAAC's Repo.
 
@@ -84,6 +86,7 @@ If you are NOT already working with an existing `<daac>-deploy` repository, stop
     $ npm install
 
 **Note** : Your DAAC's deploy repo URL will be something like, e.g., https://github.com/cumulus-nasa/ghrc-deploy.git
+
 **Note** : The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands. Kes's main executable can now be found at `<daac-deploy>/node_modules/kes/bin/cli.js`
 
 
@@ -111,7 +114,7 @@ You need to make some AWS information available to your environment. If you don'
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key>
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
-    $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
+    $ export AWS_REGION=<region>  
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
@@ -164,7 +167,7 @@ The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/
 
 **Deploy `iam` stack**[^1]
 
-    $ ./node_modules/kes/bin/cli.js cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
+    $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
 If the `iam` deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home). Note their Role ARNs for later.
 
@@ -224,15 +227,17 @@ The cumulus stack is expected to authenticate with [Earthdata Login](https://urs
 Create or update `<daac>-deploy/app/.env`. Be sure that `.env` is `.gitignore`-d so that it is not included in your repository.
 
 This file should have the following items, or a subset of them, depending on your particular existing deployment:
-```CMR_PASSWORD=<Your CMR password>
+```
+CMR_PASSWORD=<Your CMR password>
 CMR_PROVIDER=<Your CMR provider>
 CMR_USERNAME=<Your CMR username>
 DOCKER_EMAIL=<Your Dockerhub email>
 DOCKER_PASSWORD=<Your Dockerhub password>
-EARTHDATA_CLIENT_ID=<Your Earthdata application's cliend ID (can be in UAT)
-EARTHDATA_CLIENT_PASSWORD=<Your Earthdata application's account password>```
+EARTHDATA_CLIENT_ID=<Your Earthdata application client ID (can be in UAT)
+EARTHDATA_CLIENT_PASSWORD=<Your Earthdata application account password>
+```
 
-**Update main configuration file for the deployment, `<daac>-deploy/app/config.yml`**
+**Update main configuration file for the deployment** - `<daac>-deploy/app/config.yml`
 
 The various configuration sections are described below with a sample `config.yml` at the end. Do not alter any content that already exists in your daac's `<daac-deploy>/app/config.yml` file unless you're sure you know what you are doing; instead, simply append a new section to its end.
 
