@@ -7,9 +7,10 @@ This is a guide for deploying a new instance of Cumulus.
 
 The process involves:
 
-*  [Creating AWS S3 Buckets](create_bucket.html)
-*  Using [Kes](http://devseed.com/kes/) to create [AWS CloudFormation](https://aws.amazon.com/cloudformation/getting-started/) templates that create [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) for the cumulus deployment
-*  Using [Kes](http://devseed.com/kes/) to generate an [AWS CloudFormation](https://aws.amazon.com/cloudformation/getting-started/) template for Cumulus and deploy it
+*  Creating [AWS S3 Buckets](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html).
+*  Using [Kes](http://devseed.com/kes/) to transform kes templates (`cloudformation.template.yml`) into [AWS CloudFormation](https://aws.amazon.com/cloudformation/getting-started/) stack templates (`cloudformation.yml`) that are then deployed to AWS.
+*  Before deploying the Cumulus software, CloudFormation stacks are deployed that create necessary [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) via the `deployer` and `iams` stacks.
+*  The Cumulus software is configured and deployed via the `app` stack.
 
 ----
 ## Deploy Cumulus
@@ -82,7 +83,7 @@ Install packages with npm
 
     $ npm install
 
-Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
+**Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
 The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
 
@@ -113,19 +114,23 @@ If you don't want to set environment variables, [access keys can be stored local
 
 **Create S3 Buckets:**
 
-These buckets can be created with the AWS command line utility or the web interfece.
+These buckets can be created with the AWS command line utility or the web interfece. You do not need to assign them any special properties and you do not need to modify their default permissions (not even for the public bucket).
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
 The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
+
 
 * `<prefix>-internal`
 * `<prefix>-private`
 * `<prefix>-protected`
 * `<prefix>-public`
 
+You need to make some AWS information available to your environment. If you don't already have the access key and secret access key of an AWS user with IAM Create-User permissions, you must Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for such a user with IAM Create-User permissions, then export the access keys:
 
 **Note**: s3 bucket object names are global and must be unique across all users/locations/etc.
+
+If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 
 ### Create a deployer role
@@ -163,7 +168,7 @@ A successful completion will result in output similar to:
     Waiting for the CF operation to complete
     CF operation is in state of CREATE_COMPLETE
 
-This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`.
+This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`. Note its Role ARN for later.
 
 ### Create IAM Roles
 
@@ -202,7 +207,7 @@ The `iam` deployment also creates an instance profile named `<stack-name>-ecs` t
 
 Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy cumulus.
 
-This AssumeRole policy, when applied to a user, allows the user to act with the permissions described by the DeployerRole.
+This AssumeRole policy, when applied to a user, allows the user to act with the permissions described by the DeployerRole. You can paste this into the "JSON" tab of the policy creator interface.
 
     {
         "Version": "2012-10-17",
@@ -215,18 +220,22 @@ This AssumeRole policy, when applied to a user, allows the user to act with the 
         ]
     }
 
-Replace the `<arn:DeployerRole>` with value created when you deployed the deployer stack. The cli command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
+Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The cli command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
+
+_Before proceeding, make sure you attached this new policy to the user that will deploy Cumulus. If you create a new user for this, make sure to save their access key and secret access key._
 
 
+**Update AWS Access Keys**
 
-**Change AWS Access Keys**
-
-Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM, then export the access keys:
+Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM (the same user you just assigned the AssumeRole policy to), then export the access keys, replacing the previous values in your environment:
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
     $ export AWS_REGION=<region>
 
+If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+
+_Make sure you've updated your actual envionment variables before proceeding (e.g., if sourcing from a file, resource the file)._
 
 ### Configure Cumulus Stack
 
@@ -377,13 +386,13 @@ A successful completion will result in output similar to:
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
 
 
-Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.
+__Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.__
 
 #### Update Earthdata Application.
 
 You will need to add two redirect urls to your Earthdata login application.
-login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
-And add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
+Login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the Backend API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
+Also add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
 
 
 
@@ -412,8 +421,7 @@ To install the dashboard, from the root deploy directory make a clone of the cum
 
 Configure dashboard:
 
-
-Update config in `app/scripts/config/config.js`:
+Update config in `cumulus-dashboard/app/scripts/config/config.js`:
 
 replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.com/dev/` with your app's apiroot.[^2]
 
@@ -427,7 +435,7 @@ Build the dashboard from the dashboard repository root directory, cumulus-dashbo
       $ npm run build
 
 
-### Dashboard Deployment
+### Dashboard Deployment:
 
 Deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
 
