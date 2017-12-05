@@ -178,7 +178,7 @@ Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed t
 _Before proceeding, make sure you attached this new policy to the user that will deploy Cumulus. If you create a new user for this, make sure to save their access key and secret access key._
 
 
-**Update local AWS Access Keys**
+**Update AWS Access Keys**
 
 Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM (the same user you just assigned the AssumeRole policy to), then export the access keys, replacing the previous values in your environment:
 
