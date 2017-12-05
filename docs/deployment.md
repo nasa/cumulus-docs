@@ -65,8 +65,6 @@ Build the cumulus applications
 
 If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#pas)
 
-**Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
-
 Go to the same directory level as the cumulus repo download
 
     $ cd ..
