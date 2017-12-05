@@ -144,7 +144,6 @@ __All deployments in the various config.yml files inherit from the `default` dep
         internal: <prefix>-internal  # Previously created internal bucket name
         shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
-Note: All other parameters in this file such as 'Capabilities' that aren't specifically mentioned above do not need to be edited.
 
 **Deploy `deployer` stack**[^1]
 
