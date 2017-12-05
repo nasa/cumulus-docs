@@ -236,6 +236,17 @@ This updates the file copied in the [Prepare your DAAC's Repo](#prepare-your-daa
 
 The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
 
+
+###### vpc
+
+Configure your virtual private cloud.  You can find `<vpc-id>` and `<subnet-id>` values on the [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#). `vpcId` from [Your VPCs](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:), and `subnets` [here](https://console.aws.amazon.com/vpc/home?region=us-east-1#subnets:). When you choose a subnet, be sure to also note its availability zone, to configure `ecs`.
+
+###### ecs
+
+Configuration for the Amazon EC2 Container Service (ECS) instance.  Update `availabilityZone` with information from [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#)
+note `instanceType` and `desiredInstances` have been selected for a sample install.  You will have to specify appropriate values to deploy and use ECS machines.
+
+
 ###### buckets
 
 The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
@@ -244,70 +255,57 @@ The config buckets should map to the same names you used when creating buckets i
 
 Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
-
-###### ecs
-
-Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default installations.
-
 ###### users
 
 List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
 
 ###### Sample config.yml
+```
 
-	 <cumulus-deployment-name>:
-	   stackName: <prefix>-cumulus
-	   stackNameNoDash: <Prefix>Cumulus
+<cumulus-deployment-name>:
+  stackName: <prefix>-cumulus
+  stackNameNoDash: <Prefix>Cumulus
 
-	   apiStage: dev
+  apiStage: dev
 
-	   ecs:
-		 instanceType: t2.micro
-		 desiredInstances: 0
+  vpc:
+    vpcId: <vpc-id>
+    subnets:
+      - <subnet-id>
 
-	   buckets:
-		 internal: <prefix>-internal
-		 private: <prefix>-private
-		 protected: <prefix>-protected
-		 public: <prefix>-public
+  ecs:
+    instanceType: t2.micro
+    desiredInstances: 0
+    availabilityZone: <subnet-id-zone>
 
-	   iams:
-		 ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
-		 lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
-		 lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
-		 stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
-		 instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
+  buckets:
+    internal: <prefix>-internal
+    private: <prefix>-private
+    protected: <prefix>-protected
+    public: <prefix>-public
 
-		 urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
+  iams:
+    ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
+    lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
+    lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
+    stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
+    instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
 
-		 # if not specified the value of the apigateway backend endpoint is used
-		 # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
+    urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
 
-		 # if not specified the value of the apigateway dist url is used
-		 # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
+    # if not specified the value of the apigateway backend endpoint is used
+    # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
 
-	   users:
-		 - username: <user>
-		 - username: <user2>
-		# users: specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
+    # if not specified the value of the apigateway dist url is used
+    # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
 
-	   vpc:
-		 vpcId: <vpc-id>
-		 subnet: <subnet-id>
-             vpcId: vpc-xxxxxxxx
-             subnet: subnet-xxxxxxxxx
-  		# You can find this information in the AWS console under Networking and Delivery Content
-		# VPC then choose subnets from the menu. Use a subnet ID value and corresponding VPC
-		# value above. Note the Availablity Zone (AZ) of the subnet chosen to set the ECS instance AZ below.
+  # URS users who should have access to the dashboard application.
+  users:
+    - username: <user>
+    - username: <user2>
 
-	   ecs:
-             instanceType: t2.micro 		# t2.micro is an example for an initial deployment you may need
-						# to specify a larger ECS instance for operational systems.
-						# [ECS Instances type](https://aws.amazon.com/ec2/instance-types/)
-             desiredInstances: 0		# More than 0 instances will be needed for ECS to function 0 was
-						# chosen for inexpensive deployment
-             availabilityZone: <avail-zone>     # 'us-east-1f' is an example AZ. Use the AZ which matches the AZ of the
-						# subnet specifed in the vpc section
+```
+
 
 
 NOTE: Under 'users:' specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
