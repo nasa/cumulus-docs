@@ -59,7 +59,7 @@ Build the cumulus applications
 Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
 This can be fixed by 'DOING THIS?'.
 
-### Prepare your DAAC Configuration Repo.
+### Prepare your DAAC deployment Repo.
 
 If you already are working with an existing `<daac>-deploy` repository this step can be skipped if you have the appropriate configuration setup.
 
