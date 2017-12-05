@@ -154,7 +154,7 @@ If the `iam` deployment command  succeeds, you should see 4 new roles in the [IA
 
 The same information can be obtained from the AWS CLI command: `aws iam list-roles`.
 
-The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed frmo the AWS CLI command: `aws iam list-instance-profiles`.
+The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed from the AWS CLI command: `aws iam list-instance-profiles`.
 
 
 ### Assign an `sts:AssumeRole` policy to a new or existing user:
@@ -199,6 +199,15 @@ This updates the file copied in the [Prepare your DAAC's Repo](#prepare-your-daa
 
 The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
 
+
+###### vpc
+
+Configure your virtual private cloud.  You can find `<vpc-id>` and `<subnet-id>` values on the [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#). `vpcId` from [Your VPCs](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:), and `subnets` [here](https://console.aws.amazon.com/vpc/home?region=us-east-1#subnets:). When you choose a subnet, be sure to also note its availability zone, to configure ecs.
+
+###### ecs
+
+Configuration for the Amazon EC2 Container Service (ECS) instance.  Update `availabilityZone` with information from [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#)
+
 ###### buckets
 
 The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
@@ -208,50 +217,53 @@ The config buckets should map to the same names you used when creating buckets i
 Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
 
-###### ecs
-
-Configuration for the Amazon EC2 Container Service (ECS) instance.   This shouldn't need to be changed for default installations.
-
 ###### users
 
 List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
 
 ###### Sample config.yml
 
-	 <cumulus-deployment-name>:
-	   stackName: <prefix>-cumulus
-	   stackNameNoDash: <Prefix>Cumulus
+     <cumulus-deployment-name>:
+       stackName: <prefix>-cumulus
+       stackNameNoDash: <Prefix>Cumulus
 
-	   apiStage: dev
+       apiStage: dev
 
-	   ecs:
-		 instanceType: t2.micro
-		 desiredInstances: 0
+       vpc:
+         vpcId: <vpc-id>
+         subnets:
+           - <subnet-id>
 
-	  buckets:
-		 internal: <prefix>-internal
-		 private: <prefix>-private
-		 protected: <prefix>-protected
-		 public: <prefix>-public
+       ecs:
+         instanceType: t2.micro
+         desiredInstances: 0
+         availabilityZone: <subnet-id-zone>
 
-	   iams:
-		 ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
-		 lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
-		 lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
-		 stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
-		 instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
+       buckets:
+          internal: <prefix>-internal
+          private: <prefix>-private
+          protected: <prefix>-protected
+          public: <prefix>-public
 
-		 urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
+       iams:
+         ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
+         lambdaApiGatewayRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-api-gateway
+         lambdaProcessingRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-lambda-processing
+         stepRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-steprole
+         instanceProfile: arn:aws:iam::<aws-account-id>:instance-profile/<iams-prefix>-ecs
 
-		 # if not specified the value of the apigateway backend endpoint is used
-		 # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
+         urs_url: https://uat.urs.earthdata.nasa.gov/ #make sure to include the trailing slash
 
-		 # if not specified the value of the apigateway dist url is used
-		 # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
+         # if not specified the value of the apigateway backend endpoint is used
+         # api_backend_url: https://apigateway-url-to-api-backend/ #make sure to include the trailing slash
 
-      users:
-        - username: <user>
-        - username: <user2>
+         # if not specified the value of the apigateway dist url is used
+         # api_distribution_url: https://apigateway-url-to-distribution-app/ #make sure to include the trailing slash
+
+       users:
+		 - username: <user>
+		 - username: <user2>
+
 
 #### Set up an environment file:
 
