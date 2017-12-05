@@ -237,29 +237,29 @@ This updates the file copied in the [Prepare your DAAC's Repo](#prepare-your-daa
 The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
 
 
-###### vpc
+##### vpc
 
 Configure your virtual private cloud.  You can find `<vpc-id>` and `<subnet-id>` values on the [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#). `vpcId` from [Your VPCs](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:), and `subnets` [here](https://console.aws.amazon.com/vpc/home?region=us-east-1#subnets:). When you choose a subnet, be sure to also note its availability zone, to configure `ecs`.
 
-###### ecs
+##### ecs
 
 Configuration for the Amazon EC2 Container Service (ECS) instance.  Update `availabilityZone` with information from [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#)
 note `instanceType` and `desiredInstances` have been selected for a sample install.  You will have to specify appropriate values to deploy and use ECS machines.
 
 
-###### buckets
+##### buckets
 
 The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
 
-###### iams
+##### iams
 
 Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
-###### users
+##### users
 
 List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
 
-###### Sample config.yml
+##### Sample config.yml
 
 ```
 <cumulus-deployment-name>:
@@ -318,7 +318,7 @@ Copy `app/.env.sample to app/.env` and add CMR/earthdata client credentials. See
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
-For security it is highly recommended that you [gitignore](https://git-scm.com/docs/gitignore) `apps/.env` by keeping it in the `.gitignore` file at the root of this repository.
+For security it is highly recommended that you prevent `apps/.env` from being committed to the repository by keeping it in the `.gitignore` file at the root of this repository.
 
 ----
 ### Deploy the Cumulus stack
