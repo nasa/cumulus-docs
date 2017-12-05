@@ -7,7 +7,7 @@ This is a guide for deploying a new instance of Cumulus.
 
 The process involves:
 
-*  Creating [AWS S3 Buckets](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html)
+*  [Creating AWS S3 Buckets](create_bucket.html)
 *  Using [Kes](http://devseed.com/kes/) to create [AWS CloudFormation](https://aws.amazon.com/cloudformation/getting-started/) templates that create [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) for the cumulus deployment
 *  Using [Kes](http://devseed.com/kes/) to generate an [AWS CloudFormation](https://aws.amazon.com/cloudformation/getting-started/) template for Cumulus and deploy it
 
