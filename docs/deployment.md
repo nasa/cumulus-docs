@@ -82,15 +82,15 @@ Install packages with npm
 
     $ npm install
 
-**Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
+**Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
 The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
 
-Begin by copying the template directory to your project, you will modify it for you daac specific needs later.
+Begin by copying the template directory to your project, you will modify it for your DAAC's specific needs later.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
-[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track daac-specific configuraiton changes:
+[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track your DAAC's configuraiton changes:
 
     $ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
     $ git push origin master
@@ -113,8 +113,6 @@ If you don't want to set environment variables, [access keys can be stored local
 
 
 **Create S3 Buckets:**
-
-These buckets can be created with the AWS command line utility or the web interface. You do not need to assign them any special properties and you do not need to modify their default permissions (not even for the public bucket).
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 

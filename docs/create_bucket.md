@@ -1,5 +1,8 @@
 # Creating an S3 Bucket
 
+Buckets can be created with the AWS command line utility or the web interface.
+
+
 ## Command line
 
 Using the [AWS command line tool](https://aws.amazon.com/cli/) [create-bucket](https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html) s3api subcommand:
