@@ -13,7 +13,8 @@ The process involves:
 
 ----
 ## Deploy Cumulus
-### Linux/MacOS Requirements:
+
+#### Linux/MacOS software requirements:
 - zip
 - sha1sum or md5sha1sum
 - [node >= 6.9.5, < 8](https://nodejs.org/en/)
@@ -26,17 +27,16 @@ Optionally, if you want to use the command line:
 - python
 
 
-### Credentials
-
-**Posting to CMR:**
-
-If you plan to export metadata to CMR you will need to have a CMR password, otherwise it can be left blank. All installations require EarthData Client (aka URS) credentials. The EarthData Client (URS) user must have the ability to administer and/or create applications in URS.
-
-* CMR Password
-* EarthData Client login credentials (username & password)
+#### Credentials:
 
 
-### Make local copy of `cumulus` Repo and prepare it.
+* [CMR](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/common-metadata-repository) username and password.  Can be excluded if you are not exporting metadata to CMR.
+
+* [EarthData Client login](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/earthdata-login) username and password. User must have the ability to administer and/or create applications in URS.
+
+
+
+## Make local copy of `cumulus` Repo and prepare it.
 
 Clone Repository
 
@@ -56,8 +56,9 @@ Build the cumulus applications
     $ npm run build
 
 
-Note: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
-This can be fixed by 'DOING THIS?'.
+**Note**: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
+*TODO: Can someone explain how to fix or work around?*
+
 
 ### Prepare your DAAC deployment Repo.
 
@@ -111,6 +112,7 @@ If you don't want to set environment variables, [access keys can be stored local
 
 
 **Create S3 Buckets:**
+
 These buckets can be created with the AWS command line utility or the web interfece.
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
@@ -196,7 +198,7 @@ The same information can be obtained from the AWS CLI command: `aws iam list-rol
 The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed frmo the AWS CLI command: `aws iam list-instance-profiles`.
 
 
-### Assign an `sts:AssumeRole` policy to a new or existing user:
+#### Assign an `sts:AssumeRole` policy to a new or existing user:
 
 Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy cumulus.
 
@@ -310,11 +312,9 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 NOTE: Under 'users:' specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
 
-##### Earthdata Login
+### Configure EarthData application
 
-The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). Create and register a new application. If you didn't modify the template you will use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov). Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).
-
-The `clientid` (not client or application name)  and `clientpassword` are used to configure the .env file in the next step.
+The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Note the password in step 3 and client ID in step 4 these replace the `clientid`  and `clientpassword` .env file in the next step.
 
 #### Set up an environment file:
 
@@ -324,10 +324,7 @@ Copy `app/.env.sample to app/.env` and add CMR/earthdata client credentials. See
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
-For security it is highly recommended that you add .env to the .gitignore file
-in the repository root so the file is not included in your repository. Edit
-.gitignore if it exists, or create it if it does not and simply add .env on
-a new line.
+For security it is highly recommended that you [gitignore](https://git-scm.com/docs/gitignore) `apps/.env` by keeping it in the `.gitignore` file at the root of this repository.
 
 ----
 ### Deploy the Cumulus stack
