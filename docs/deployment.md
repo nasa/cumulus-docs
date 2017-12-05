@@ -103,7 +103,8 @@ You can then [add/commit](https://help.github.com/articles/adding-a-file-to-a-re
 
 **Set Access Keys:**
 
-Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for a user with IAM Create-User permissions, then export the access keys:
+You need to make some AWS information available to your environment. If you don't already have the access key and secret access key of an AWS user with IAM Create-User permissions, you must [Create Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for such a user with IAM Create-User permissions, then export the access keys:
+
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key>
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
@@ -114,7 +115,7 @@ If you don't want to set environment variables, [access keys can be stored local
 
 **Create S3 Buckets:**
 
-These buckets can be created with the AWS command line utility or the web interfece. You do not need to assign them any special properties and you do not need to modify their default permissions (not even for the public bucket).
+These buckets can be created with the AWS command line utility or the web interface. You do not need to assign them any special properties and you do not need to modify their default permissions (not even for the public bucket).
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
@@ -126,11 +127,8 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 * `<prefix>-protected`
 * `<prefix>-public`
 
-You need to make some AWS information available to your environment. If you don't already have the access key and secret access key of an AWS user with IAM Create-User permissions, you must Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for such a user with IAM Create-User permissions, then export the access keys:
 
 **Note**: s3 bucket object names are global and must be unique across all users/locations/etc.
-
-If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
 
 ### Create a deployer role
