@@ -105,7 +105,7 @@ Create [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-
 
     $ export AWS_ACCESS_KEY_ID=<AWS access key>
     $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
-    $ export AWS_REGION=<region>  # this should be us-east-1 unless told otherwise.
+    $ export AWS_REGION=<region>
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
