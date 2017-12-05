@@ -39,11 +39,11 @@ Optionally, if you want to use the command line:
 
 ## Make local copy of `cumulus` Repo and prepare it.
 
-Clone Repository
+Clone repository
 
     $ git clone https://github.com/cumulus-nasa/cumulus.git
 
-Change Directory to the Repository root
+Change directory to the repository root
 
     $ cd cumulus
 
@@ -52,16 +52,17 @@ Install and configure the local build environment and dependencies using npm
     $ npm install
     $ npm run ybootstrap
 
-Build the cumulus applications
+Build the cumulus application
 
     $ npm run build
 
 
 **Note**: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
+
 *TODO: Can someone explain how to fix or work around?*
 
 
-### Prepare your DAAC deployment Repo.
+### Prepare DAAC deployment repository
 
 If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#pas)
 
