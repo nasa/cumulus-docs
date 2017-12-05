@@ -378,7 +378,7 @@ Build the dashboard:
       $ npm run build
 
 
-Dashboard Deployment:
+### Dashboard Deployment:
 
 Deploy dashboard to s3 bucket from the `cumulus-dashboard` directory:
 
