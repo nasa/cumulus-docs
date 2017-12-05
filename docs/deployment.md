@@ -312,7 +312,7 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 NOTE: Under 'users:' specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
 
-### Configure EarthData application
+#### Configure EarthData application
 
 The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Note the password in step 3 and client ID in step 4 these replace the `clientid`  and `clientpassword` .env file in the next step.
 
