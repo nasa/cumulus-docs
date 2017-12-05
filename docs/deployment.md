@@ -20,19 +20,17 @@ The process involves:
 - [npm](https://www.npmjs.com/get-npm)
 - [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
+Optionally, if you want to use the command line:
 
-If you would like to work with AWS via CLI aws and a python platform are required. Alternatately
-you may use the AWS web console to complete these instructions.
-- aws (AWS command line utility)
+- AWS CLI - [AWS command line interface](https://aws.amazon.com/cli/)
 - python
 
-Installation details for the AWS CLI package can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/installing.html).
 
 ### Credentials
 
 **Posting to CMR:**
 
-If you plan to export metadata to CMR you will need to have a CMR password, otherwise it can be left blank. All installations require EarthData Client (aka URS) credentials. The EarthData Client (URS) user must have the ability to administer and/or create applications in URS. 
+If you plan to export metadata to CMR you will need to have a CMR password, otherwise it can be left blank. All installations require EarthData Client (aka URS) credentials. The EarthData Client (URS) user must have the ability to administer and/or create applications in URS.
 
 * CMR Password
 * EarthData Client login credentials (username & password)
@@ -48,7 +46,7 @@ Change Directory to the Repository root
 
     $ cd cumulus
 
-Install and configure the local build environment and dependencies using npm 
+Install and configure the local build environment and dependencies using npm
 
     $ npm install
     $ npm run ybootstrap
@@ -85,7 +83,7 @@ Install packages with npm
 
 Note: The npm install command will add the [kes](http://devseed.com/kes/) utility to the daac-deploy's `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.  
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
 
 Begin by copying the template directory to your project, you will modify it for you daac specific needs later.
 
@@ -290,31 +288,31 @@ List of EarthData users you wish to have access to your dashboard application.  
 		 - username: <user>
 		 - username: <user2>
 		# users: specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
-           
-	   vpc: 
+
+	   vpc:
 		 vpcId: <vpc-id>
 		 subnet: <subnet-id>
              vpcId: vpc-xxxxxxxx
              subnet: subnet-xxxxxxxxx
-  		# You can find this information in the AWS console under Networking and Delivery Content 
-		# VPC then choose subnets from the menu. Use a subnet ID value and corresponding VPC 
+  		# You can find this information in the AWS console under Networking and Delivery Content
+		# VPC then choose subnets from the menu. Use a subnet ID value and corresponding VPC
 		# value above. Note the Availablity Zone (AZ) of the subnet chosen to set the ECS instance AZ below.
 
 	   ecs:
              instanceType: t2.micro 		# t2.micro is an example for an initial deployment you may need
-						# to specify a larger ECS instance for operational systems.  
+						# to specify a larger ECS instance for operational systems.
 						# [ECS Instances type](https://aws.amazon.com/ec2/instance-types/)
-             desiredInstances: 0		# More than 0 instances will be needed for ECS to function 0 was 
+             desiredInstances: 0		# More than 0 instances will be needed for ECS to function 0 was
 						# chosen for inexpensive deployment
-             availabilityZone: <avail-zone>     # 'us-east-1f' is an example AZ. Use the AZ which matches the AZ of the 
-						# subnet specifed in the vpc section 
+             availabilityZone: <avail-zone>     # 'us-east-1f' is an example AZ. Use the AZ which matches the AZ of the
+						# subnet specifed in the vpc section
 
 
 NOTE: Under 'users:' specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
 
 ##### Earthdata Login
 
-The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). Create and register a new application. If you didn't modify the template you will use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov). Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application). 
+The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). Create and register a new application. If you didn't modify the template you will use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov). Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).
 
 The `clientid` (not client or application name)  and `clientpassword` are used to configure the .env file in the next step.
 
@@ -449,7 +447,7 @@ Using AWS CLI:
 Or from the S3 Console:
  Open the <prefix>-dashboard bucket, click 'upload'. Add the contents of the 'dist' subdirectory to the upload. Then select 'Next'. On the permissions window allow the public to view. Select 'Upload'.
 
-      
+
 
 You should be able to visit the dashboard website at `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or find the url
 `<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint" and login with a user that you configured for access in the [Configure Cumulus Stack](#configure-cumulus-stack) step.
