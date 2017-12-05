@@ -260,8 +260,8 @@ Add the ARNs for each of the four roles and one instanceProfile created in the [
 List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
 
 ###### Sample config.yml
-```
 
+```
 <cumulus-deployment-name>:
   stackName: <prefix>-cumulus
   stackNameNoDash: <Prefix>Cumulus
@@ -303,12 +303,8 @@ List of EarthData users you wish to have access to your dashboard application.  
   users:
     - username: <user>
     - username: <user2>
-
 ```
 
-
-
-NOTE: Under 'users:' specify all of the URS User IDs which will need access to the cumulus dashboard for operations and maintenance to the list. You may add as many as necessary by adding a similar username/URS UID key value pair for each user.
 
 #### Configure EarthData application
 
