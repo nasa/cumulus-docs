@@ -61,7 +61,7 @@ This can be fixed by 'DOING THIS?'.
 
 ### Prepare your DAAC deployment Repo.
 
-If you already are working with an existing `<daac>-deploy` repository this step can be skipped if you have the appropriate configuration setup.
+If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#pas)
 
 **Note**: to function correctly the deployment configuration root *must* be at the same root as the cumulus main project directory
 
@@ -97,7 +97,7 @@ Begin by copying the template directory to your project, you will modify it for 
 You can then [add/commit](https://help.github.com/articles/adding-a-file-to-a-repository-using-the-command-line/) changes as needed.
 
 
-### Prepare AWS configuration
+### Prepare AWS configuration  {#pas}
 
 **Set Access Keys:**
 
