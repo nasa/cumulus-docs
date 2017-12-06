@@ -18,6 +18,7 @@ The process involves:
 #### Linux/MacOS software requirements:
 - zip
 - sha1sum or md5sha1sum
+- git
 - [node >= 6.9.5, < 8](https://nodejs.org/en/)
 - [npm](https://www.npmjs.com/get-npm)
 - [yarn](https://yarnpkg.com/lang/en/docs/install/)
@@ -62,7 +63,7 @@ Build the cumulus application
 *TODO: Can someone explain how to fix or work around?*
 
 
-### Prepare DAAC deployment repository
+### Prepare DAAC deployment repository {#prepare-deployment}
 
 If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#pas)
 
@@ -85,6 +86,8 @@ Install packages with npm
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
 The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
+
+##### Copy the sample template into your repository. {#copy-template}
 
 Begin by copying the template directory to your project, you will modify it for your DAAC's specific needs later.
 
@@ -152,17 +155,18 @@ __All deployments in the various config.yml files inherit from the `default` dep
     $ cd ..
     $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
 
-Notes: If global `kes` commands do not work, your `npm install` of the `<daac>-deploy` repo has included a local copy under `./node_modules/.bin/kes`.  It may be useful to add this to your PATH environment variable.
+**Note**: If the `kes` command does not work, `npm install` has installed a local copy at `./node_modules/.bin/kes` that can be used. i.e. you would run `./node_modules/.bin/kes` instead of `kes` in all example commands.
 
 A successful completion will result in output similar to:
 
     $ kes cf deploy --kes-folder deployer --deployment default --region us-east-1
+
     Template saved to deployer/cloudformation.yml
     Uploaded: s3://<bucket-name>/<stack-name>/cloudformation.yml
     Waiting for the CF operation to complete
     CF operation is in state of CREATE_COMPLETE
 
-This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`. Note its Role ARN for later.
+This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`. **Note its `Role ARN` for later.**
 
 ### Create IAM Roles
 
@@ -183,7 +187,7 @@ The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/
 
     $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
-Note: If this deployment fails check the deployment details in the AWS Cloud Formation Console for information. Permissions may need to be updated by your AWS adminstrator.
+**Note**: If this deployment fails check the deployment details in the AWS Cloud Formation Console for information. Permissions may need to be updated by your AWS adminstrator.
 
 If the `iam` deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
 
@@ -194,7 +198,7 @@ If the `iam` deployment command  succeeds, you should see 4 new roles in the [IA
 
 The same information can be obtained from the AWS CLI command: `aws iam list-roles`.
 
-The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed frmo the AWS CLI command: `aws iam list-instance-profiles`.
+The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed from the AWS CLI command: `aws iam list-instance-profiles`.
 
 
 #### Assign an `sts:AssumeRole` policy to a new or existing user:
@@ -214,9 +218,7 @@ This AssumeRole policy, when applied to a user, allows the user to act with the 
         ]
     }
 
-Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The cli command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
-
-_Before proceeding, make sure you attached this new policy to the user that will deploy Cumulus. If you create a new user for this, make sure to save their access key and secret access key._
+Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The AWS CLI command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
 
 
 **Update AWS Access Keys**
@@ -229,15 +231,15 @@ Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/man
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-_Make sure you've updated your actual envionment variables before proceeding (e.g., if sourcing from a file, resource the file)._
+_Make sure you've updated your actual envionment variables before proceeding (e.g., if sourcing from a file, re-source the file)._
 
 ### Configure Cumulus Stack
 
-This updates the file copied in the [Prepare your DAAC's Repo](#prepare-your-daacs-repo) step.
+These updates configure the [copied template](#copy-template) from the cumumuls repository for your DAAC.
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
-The various configuration sections are described below with a sample `config.yml` at the end. It is not necessary to configure the CMR/distribution sections if you're not utilizing CMR/deploying for the first time.
+The various configuration sections are described below with a sample `config.yml` at the end.
 
 
 ##### vpc
@@ -252,15 +254,15 @@ note `instanceType` and `desiredInstances` have been selected for a sample insta
 
 ##### buckets
 
-The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-aws) step.
+The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#pas) step.
 
 ##### iams
 
-Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step.    For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
+Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step. For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
 
 ##### users
 
-List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) in addition to the default_users defined in the cumulus default template.
+List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) (in addition to the default_users defined in the cumulus default template).
 
 ##### Sample config.yml
 
@@ -311,17 +313,17 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 #### Configure EarthData application
 
-The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Note the password in step 3 and client ID in step 4 these replace the `clientid`  and `clientpassword` .env file in the next step.
+The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Use any url for the `Redirect URL`, it will be deleted in a later step. Also note the password in step 3 and client ID in step 4 use these to replace `clientid` and `clientpassword` in the `.env` file in the next step.
 
 #### Set up an environment file:
 
-Copy `app/.env.sample to app/.env` and add CMR/earthdata client credentials. See [Credentials section](#Credentials):
+Copy `app/.env.sample to app/.env` and add CMR/earthdata client [credentials](#Credentials):
 
     CMR_PASSWORD=cmrpassword
     EARTHDATA_CLIENT_ID=clientid
     EARTHDATA_CLIENT_PASSWORD=clientpassword
 
-For security it is highly recommended that you prevent `apps/.env` from being committed to the repository by keeping it in the `.gitignore` file at the root of this repository.
+For security it is highly recommended that you prevent `apps/.env` from being accidentally committed to the repository by keeping it in the `.gitignore` file at the root of this repository.
 
 ----
 ### Deploy the Cumulus stack
@@ -380,14 +382,13 @@ A successful completion will result in output similar to:
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
 
 
-__Note that the output of a successful deploy gives you urls that you will use to update your Earthdata application.__
+__Note that the output of a successful deploy gives you urls that you will use to update your EarthData application.__
 
 #### Update Earthdata Application.
 
-You will need to add two redirect urls to your Earthdata login application.
+You will need to add two redirect urls to your EarthData login application.
 Login to URS (UAT), and under My Applications -> Application Administration -> use the edit icon of your application.  Then under Manage -> redirect URIs, add the Backend API url returned from the stack deployment, e.g. `https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/token`.
 Also add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazonaws.com/dev/redirect`[^3]. You may also delete the placeholder url you used to create the application.
-
 
 
 ----
@@ -395,17 +396,17 @@ Also add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazon
 
 ### Prepare AWS
 
-**Create S3 bucket:**
+**Create S3 bucket for dashboard:**
 
 * Create it, e.g. `<prefix>-dashboard`. Use the command line or console as you did when [preparing AWS configuration](#Prepare AWS configuration).
 * Configure the bucket to host a website:
-  * AWS S3 console: Select <prefix>-dashboard bucket then,  "Properties" -> "Static Website Hosting", point to `index.html`
+  * AWS S3 console: Select `<prefix>-dashboard` bucket then, "Properties" -> "Static Website Hosting", point to `index.html`
   * CLI: `aws s3 website s3://<prefix>-dashboard --index-document index.html`
 * The bucket's url will be `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or you can find it on the AWS console via "Properties" -> "Static website hosting" -> "Endpoint"
 
 ### Install dashboard
 
-To install the dashboard, from the root deploy directory make a clone of the cumulus-dashboard repository and prepare the repo with npm install:
+To install the dashboard clone the cumulus-dashboard repository into the root deploy directory and install dependencies with `npm install`:
 
     $ git clone https://github.com/cumulus-nasa/cumulus-dashboard
     $ cd cumulus-dashboard
@@ -421,10 +422,11 @@ replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.
 
     apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
-**Note**  evironmental variables are available during the build:`DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js`.
+
+**Note**  evironmental variables are available during the build: `APIROOT`, `DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js` when running the build below.
 
 
-Build the dashboard from the dashboard repository root directory, cumulus-dashboard:
+Build the dashboard from the dashboard repository root directory, `cumulus-dashboard`:
 
       $ npm run build
 
@@ -437,8 +439,9 @@ Using AWS CLI:
 
       $ aws s3 sync dist s3://<prefix>-dashboard --acl public-read
 
-Or from the S3 Console:
- Open the <prefix>-dashboard bucket, click 'upload'. Add the contents of the 'dist' subdirectory to the upload. Then select 'Next'. On the permissions window allow the public to view. Select 'Upload'.
+From the S3 Console:
+
+* Open the `<prefix>-dashboard` bucket, click 'upload'. Add the contents of the 'dist' subdirectory to the upload. Then select 'Next'. On the permissions window allow the public to view. Select 'Upload'.
 
 
 
