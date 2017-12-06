@@ -65,7 +65,7 @@ Build the cumulus application
 
 ### Prepare DAAC deployment repository {#prepare-deployment}
 
-If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#pas)
+If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#prepare-config)
 
 Go to the same directory level as the cumulus repo download
 
@@ -101,7 +101,7 @@ Begin by copying the template directory to your project, you will modify it for 
 You can then [add/commit](https://help.github.com/articles/adding-a-file-to-a-repository-using-the-command-line/) changes as needed.
 
 
-### Prepare AWS configuration  {#pas}
+### Prepare AWS configuration  {#prepare-config}
 
 **Set Access Keys:**
 
@@ -254,7 +254,7 @@ note `instanceType` and `desiredInstances` have been selected for a sample insta
 
 ##### buckets
 
-The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#pas) step.
+The config buckets should map to the same names you used when creating buckets in the [Prepare AWS](#prepare-config) step.
 
 ##### iams
 
