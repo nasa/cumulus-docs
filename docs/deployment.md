@@ -60,8 +60,6 @@ Build the cumulus application
 
 **Note**: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
 
-*TODO: Can someone explain how to fix or work around?*
-
 
 ### Prepare DAAC deployment repository {#prepare-deployment}
 
