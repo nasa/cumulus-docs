@@ -73,7 +73,7 @@ Build the cumulus application
 
 #### Prepare DAAC deployment repository {#prepare-deployment}
 
-If you already are working with an existing `<daac>-deploy` repository with appropriate configuration, skip to [Prepare AWS configuration](#prepare-config)
+_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the current version of Cumulus, skip to [Prepare AWS configuration. ](#prepare-config)_
 
 Go to the same directory level as the cumulus repo download
 
@@ -328,6 +328,8 @@ The cumulus stack is expected to authenticate with [Earthdata Login](https://urs
 
 ##### Set up an environment file:
 
+_If you're adding a new deployment to an existing configuration repository or re-deploying an existing Cumulus configuration you should skip to [Deploy the Cumulus Stack](#deploy-the-cumulus-stack), as these values should already be configured._
+
 Copy `app/.env.sample to app/.env` and add CMR/earthdata client [credentials](#Credentials):
 
     CMR_PASSWORD=cmrpassword
@@ -337,7 +339,7 @@ Copy `app/.env.sample to app/.env` and add CMR/earthdata client [credentials](#C
 For security it is highly recommended that you prevent `apps/.env` from being accidentally committed to the repository by keeping it in the `.gitignore` file at the root of this repository.
 
 ----
-#### Deploy the Cumulus stack
+#### Deploy the Cumulus Stack
 
 Once the preceeding configuration steps have completed, run the following to deploy cumulus from your `<daac>-deploy` root directory:
 
