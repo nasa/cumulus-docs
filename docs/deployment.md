@@ -38,7 +38,7 @@ Optionally, if you want to use the command line:
 
 
 
-## Make local copy of `cumulus` Repo and prepare it.
+## Make local copy of `Cumulus` Repo and prepare it.
 
 Clone repository
 
@@ -53,7 +53,7 @@ Install and configure the local build environment and dependencies using npm
     $ npm install
     $ npm run ybootstrap
 
-Build the cumulus application
+Build the Cumulus application
 
     $ npm run build
 
@@ -65,7 +65,7 @@ Build the cumulus application
 
 If you already are working with an existing `<daac>-deploy` with appropriate configuration, skip to [Prepare AWS configuration](#prepare-config)
 
-Go to the same directory level as the cumulus repo download
+Go to the same directory level as the Cumulus repo download
 
     $ cd ..
 
@@ -83,7 +83,7 @@ Install packages with npm
 
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
+The [`Cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your Cumulus app.
 
 ##### Copy the sample template into your repository. {#copy-template}
 
@@ -131,7 +131,7 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 
 ### Create a deployer role
 
-The `deployer` configuration sets up an IAM role with permissions for deploying the cumulus stack.
+The `deployer` configuration sets up an IAM role with permissions for deploying the Cumulus stack.
 
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
@@ -148,7 +148,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
 
 **Deploy `deployer` stack**[^1]
 
-    Use the kes utility installed with cumulus to deploy your configurations to AWS. This must be done from the <daac>-deploy repository root
+    Use the kes utility installed with Cumulus to deploy your configurations to AWS. This must be done from the <daac>-deploy repository root
 
     $ cd ..
     $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
@@ -168,7 +168,7 @@ This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/Us
 
 ### Create IAM Roles
 
-The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the cumulus stack.
+The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
@@ -201,7 +201,7 @@ The `iam` deployment also creates an instance profile named `<stack-name>-ecs` t
 
 #### Assign an `sts:AssumeRole` policy to a new or existing user:
 
-Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy cumulus.
+Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy Cumulus.
 
 This AssumeRole policy, when applied to a user, allows the user to act with the permissions described by the DeployerRole. You can paste this into the "JSON" tab of the policy creator interface.
 
@@ -260,7 +260,7 @@ Add the ARNs for each of the four roles and one instanceProfile created in the [
 
 ##### users
 
-List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) (in addition to the default_users defined in the cumulus default template).
+List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) (in addition to the default_users defined in the Cumulus default template).
 
 ##### Sample config.yml
 
@@ -311,7 +311,7 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 #### Configure EarthData application
 
-The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Use any url for the `Redirect URL`, it will be deleted in a later step. Also note the password in step 3 and client ID in step 4 use these to replace `clientid` and `clientpassword` in the `.env` file in the next step.
+The Cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Use any url for the `Redirect URL`, it will be deleted in a later step. Also note the password in step 3 and client ID in step 4 use these to replace `clientid` and `clientpassword` in the `.env` file in the next step.
 
 #### Set up an environment file:
 
@@ -326,7 +326,7 @@ For security it is highly recommended that you prevent `apps/.env` from being ac
 ----
 ### Deploy the Cumulus stack
 
-Once the preceeding configuration steps have completed, run the following to deploy cumulus from your `<daac>-deploy` root directory:
+Once the preceeding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
 
 
     $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <cumulus-deployment-name> --role <arn:deployerRole>
@@ -404,7 +404,7 @@ Also add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazon
 
 ### Install dashboard
 
-To install the dashboard clone the cumulus-dashboard repository into the root deploy directory and install dependencies with `npm install`:
+To install the dashboard clone the Cumulus-dashboard repository into the root deploy directory and install dependencies with `npm install`:
 
     $ git clone https://github.com/cumulus-nasa/cumulus-dashboard
     $ cd cumulus-dashboard
@@ -498,12 +498,12 @@ Alternatively, to monitor for changes and auto-rebuild:
 
     $ npm run watch
 
-For non-node lambdas not included in cumulus repo, upload .zip to s3 and modify lambdas.yml as previously shown.
+For non-node lambdas not included in Cumulus repo, upload .zip to s3 and modify lambdas.yml as previously shown.
 
 ### Deploy a Lambda
 
 For new lambdas, update `<daac>-deploy/lambdas.yml` by adding a new entry.
-E.g.: node.js sample for '../cumulus/cumulus/tasks/sample-lambda' in the cumulus repo):
+E.g.: node.js sample for '../cumulus/cumulus/tasks/sample-lambda' in the Cumulus repo):
 
     - name: <LambdaName>                                       # eg:  LambdaSample (does not need to conform to dirname)
       handler: <dir>.<function>                                # eg:  sample-lambda.handler (assuming file has module.exports.handler = <someFunc>)
