@@ -21,7 +21,7 @@ The process involves:
 - git
 - [node >= 6.9.5, < 8](https://nodejs.org/en/) (use [nvm](https://github.com/creationix/nvm) to upgrade/downgrade)
 - [npm](https://www.npmjs.com/get-npm)
-- [yarn](https://yarnpkg.com/lang/en/docs/install/)
+- [yarn ~= 1.2.x](https://yarnpkg.com/lang/en/docs/install/)
 
 Optionally, if you want to use the command line:
 
