@@ -73,7 +73,7 @@ Build the cumulus application
 
 #### Prepare DAAC deployment repository {#prepare-deployment}
 
-_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the current version of Cumulus, skip to [Prepare AWS configuration. ](#prepare-config)_
+_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Prepare AWS configuration. ](#prepare-config)_
 
 Go to the same directory level as the cumulus repo download
 
@@ -243,7 +243,6 @@ _Make sure you've updated your actual envionment variables before proceeding (e.
 #### Configure Cumulus Stack
 
 These updates configure the [copied template](#copy-template) from the cumulus repository for your DAAC.
-<<<<<<< HEAD
 
 You should either add a new root-level key for your configuration or modify the existing default configuration key to whatever you'd like your new deployment to be.
 
