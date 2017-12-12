@@ -20,7 +20,7 @@ The process involves:
 #### Linux/MacOS software requirements:
 
 - git
-- [node >= 6.9.5, < 8](https://nodejs.org/en/)
+- [node >= 6.9.5, < 8](https://nodejs.org/en/) (use [nvm](https://github.com/creationix/nvm) to upgrade/downgrade)
 - [npm](https://www.npmjs.com/get-npm)
 - sha1sum or md5sha1sum
 - [yarn](https://yarnpkg.com/lang/en/docs/install/)
@@ -83,7 +83,7 @@ Clone template-deply repo and name appropriately for your DAAC or organization.
 
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
 
-Enter repoistory root directory
+Enter repository root directory
 
     $ cd <daac>-deploy
 
@@ -93,15 +93,15 @@ Install packages with npm
 
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
 
-The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
+The [`cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configuration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your cumulus app.
 
 ##### Copy the sample template into your repository. {#copy-template}
 
-Begin by copying the template directory to your project, you will modify it for your DAAC's specific needs later.
+Begin by copying the template directory to your project. You will modify it for your DAAC's specific needs later.
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
-[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track your DAAC's configuraiton changes:
+[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track your DAAC's configuration changes:
 
     $ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
     $ git push origin master
@@ -182,11 +182,11 @@ The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/
 
 **Add new deployment to `<daac>-deploy/iam/config.yml`:**
 
-    <iam-deployment-name>:
+    <iam-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
       prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH prefix in deployer stack
       stackName: <stack-name> # name of this iam stack in CloudFormation (e.g. <prefix>-iams)
       buckets:
-        internal: <prefix>-internal
+        internal: <prefix>-internal  # Note: these are the bucket names, not the prefix from above
         private: <prefix>-private
         protected: <prefix>-protected
         public: <prefix>-public
@@ -226,7 +226,7 @@ This AssumeRole policy, when applied to a user, allows the user to act with the 
         ]
     }
 
-Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The AWS CLI command `aws iam list-roles | grep <deployer-stack>` will show you the correct ARN.
+Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The AWS CLI command `aws iam list-roles | grep Arn` will show you the ARNs.
 
 #### Update AWS Access Keys
 
@@ -243,10 +243,13 @@ _Make sure you've updated your actual envionment variables before proceeding (e.
 #### Configure Cumulus Stack
 
 These updates configure the [copied template](#copy-template) from the cumulus repository for your DAAC.
+<<<<<<< HEAD
 
 You should either add a new root-level key for your configuration or modify the existing default configuration key to whatever you'd like your new deployment to be.
 
 If you're re-depoying based on an existing configuration you can skip this configuration step unless values have been updated *or* you'd like to add a new deployment to your deployment configuration file.
+=======
+>>>>>>> develop
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
@@ -269,7 +272,12 @@ The config buckets should map to the same names you used when creating buckets i
 
 ###### iams
 
-Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step. For more inforamtion on how to locate them, see [Locating Cumulus IAM Roles](iam_roles.md).
+Add the ARNs for each of the four roles and one instanceProfile created in the [Create IAM Roles](create-iam-roles) step. You can retrieve the ARNs from:
+
+    $ aws iam list-roles | grep Arn
+    $ aws iam list-instance-profiles | grep Arn
+
+For information on how to locate them in the Console see [Locating Cumulus IAM Roles](iam_roles.md).
 
 ###### users
 
@@ -278,7 +286,7 @@ List of EarthData users you wish to have access to your dashboard application.  
 ###### Sample config.yml
 
 ```
-<cumulus-deployment-name>:
+<cumulus-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
   stackName: <prefix>-cumulus
   stackNameNoDash: <Prefix>Cumulus
 
@@ -324,7 +332,7 @@ List of EarthData users you wish to have access to your dashboard application.  
 
 ##### Configure EarthData application
 
-The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Accpetance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Use any url for the `Redirect URL`, it will be deleted in a later step. Also note the password in step 3 and client ID in step 4 use these to replace `clientid` and `clientpassword` in the `.env` file in the next step.
+The cumulus stack is expected to authenticate with [Earthdata Login](https://urs.earthdata.nasa.gov/documentation). You must create and register a new application. Use the [User Acceptance Tools (UAT) site](https://uat.urs.earthdata.nasa.gov) unless you changed `urs_url` above. Follow the directions on [how to register an application.](https://wiki.earthdata.nasa.gov/display/EL/How+To+Register+An+Application).  Use any url for the `Redirect URL`, it will be deleted in a later step. Also note the password in step 3 and client ID in step 4 use these to replace `clientid` and `clientpassword` in the `.env` file in the next step.
 
 ##### Set up an environment file:
 
@@ -343,17 +351,19 @@ For security it is highly recommended that you prevent `apps/.env` from being ac
 
 Once the preceeding configuration steps have completed, run the following to deploy cumulus from your `<daac>-deploy` root directory:
 
+    $ kes cf deploy --kes-folder app --region <region> \
+      --template ../cumulus/packages/deployment/app \
+      --deployment <cumulus-deployment-name> --role <arn:deployerRole>
 
-    $ kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment <cumulus-deployment-name> --role <arn:deployerRole>
 
-
-
-You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home), this step takes a few minutes.
+You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home); this step takes a few minutes.
 
 
 A successful completion will result in output similar to:
 
-	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> --template ../cumulus/packages/deployment/app --deployment daac --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
+	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region>
+       --template ../cumulus/packages/deployment/app --deployment daac
+       --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
 	Generating keys. It might take a few seconds!
 	Keys Generated
 	keys uploaded to S3
@@ -395,7 +405,7 @@ A successful completion will result in output similar to:
 	Uploaded: s3://<prefix>-internal/<prefix>-cumulus/workflows/list.json
 
 
-__Note that the output of a successful deploy gives you urls that you will use to update your EarthData application.__
+__Note:__ Be sure to copy the urls, as you will use them to update your EarthData application.
 
 ##### Update Earthdata Application.
 
@@ -470,12 +480,15 @@ Once deployed for the first time, any future updates to the role/stack configura
 
 ## Update Roles
 
-    $ kes cf deploy --kes-folder deployer --deployment <deployment-name> --region <region> # e.g. us-east-1
-    $ kes cf deploy --kes-folder iam --deployment <deployment-name> --region <region> # e.g. us-east-1
+    $ kes cf deploy --kes-folder deployer \
+      --deployment <deployment-name> --region <region> # e.g. us-east-1
+    $ kes cf deploy --kes-folder iam --deployment <deployment-name> \
+      --region <region> # e.g. us-east-1
 
 ## Update Cumulus
 
-    $ kes cf deploy --kes-folder config --region <region> --deployment <deployment-name> --role <arn:deployerRole>
+    $ kes cf deploy --kes-folder config --region <region> \
+      --deployment <deployment-name> --role <arn:deployerRole>
 
 
 ----
@@ -492,8 +505,8 @@ To develop a new lambda from a sample, create a new folder in `cumulus/tasks/` a
 
 Or copy an existing lambda function to customize:
 
-        $ cd ../cumulus/cumulus/tasks
-        $ cp discover-pdrs new-lambda
+    $ cd ../cumulus/cumulus/tasks
+    $ cp discover-pdrs new-lambda
 
 Modify package.json:
 
