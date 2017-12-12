@@ -36,7 +36,7 @@ Optionally, if you want to use the command line, Amazon proivdes a CLI for inter
 
 * [CMR](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/common-metadata-repository) username and password.  Can be excluded if you are not exporting metadata to CMR.
 
-* [EarthData Client login](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/earthdata-login) username and password. User must have the ability to administer and/or create applications in URS.   It's reccomended to obtain a this account in the test environment (UAT).
+* [EarthData Client login](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/earthdata-login) username and password. User must have the ability to administer and/or create applications in URS.   It's recommended to obtain a this account in the test environment (UAT).
 
 
 #### Needed Git Repositories:
