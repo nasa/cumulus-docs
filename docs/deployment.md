@@ -447,7 +447,7 @@ replace the default apiRoot `https://wjdkfyb6t6.execute-api.us-east-1.amazonaws.
     apiRoot: process.env.APIROOT || 'https://<czbbkscuy6>.execute-api.us-east-1.amazonaws.com/dev/'
 
 
-**Note**  evironmental variables are available during the build: `APIROOT`, `DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js` when running the build below.
+**Note**  environmental variables are available during the build: `APIROOT`, `DAAC_NAME`, `STAGE`, `HIDE_PDR`, any of these can be set on the command line to override the values contained in `config.js` when running the build below.
 
 
 Build the dashboard from the dashboard repository root directory, `cumulus-dashboard`:
