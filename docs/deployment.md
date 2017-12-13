@@ -23,7 +23,7 @@ The process involves:
 - [node >= 6.9.5, < 8](https://nodejs.org/en/) (use [nvm](https://github.com/creationix/nvm) to upgrade/downgrade)
 - [npm](https://www.npmjs.com/get-npm)
 - sha1sum or md5sha1sum
-- [yarn](https://yarnpkg.com/lang/en/docs/install/)
+- [yarn ~= 1.2.x](https://yarnpkg.com/lang/en/docs/install/)
 - zip
 
 Optionally, if you want to use the command line, Amazon proivdes a CLI for interacting with AWS:
