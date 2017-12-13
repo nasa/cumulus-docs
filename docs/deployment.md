@@ -26,8 +26,6 @@ The process involves:
 - [yarn](https://yarnpkg.com/lang/en/docs/install/)
 - zip
 
-Optionally, if you want to use the command line, Amazon proivdes a CLI for interacting with AWS:
-
 - AWS CLI - [AWS command line interface](https://aws.amazon.com/cli/)
 - python
 
@@ -58,24 +56,25 @@ Change directory to the repository root
 
     $ cd cumulus
 
+Optionally, If you are deploying a particular version(tag), ref or branch of Cumulus core, you should check out that particular reference
+
+    $ git checkout \<ref/branch/tag\>
+
 Install and configure the local build environment and dependencies using npm
 
     $ npm install
-    $ npm run ybootstrap
+    $ npm run ybootstrap[Troubleshooting^4]
 
 Build the cumulus application
 
     $ npm run build
 
-
-**Note**: In-house SSL certificates may prevent successful bootstrap. (i.e. `PEM_read_bio` errors)
-
-
 #### Prepare DAAC deployment repository {#prepare-deployment}
 
-_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Prepare AWS configuration. ](#prepare-config)_
+_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Pre
+pare AWS configuration. ](#prepare-config)_
 
-Go to the same directory level as the cumulus repo download
+Go to the same directory level as the cumulus repo download (e.g. cumulus/..)
 
     $ cd ..
 
@@ -135,6 +134,8 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 * `<prefix>-protected`
 * `<prefix>-public`
 
+These buckets do not need any non-default permissions to function with Cumulus, however your local security requirements may vary.
+
 
 **Note**: s3 bucket object names are global and must be unique across all accounts/locations/etc.
 
@@ -156,7 +157,7 @@ __All deployments in the various config.yml files inherit from the `default` dep
         shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
 
-#####Deploy `deployer` stack**[^1]
+##### Deploy `deployer` stack**[^1]
 
 Use the kes utility installed with cumulus to deploy your configurations to AWS. This must be done from the <daac>-deploy repository root
 
@@ -247,8 +248,8 @@ These updates configure the [copied template](#copy-template) from the cumulus r
 You should either add a new root-level key for your configuration or modify the existing default configuration key to whatever you'd like your new deployment to be.
 
 If you're re-depoying based on an existing configuration you can skip this configuration step unless values have been updated *or* you'd like to add a new deployment to your deployment configuration file.
+
 =======
->>>>>>> develop
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
@@ -259,11 +260,11 @@ The various configuration sections are described below with a sample `config.yml
 
 Configure your virtual private cloud.  You can find `<vpc-id>` and `<subnet-id>` values on the [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#). `vpcId` from [Your VPCs](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:), and `subnets` [here](https://console.aws.amazon.com/vpc/home?region=us-east-1#subnets:). When you choose a subnet, be sure to also note its availability zone, to configure `ecs`.
 
+
 ###### ecs
 
 Configuration for the Amazon EC2 Container Service (ECS) instance.  Update `availabilityZone` with information from [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#)
-note `instanceType` and `desiredInstances` have been selected for a sample install.  You will have to specify appropriate values to deploy and use ECS machines.
-
+note `instanceType` and `desiredInstances` have been selected for a sample install.  You will have to specify appropriate values to deploy and use ECS machines.   See [EC2 Instance Types](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) for more information.
 
 ###### buckets
 
@@ -425,6 +426,7 @@ Also add the Distribution url `https://<kido2r7kji>.execute-api.us-east-1.amazon
   * AWS S3 console: Select `<prefix>-dashboard` bucket then, "Properties" -> "Static Website Hosting", point to `index.html`
   * CLI: `aws s3 website s3://<prefix>-dashboard --index-document index.html`
 * The bucket's url will be `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or you can find it on the AWS console via "Properties" -> "Static website hosting" -> "Endpoint"
+ * Ensure the bucket's access permissions allow your deployment user access to write to the bucket
 
 ### Install dashboard
 
@@ -464,8 +466,6 @@ Using AWS CLI:
 From the S3 Console:
 
 * Open the `<prefix>-dashboard` bucket, click 'upload'. Add the contents of the 'dist' subdirectory to the upload. Then select 'Next'. On the permissions window allow the public to view. Select 'Upload'.
-
-
 
 You should be able to visit the dashboard website at `http://<prefix>-dashboard.s3-website-<region>.amazonaws.com` or find the url
 `<prefix>-dashboard` -> "Properties" -> "Static website hosting" -> "Endpoint" and login with a user that you configured for access in the [Configure Cumulus Stack](#configure-cumulus-stack) step.
