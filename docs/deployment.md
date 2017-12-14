@@ -142,19 +142,47 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 
 #### Create a deployer role
 
+**Add new deployment to `<daac>-deploy/deployer/config.yml`:**
+
 The `deployer` configuration sets up an IAM role with permissions for deploying the Cumulus stack.
 
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
-**Add new deployment to `<daac>-deploy/deployer/config.yml`:**
 
-    <deployer-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
-      prefix: <stack-prefix>    # prefixes CloudFormation-created deployer resources and permissions
-      stackName: <stack-name>   # name of this deployer stack in CloudFormation (e.g. <prefix>-deployer)
-      stackNameNoDash: <DashlessStackName>	# a stack name that will be identifiable as being associated with stack-name which contains no dashes
+
+####### deployer-deployment-name:
+
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+
+####### prefix:
+
+This value will prefix CloudFormation-created deployer resources and permissions.
+
+####### stackName:
+
+The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
+
+####### stackNameNoDash:
+
+A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier
+
+####### internal
+
+The internal bucket name previously created in the [Create S3 Buckets](#create-s3-buckets) step.  Preferably <prefix>-internal for ease of identification.
+
+x####### shared_data_bucket
+
+Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
+
+**Sample new deployment added to config.yml**:
+
+    <deployer-deployment-name>:
+      prefix: <stack-prefix>
+      stackName: <stack-name>
+      stackNameNoDash: <DashlessStackName>
       buckets:
-        internal: <prefix>-internal  # Previously created internal bucket name
-        shared_data_bucket: cumulus-data-shared  # Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
+        internal: <prefix>-internal
+        shared_data_bucket: cumulus-data-shared
 
 
 #####Deploy `deployer` stack**[^1]
@@ -179,9 +207,33 @@ This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/Us
 
 #### Create IAM roles
 
+**Add new deployment to `<daac>-deploy/iam/config.yml`:**
+
 The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
-**Add new deployment to `<daac>-deploy/iam/config.yml`:**
+The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values.
+
+-----
+
+###### iam-deployment-name
+
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+
+###### prefix:
+
+This value will prefix CloudFormation-created deployer resources and permissions.
+
+###### stackName:
+
+The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
+
+###### buckets:
+
+The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
+
+-----
+
+**Sample new deployment added to config.yml**:
 
     <iam-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
       prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH prefix in deployer stack
@@ -247,12 +299,24 @@ These updates configure the [copied template](#copy-template) from the cumulus r
 You should either add a new root-level key for your configuration or modify the existing default configuration key to whatever you'd like your new deployment to be.
 
 If you're re-depoying based on an existing configuration you can skip this configuration step unless values have been updated *or* you'd like to add a new deployment to your deployment configuration file.
-=======
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
 The various configuration sections are described below with a sample `config.yml` at the end.
 
+-----
+
+###### deployer-deployment-name:
+
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+
+###### stackName:
+
+The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
+
+###### stackNameNoDash:
+
+A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier
 
 ###### vpc
 
@@ -281,10 +345,12 @@ For information on how to locate them in the Console see [Locating Cumulus IAM R
 
 List of EarthData users you wish to have access to your dashboard application.   These users will be populated in your `<stackname>-UsersTable` [DynamoDb](https://console.aws.amazon.com/dynamodb/) (in addition to the default_users defined in the Cumulus default template).
 
+-----
+
 ###### Sample config.yml
 
 ```
-<cumulus-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
+<cumulus-deployment-name>:
   stackName: <prefix>-cumulus
   stackNameNoDash: <Prefix>Cumulus
 
