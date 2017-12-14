@@ -142,7 +142,7 @@ The following s3 buckets should be created (replacing prefix with whatever you'd
 
 #### Create a deployer role
 
-**Add new deployment to `<daac>-deploy/deployer/config.yml`:**
+##### Add new deployment to `<daac>-deploy/deployer/config.yml`
 
 The `deployer` configuration sets up an IAM role with permissions for deploying the Cumulus stack.
 
@@ -211,7 +211,7 @@ This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/Us
 
 #### Create IAM roles
 
-**Add new deployment to `<daac>-deploy/iam/config.yml`:**
+##### Add new deployment to `<daac>-deploy/iam/config.yml`
 
 The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
