@@ -8,6 +8,7 @@
 * [Deployment](docs/deployment.md)
   * [Creating an S3 Bucket](docs/create_bucket.md)
   * [Locating IAMs](docs/iam_roles.md)
+* [Develop Lambda Functions](docs/lambda.md)
 * [Dockerization](docs/docker.md)
 * [Local Docs](docs/doc_installation.md)
 * [Team](docs/team.md)
