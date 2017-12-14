@@ -148,7 +148,9 @@ The `deployer` configuration sets up an IAM role with permissions for deploying 
 
 __All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
 
+The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values:
 
+------
 
 ####### deployer-deployment-name:
 
@@ -170,9 +172,11 @@ A representation of the stack name that has dashes removed.   This will be used 
 
 The internal bucket name previously created in the [Create S3 Buckets](#create-s3-buckets) step.  Preferably <prefix>-internal for ease of identification.
 
-x####### shared_data_bucket
+####### shared_data_bucket
 
 Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
+
+------
 
 **Sample new deployment added to config.yml**:
 
@@ -211,9 +215,9 @@ This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/Us
 
 The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
-The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values.
+The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values:
 
------
+------
 
 ###### iam-deployment-name
 
@@ -231,7 +235,7 @@ The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
 
 The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
 
------
+------
 
 **Sample new deployment added to config.yml**:
 
@@ -302,7 +306,7 @@ If you're re-depoying based on an existing configuration you can skip this confi
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
-The various configuration sections are described below with a sample `config.yml` at the end.
+The various configuration sections are described below with a sample `config.yml` at the end:
 
 -----
 
