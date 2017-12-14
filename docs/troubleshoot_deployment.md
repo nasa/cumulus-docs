@@ -12,11 +12,10 @@ Issues:
 
 #### Configure Cumulus Stack
 ##### vpc
+
 Issues:
 
   - If redeploying an existing configuration you may already have at least 1 vpc associated with your existing deployment, but its subnets can be transitory in nature depending on what kind of load balancing and/or docker activities are taking place at a given time.  You should  identify at least one persistent subnet to use as a subnet ID (you may only specify one) for use.    If this is needed, navigate to  [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the "Availibility Zone" (e.g., us-east-1a). Next, visit [AWS VPC](https://console.aws.amazon.com/vpc/home) and click on "Subnets". Copy the 'VPC' value into 'vpcId' and the appropriate 'Subnet ID' value, based on the Availability Zone value you just saw on the Auto Scaling Groups page, into 'subnets'. If you have no vpc and/or subnets, do not include the vpc section in your new configuration.
-
-  - If you see the error "The availability zones of the specified subnets and the Auto Scaling group do not match" in AWS > CloudFormation > Stacks > Stack Detail > Events appears while this stack is being deployed, it means you've chosen a subnet that isn't correct; this could be due to load balancing happening at different times. Try to use the approach above (but if this fails, you can try picking the "1a" subnet, which seems to serve as some sort of default).
 
 #### Deploy the Cumulus Stack
 
@@ -24,7 +23,7 @@ Monitoring the progress of stack deployment can be done from the [AWS CloudForma
 
 Issues:
 
--  **Error:** __"The availability zones of the specified subnets and the Auto Scaling group do not match"__ -- You may have chosen the wrong subnet for your vpc. All but one of the subnets are transitory, only existing when various load balancing and/or docker operations are taking place. Thus, you must choose the one and only persistent subnet. Navigate to [AWS EC2 > Auto Scaling Groups](https://console.aws.amazon.com/ec2/autoscaling/home) and note the Availibility Zones (probably us-east-1a). Use that information in conjunction with [AWS VPC > Subnets](https://console.aws.amazon.com/vpc/home) to select the subnet ID corresponding to the correct availability zone (e.g., the subnet for "us-east-1a".
+-  **Error:** __"The availability zones of the specified subnets and the Auto Scaling group do not match"__ -- see [vpc issues](#vpc)
 
 - **The deployment isn't failing but is taking a long time**, navigate to [AWS ECS](https://console.aws.amazon.com/ecs/home) and then to "Clusters". Identify the new cluster associated with your <prefix> app deployment and click on it. The summary table (shown at bottom) for the cluster probably says "Desired tasks 1", or some other non-zero number, and "Running tasks 0". Click Update, then update the cluster to change "Number of tasks" to 0, or else you will receive (eventually) an error such as __"Service arn:aws:ecs:us-east-1:numbers:service/<prefix>-cumulus-<ECS service name> did not stabilize"__ and your app deployment will fail.
 
