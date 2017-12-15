@@ -153,27 +153,29 @@ The various config fields are described below with a sample `config.yml` at the 
 
 ------
 
-####### deployer-deployment-name:
+###### deployer-deployment-name:
 
-The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
 
-####### prefix:
+###### prefix:
 
 This value will prefix CloudFormation-created deployer resources and permissions.
 
-####### stackName:
+**This value must match the prefix used in the IAM role creation and the Cumulus application stack name must start with `<prefix>`**[^5]
+
+###### stackName:
 
 The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
 
-####### stackNameNoDash:
+###### stackNameNoDash:
 
-A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier
+A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier.
 
-####### internal
+###### internal
 
 The internal bucket name previously created in the [Create S3 Buckets](#create-s3-buckets) step.  Preferably <prefix>-internal for ease of identification.
 
-####### shared_data_bucket
+###### shared_data_bucket
 
 Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
 
@@ -222,11 +224,13 @@ The various config fields are described below with a sample `config.yml` at the 
 
 ###### iam-deployment-name
 
-The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
 
 ###### prefix:
 
 This value will prefix CloudFormation-created deployer resources and permissions.
+
+**This value must match the prefix used in the [Deployer](#create-a-deployer-role) role creation and the cumulus stack name must start with `<prefix>`** [^6]
 
 ###### stackName:
 
@@ -313,15 +317,15 @@ The various configuration sections are described below with a sample `config.yml
 
 ###### deployer-deployment-name:
 
-The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template.
+The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
 
 ###### stackName:
 
-The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
+The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).    **This stack name must start with the prefix listed in the [IAM](#create-iam-roles)  and [Deployer](#create-a-deployer-role) role configurations, or the deployment will fail.**
 
 ###### stackNameNoDash:
 
-A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier
+A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier.
 
 ###### vpc
 
@@ -397,7 +401,6 @@ List of EarthData users you wish to have access to your dashboard application.  
     - username: <user>
     - username: <user2>
 ```
-
 
 ##### Configure EarthData application
 
@@ -634,3 +637,6 @@ To deploy modifications to a single lambda package:
 [^2]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
 
 [^3]: To add another redirect URIs to your application. On EarthData home page, select "My Applications" Scroll down to "Application Administration" and use the edit icon for your application.  Then Manage -> Redirect URIs.
+[^4]: This value is used by kes only to identify the configuration set to use and should not appear in any AWS object
+[^5]: For more on the AWS objects this impacts, you can look through deployer/cloudformation.template.yml
+[^6]: For more on the AWS objects this impacts, you can look through iam/cloudformation.template.yml
