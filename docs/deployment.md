@@ -71,8 +71,7 @@ Build the Cumulus application
 
 #### Prepare DAAC deployment repository {#prepare-deployment}
 
-_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Pre
-pare AWS configuration. ](#prepare-config)_
+_If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Prepare AWS configuration. ](#prepare-config)_
 
 Go to the same directory level as the cumulus repo download (e.g. `cumulus/..`)
 
