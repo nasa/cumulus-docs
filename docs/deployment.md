@@ -5,6 +5,12 @@
 
 This is a guide for deploying a new instance of Cumulus.
 
+The deployment  documentation is current for the following component versions:
+
+* [Cumulus](https://github.com/cumulus-nasa/cumulus)  ([v1.0.0-beta1](https://github.com/cumulus-nasa/cumulus/tree/v1.0.0-beta1))
+* [Deployment Template](https://github.com/cumulus-nasa/template-deploy) ([7a547dd](https://github.com/cumulus-nasa/template-deploy/commit/7a547ddc1113330fb33428562291375e0eb7eafd))
+* [Cumulus Dashboard](https://github.com/cumulus-nasa/cumulus-dashboard) ([c6e5c05](https://github.com/cumulus-nasa/cumulus-dashboard/commit/c6e5c05a1c04b1996366ae3a9fe660bd439f0fb3))
+
 The process involves:
 
 *  Creating [AWS S3 Buckets](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html).
