@@ -34,7 +34,7 @@ The process involves:
 
 * [CMR](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/common-metadata-repository) username and password.  Can be excluded if you are not exporting metadata to CMR.
 
-* [EarthData Client login](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/earthdata-login) username and password. User must have the ability to administer and/or create applications in URS.   It's recommended to obtain a this account in the test environment (UAT).
+* [EarthData Client login](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/earthdata-login) username and password. User must have the ability to administer and/or create applications in URS.   It's recommended to obtain an account in the test environment (UAT).
 
 
 #### Needed Git Repositories:
@@ -63,7 +63,7 @@ Optionally, If you are deploying a particular version(tag), ref or branch of Cum
 Install and configure the local build environment and dependencies using npm
 
     $ npm install
-    $ npm run ybootstrap[Troubleshooting^4]
+    $ npm run ybootstrap
 
 Build the Cumulus application
 
@@ -77,7 +77,7 @@ Go to the same directory level as the cumulus repo download (e.g. `cumulus/..`)
 
     $ cd ..
 
-Clone template-deply repo and name appropriately for your DAAC or organization
+Clone template-deploy repo and name appropriately for your DAAC or organization
 
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
 
@@ -176,7 +176,7 @@ The internal bucket name previously created in the [Create S3 Buckets](#create-s
 
 ###### shared_data_bucket
 
-Devseed-managed shared bucket (contains custom ingest lmabda functions/common ancillary files)
+Devseed-managed shared bucket (contains custom ingest lambda functions/common ancillary files)
 
 ------
 
@@ -256,7 +256,7 @@ The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
 
     $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
 
-**Note**: If this deployment fails check the deployment details in the AWS Cloud Formation Console for information. Permissions may need to be updated by your AWS adminstrator.
+**Note**: If this deployment fails check the deployment details in the AWS Cloud Formation Console for information. Permissions may need to be updated by your AWS administrator.
 
 If the `iam` deployment command  succeeds, you should see 4 new roles in the [IAM Console](https://console.aws.amazon.com/iam/home):
 
@@ -298,7 +298,7 @@ Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/man
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-_Make sure you've updated your actual envionment variables before proceeding (e.g., if sourcing from a file, re-source the file)._
+_Make sure you've updated your actual environment variables before proceeding (e.g., if sourcing from a file, re-source the file)._
 
 #### Configure Cumulus stack
 
@@ -306,7 +306,7 @@ These updates configure the [copied template](#copy-template) from the cumulus r
 
 You should either add a new root-level key for your configuration or modify the existing default configuration key to whatever you'd like your new deployment to be.
 
-If you're re-depoying based on an existing configuration you can skip this configuration step unless values have been updated *or* you'd like to add a new deployment to your deployment configuration file.
+If you're re-deploying based on an existing configuration you can skip this configuration step unless values have been updated *or* you'd like to add a new deployment to your deployment configuration file.
 
 **Edit the  `<daac>-deploy/app/config.yml` file **
 
@@ -420,7 +420,7 @@ For security it is highly recommended that you prevent `apps/.env` from being ac
 ----
 #### Deploy the Cumulus Stack
 
-Once the preceeding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
+Once the preceding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
 
     $ kes cf deploy --kes-folder app --region <region> \
       --template ../cumulus/packages/deployment/app \
