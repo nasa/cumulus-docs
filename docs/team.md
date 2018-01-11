@@ -2,11 +2,11 @@
 
 ### Cumulus Core Team
 
-- Ali Felski ([@felskia](https://github.com/felskia))
-- Matthew Hanson ([@matthewhanson](https://github.com/matthewhanson))
-- Marc Huffnagle([@yjpa7145](https://github.com/yjpa7145))
+- Aimee Barciauskas ([@abarciauskas-bgse](https://github.com/abarciauskas-bgse))
 - Alireza Jazayeri ([@scisco](https://github.com/scisco))
+- Jenny Liu ([@jennyhliu](https://github.com/jennyhliu))
 - Katherine Kelly ([@kkelly51](https://github.com/kkelly51))
-- James Norton ([@indiejames](https://github.com/indiejames))
+- Lauren Frederick ([@laurenfrederick](https://github.com/laurenfrederick))
+- Marc Huffnagle([@yjpa7145](https://github.com/yjpa7145))
 - Patrick Quinn ([@bilts](https://github.com/bilts))
 - Seth Vincent ([@sethvincent](https://github.com/sethvincent))
