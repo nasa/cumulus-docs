@@ -2,6 +2,8 @@
 
 ## Overview
 
+<img src="/images/cumulus-arch-diagram.png">
+
 Provider data ingest and GIBS have a set of common needs in getting data from a source system and into the cloud where they can be distributed to end users. These common needs are:
 
 * **Data Discovery** - Crawling, polling, or detecting changes from a variety of sources.
