@@ -562,6 +562,18 @@ Once deployed for the first time, any future updates to the role/stack configura
     $ kes cf deploy --kes-folder iam --deployment <deployment-name> \
       --region <region> # e.g. us-east-1
 
+## Cumulus Versioning
+
+Cumulus uses a global versioning approach, meaning version numbers are consistent across all packages and tasks, and semantic versioning to track major, minor, and patch version (i.e. 1.0.0). We use Lerna to manage versioning. Any change will force lerna to increment the version of all packages.
+
+### Publishing to NPM
+
+    $ lerna publish
+
+To specify the level of change for the new version
+
+    $ lerna publish --cd-version (major | minor | patch | prerelease)
+
 ## Update Cumulus
 
     $ kes cf deploy --kes-folder config --region <region> \
