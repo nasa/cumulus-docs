@@ -2,7 +2,7 @@
 
 <img src="/images/cumulus-task-message-flow.png">
 
-This flow is detailed in sections below.
+This steps in this flow are detailed in sections below.
 
 ## Cumulus Message Format
 
@@ -11,9 +11,9 @@ Cumulus Messages come in 2 flavors: The full **Cumulus Message** and the **Cumul
 A full **Cumulus Message** has the 4 following keys:
 
 * **`workflow_config`:** Stores configuration for each task in the workflow, keyed by task name.
-* **`cumulus_meta`:** Stores meta information about the workflow such as the state machine name and associated execution's name. This information is used to look up the current active task which is then used to look up the corresponding task's config in `workflow_config`.
+* **`cumulus_meta`:** Stores meta information about the workflow such as the state machine name and the current workflow execution's name. This information is used to look up the current active task. The name of the current active task is used to look up the corresponding task's config in `workflow_config`.
 * **`meta`:** Stores execution-agnostic variables which can be re-used via templates in `workflow_config`.
-* **`payload`:** The payload is the arbitrary output of the task's main business code.
+* **`payload`:** The payload is the arbitrary output of the task's application code.
 
 Here's a simple example of a Cumulus Message:
 
@@ -55,25 +55,25 @@ A **Cumulus Remote Message** has only the keys `replace` and `cumulus_meta`.
 
 ## Cumulus Message Preparation
 
-The event coming into a Cumulus Task is assumed to be a Cumulus Message or Cumulus Remote Message and should first be handled by the functions described below before being passed to the main task business code.
+The event coming into a Cumulus Task is assumed to be a Cumulus Message or Cumulus Remote Message and should first be handled by the functions described below before being passed to the task application code.
 
 #### Preparation Step 1: Fetch remote event
 
 Fetch remote event will fetch the actual event from S3 if the cumulus message includes a `replace` key.
 
-Once "my-large-event.json" is fetched from S3, it's returned from the fetch remote event function. If no "replace" key is present, it is assumed to be a full Cumulus Message passed to the lambda task is returned as-is.
+Once "my-large-event.json" is fetched from S3, it's returned from the fetch remote event function. If no "replace" key is present, the event passed to the fetch remote event function is assumed to be a full Cumulus Message and returned as-is.
 
 #### Preparation Step 2: Fetch step function config
 
-Fetch step function config determines what current task is being executed. Note this is different from what lambda or activity is being executed, because the same lambda or activity can be used for different tasks. The current task name is used to load the appropriate configuration from the cumulus message 'workflow_config'.
+Fetch step function config determines what current task is being executed. Note this is different from what lambda or activity is being executed, because the same lambda or activity can be used for different tasks. The current task name is used to load the appropriate configuration from the Cumulus Message's 'workflow_config'.
 
 #### Preparation Step 3: Load nested event
 
-Using the config returned from the previous step, load nested event resolves templates for the final config and input to send to the main business. Read more on URL Templating in the [Protocol section](protocol.html#url-templating).
+Using the config returned from the previous step, load nested event resolves templates for the final config and input to send to the task's application code. Read more on URL Templating in the [Protocol section](protocol.html#url-templating).
 
-## Main Business Function
+## Task Application Code
 
-After message prep, the message passed to the main business function is of the form:
+After message prep, the message passed to the task application code is of the form:
 
 ```json
 {
@@ -86,11 +86,11 @@ After message prep, the message passed to the main business function is of the f
 
 ## Create Next Message functions
 
-Whatever comes out of the main business function is used to construct an outgoing Cumulus Message.
+Whatever comes out of the task application code is used to construct an outgoing Cumulus Message.
 
 #### Create Next Message Step 1: Assign outputs
 
-The config loaded from the **Fetch step function config** step may have a `cumulus_message` key. This can be used to "dispatch" fields from the main business output to a destination in the final event output. Here's an example where the value of `input.anykey` would be dispatched as the value of `payload.out` in the final cumulus message:
+The config loaded from the **Fetch step function config** step may have a `cumulus_message` key. This can be used to "dispatch" fields from the task's application output to a destination in the final event output (via URL templating). Here's an example where the value of `input.anykey` would be dispatched as the value of `payload.out` in the final cumulus message:
 
 ```json
 {
