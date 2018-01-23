@@ -6,10 +6,12 @@ This flow is detailed in sections below.
 
 ## Cumulus Message Format
 
-A Cumulus Message has the 4 following keys:
+Cumulus Messages come in 2 flavors: The full **Cumulus Message** and the **Cumulus Remote Message**. The Cumulus Remote Message points to a full Cumulus Message stored in S3 because of size limitations.
+
+A full **Cumulus Message** has the 4 following keys:
 
 * **`workflow_config`:** Stores configuration for each task in the workflow, keyed by task name.
-* **`cumulus_meta`:** Stores meta information about the workflow - the state machine and associated execution's name. This information is used to look up the current active task which is then used to look up the corresponding task's config in `workflow_config`.
+* **`cumulus_meta`:** Stores meta information about the workflow such as the state machine name and associated execution's name. This information is used to look up the current active task which is then used to look up the corresponding task's config in `workflow_config`.
 * **`meta`:** Stores execution-agnostic variables which can be re-used via templates in `workflow_config`.
 * **`payload`:** The payload is the arbitrary output of the task's main handler code.
 
@@ -39,13 +41,7 @@ Here's a simple example of a Cumulus Message:
 }
 ```
 
-## Sled message prep functions
-
-The event coming into the lambda task is assumed to be in the cumulus message format and should first be handled by message prep before being passed to the main task handler.
-
-#### 1. Fetch remote event
-
-Cumulus messages can be too big for AWS size limits (for Lambda or Step Functions or both?). Fetch remote event will fetch the actual event from S3 if the cumulus message includes a `replace` key. In this scenario, the incoming cumulus message object has only 2 message keys:
+A **Cumulus Remote Message** has only the keys `replace` and `cumulus_meta`.
 
 ```json
 {
@@ -56,6 +52,14 @@ Cumulus messages can be too big for AWS size limits (for Lambda or Step Function
   "cumulus_meta": {}
 }
 ```
+
+## Cumulus Message Preparation
+
+The event coming into a Cumulus Task is assumed to be a Cumulus Message or Cumulus Remote Message and should first be handled by the functions described below before being passed to the main task handler.
+
+#### Preparation Step 1: Fetch remote event
+
+Fetch remote event will fetch the actual event from S3 if the cumulus message includes a `replace` key.
 
 Once "my-large-event.json" is fetched from S3, it's returned from the fetch remote event function. In the case that no "replace" key is present in the cumulus message, the cumulus message passed to the lambda task is returned as-is.
 
