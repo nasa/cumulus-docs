@@ -10,10 +10,10 @@ Cumulus Messages come in 2 flavors: The full **Cumulus Message** and the **Cumul
 
 A full **Cumulus Message** has the 4 following keys:
 
-* **`workflow_config`:** Stores configuration for each task in the workflow, keyed by task name.
-* **`cumulus_meta`:** Stores meta information about the workflow such as the state machine name and the current workflow execution's name. This information is used to look up the current active task. The name of the current active task is used to look up the corresponding task's config in `workflow_config`.
-* **`meta`:** Stores execution-agnostic variables which can be re-used via templates in `workflow_config`.
-* **`payload`:** The payload is the arbitrary output of the task's application code.
+* **`workflow_config`:** Definition-time information to set up tasks. Optionally includes configuration for each task in the workflow, keyed by task name.
+* **`cumulus_meta`:** System runtime information that should generally not be touched outside of Cumulus library code or the Cumulus Message Adapter. Stores meta information about the workflow such as the state machine name and the current workflow execution's name. This information is used to look up the current active task. The name of the current active task is used to look up the corresponding task's config in `workflow_config`.
+* **`meta`:** Runtime information captured by the workflow operators. Stores execution-agnostic variables which can be re-used via templates in `workflow_config`.
+* **`payload`:** Payload is runtime information for the tasks.
 
 Here's a simple example of a Cumulus Message:
 
@@ -78,8 +78,7 @@ After message prep, the message passed to the task application code is of the fo
 ```json
 {
   "input": {},
-  "config": {},
-  "messageConfig": {}
+  "config": {}
 }
 ```
 
