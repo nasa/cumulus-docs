@@ -61,7 +61,7 @@ The event coming into a Cumulus Task is assumed to be a Cumulus Message or Cumul
 
 #### Preparation Step 1: Fetch remote event
 
-Fetch remote event will fetch the actual event from S3 if the cumulus message includes a `replace` key.
+Fetch remote event will fetch the full event from S3 if the cumulus message includes a `replace` key.
 
 Once "my-large-event.json" is fetched from S3, it's returned from the fetch remote event function. If no "replace" key is present, the event passed to the fetch remote event function is assumed to be a full Cumulus Message and returned as-is.
 
