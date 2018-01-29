@@ -127,6 +127,6 @@ The config loaded from the **Fetch step function config** step may have a `cumul
 
 #### Create Next Message Step 2: Store remote event
 
-**Store remote event** complements **Fetch remote event**: If the cumulus message is too big, it will be stored in S3 and the final output of the task will be an object with just the `cumulus_meta` and `replace` keys, where the `replace` key identifies where the large event has been stored in S3.
+**Store remote event** complements **Fetch remote event:** If the cumulus message is too big, it will be stored in S3 and the final output of the task will be Cumulus Remove Message - an object with only the `replace` and `cumulus_meta` keys. The `replace` key identifies where the large event has been stored in S3.
 
 
