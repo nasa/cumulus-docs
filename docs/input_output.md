@@ -13,8 +13,8 @@ Below is the input format, annotated inline:
                                  // prefer to be passed resources explicitly in their configuration rather 
                                  // than looking up paths here. The paths being present here, however allows 
                                  // configuration to parameterize values that are not known until the stack 
-                                 // is created.  For instance, a configuration field have the value \"
-                                 // {cumulus_meta.buckets.private}\", which instructs the Task to look up the 
+                                 // is created.  For instance, a configuration field have the value 
+                                 // "{cumulus_meta.buckets.private}", which instructs the Task to look up the 
                                  // private bucket while allowing the Task to remain ignorant of what buckets 
                                  // are available.
       
@@ -33,10 +33,10 @@ Below is the input format, annotated inline:
       },
       "meta": {                  // Metadata taken from the collection configuration and other configuration 
                                  // settings. Tasks may add fields to the 'meta' object at will (in their 
-                                 // returned output) in order to pass data to future tasks. Tasks should avoid 
-                                 // assuming that fields are present in the meta object and avoid naming fields 
-                                 // to put in the meta object, preferring instead to let configuration decide 
-                                 // what goes into the object.      
+                                 // returned output) in order to pass data to future tasks. Tasks should 
+                                 // avoid assuming that fields are present in the meta object and avoid 
+                                 // naming fields to put in the meta object, preferring instead to let 
+                                 // configuration decide what goes into the object.      
         "cmr": {                 // CMR credential for exporting metadata to CMR
           "username": "<string>",   // CMR user name
           "password": "<string>",   // CMR encrypted password
@@ -73,37 +73,202 @@ Below is the input format, annotated inline:
 
 ## Cumulus Message Adapter
 
-The Scheduler service creates the initial event by combining the collection configuration, external resource configuration, workflow configuration, and deployment environment settings.  The subsequent workflow message between tasks must conform to the message schema.  
+The Scheduler service creates the initial event by combining the collection configuration, external resource configuration, workflow configuration, and deployment environment settings.  The subsequent workflow messages between tasks must conform to the message schema. By using Cumulus Message Adapter, individule task Lambda function can focus on the input and output specific to the task, and does not worry about the non-task related message fields.
 
-Because of the potential size of the `"payload"` field, it may contain a reference to an S3 Bucket and Key, as follows:
+Cumulus Message Adapter implements an AWS Lambda handler that adapts incoming messages in the Cumulus protocol to a format more easily consumable by Cumulus tasks, invokes the tasks, and then adapts their response back to the Cumulus message protocol to be sent to the next task.  
+
+The task Lambda function should take two inputs `input` and `config` in the event message:
+#### 1. `input`: The incoming payload or a portion of it as specified in the task configuration.
+#### 2. `config`: Task-specific configuration object with URL templates resolved.
+#### 3. The task's return value is interpreted as the next payload as specified in the task configuration.
+
+Cumulus Message Adapter has the following capabilities:
+
+### 1. Retrieve a Cumulus message from S3 Bucket, or store a cumulus message to a S3 Bucket.
+
+Because of the potential size of a Cumulus message, mainly the `"payload"` field, if the message size is greater than 10000 bytes, the full message will be stored to S3 Bucket.  The message may contain a reference to an S3 Bucket and Key, as follows:
 
     {
-      "payload" : {
-        "Bucket" : "gitc-foo",
-        "Key" : "bar/baz"
+      "cumulus_meta": {...},
+      "replace": {
+        "Bucket": "gitc-foo",
+        "Key": "bar/baz"
+        }
+    }
+
+When a workflow task receives such message, the Cumulus Message Adapter is responsible for fetching the JSON message document and pass it to the task.  When a task output message is too big, the Cumulus Message Adapter will store the message to S3 Bucket under $.cumulus_meta.buckets.internal, and return a new message with S3 reference as above example.
+
+### 2. Resolve URL templates in the task configuration
+
+In the workflow configuration, each task has its own configuration, and it can use URL template as a value for achieve simplicity or for values only available at execution time.  When each task executes, it is expected to resolve URL templates found in its configuration against the entire Cumulus message. The Cumulus Message Adapter solves the URL templates and then passes message to next task. For example, a task has configuration in the workflow:
+
+    Discovery:
+        config:
+          useQueue: false
+          stack: '$.cumulus_meta.stack'
+          provider: '$.meta.provider'
+          inlinestr: 'prefix{meta.foo}suffix',
+          array: '{[$.meta.foo]}',
+          object: '{{$.meta}}'
+
+The task configuration in the message (only partial message is shown here):
+
+    {
+      "cumulus_meta": {
+        "stack": "foo-cumulus",
+        ....
+      },
+      "meta": {
+        "foo": "bar",
+        "provider": {
+          "id": "FOO_DAAC",
+          "anykey": "anyvalue"
+        },
+        ...
+      },
+      "workflow_config": {
+        "Discovery": {
+          "useQueue": false,
+          "stack": "{{$.cumulus_meta.stack}}",
+          "object": "{{$.meta.provider}}",
+          "inlinestr": "prefix{meta.foo}suffix",
+          "array": "{[$.meta.foo]}"
+        },
+        ...
       }
     }
 
-When a Task receives such a payload, it is responsible for fetching the JSON document at the given key and replacing `"payload"` with its contents.  See the (EventSource)[../lib/event-source.js] implementation for examples.
-
-## URL Templating
-
-When each task executes, it is expected to resolve URL templates found in its collection configuration against the entire collection configuration. For example, tasks should resolve the following collection:
+Into this as part of the message passed to task:
 
     {
-      "meta": { "name": "Hello" },
-      "config" : { "output" : "{meta.name} World!" }
-    }
+      "config" : {
+        "useQueue": false,
+        "stack": "foo-cumulus",
+        "object": {
+          "id": "FOO_DAAC",
+          "anykey": "anyvalue"
+        },
+        "inlinestr": "prefixbarsuffix",
+        "array": ["bar"]
+      }
+      
+URL template variables replace dotted paths inside curly brackets with their corresponding value. If the Cumulus Message Adapter cannot resolve a value, it should ignore the template, leaving it verbatim in the string.  While seemingly complex, this allows significant decoupling of Tasks from one another and the data that drives them. Tasks are able to easily receive runtime configuration produced by previously run Tasks and domain data.
 
-Into this:
+### 3. Resolve task input
+
+Generally, the Cumulus Message Adapter uses the data from `"payload"` of the previous message as input to the next task.  However, the task can configure what input data it should get.  For example, a task specifies cumulus_message.input in its workflow configuration:
+    
+    ExampleTask:
+      config:
+        cumulus_message:
+            input: '$.payload.input'
+            
+The task configuration in the message:
 
     {
-      "meta": { "name": "Hello" },
-      "config" : { "output" : "Hello World!" }
+      "workflow_config": {
+        "ExampleTask": {
+          "cumulus_message": {
+            "input": "{{$.payload.input}}"
+          }
+        }
+      },
+      "payload": {
+        "input": {
+          "anykey": "anyvalue"
+        }
+      }
     }
 
-URL template variables replace dotted paths inside curly brackets with their corresponding value. If a Task cannot resolve a value, it should ignore the template, leaving it verbatim in the string.  While seemingly complex, this allows significant decoupling of Tasks from one another and the data that drives them. Tasks are able to easily receive runtime configuration produced by previously run Tasks and domain data.
+The Cumulus Message Adapter will resolve the task input, instead of send the whole `"payload"` as task input, the task input would be:
 
+    {
+      "input" : {
+        "anykey": "anyvalue"
+      }
+    }
+
+### 4. Resolve task output
+
+The workflow task can configure about what to do with its output.  Based on the task configuration about the output under cumulus_message.outputs, the Message Adapter applies a task's return value to an output message, from source to destination. If the destination already exists, its value would be updated.  For example, a task specifies cumulus_message.output in its workflow configuration:
+    
+    ExampleTask:
+      config:
+        cumulus_message:
+            output: 
+              - source: '$'
+                destination: '$.payload'
+              - source: '$.output.anykey'
+                destination: '$.meta.baz'
+                
+The task configuration in the message:
+
+    {
+      "workflow_config": {
+        "ExampleTask": {
+          "cumulus_message": {
+            "outputs": [
+              {
+                "source": "{{$}}",
+                "destination": "{{$.payload}}"
+              },
+              {
+                "source": "{{$.output.anykey}}",
+                "destination": "{{$.meta.baz}}"
+              }
+            ]
+          }
+        }
+      },
+      "meta": {
+        "foo": "bar"
+      },
+      "payload": {
+        "anykey": "anyvalue"
+      }
+    }
+
+The response from task:
+
+    {
+      "output": {
+          "anykey": "boo"
+      }
+    }
+
+So the message would be like this after the adapter resolves the output:
+
+    {
+      "workflow_config": {
+        "ExampleTask": {
+          "cumulus_message": {
+            "outputs": [
+              {
+                "source": "{{$}}",
+                "destination": "{{$.payload}}"
+              },
+              {
+                "source": "{{$.output.anykey}}",
+                "destination": "{{$.meta.baz}}"
+              }
+            ]
+          }
+        }
+      },
+      "meta": {
+        "foo": "bar",
+        "baz": "boo"
+      },
+      "payload": {
+        "output": {
+          "anykey": "boo"
+        }
+      }
+    }
+    
+### 5. Validate task input, output and configuration messages against the schemas provided.
+
+If the task has schemas for input, output and configuration, the Message Adapter validates the task input, output and configuration messages against the schemas before the message is sent to next step.
 
 ## Specific Payload Formats
 
