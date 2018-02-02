@@ -11,7 +11,7 @@
       "type": "object",
       "properties": {
         "cmr": {
-          "description": "CMR credential for exporting metadata to CMR",
+          "description": "(optinal) CMR credential for exporting metadata to CMR",
           "$ref": "#/definitions/CmrType"
         },
         "provider": {
@@ -62,11 +62,11 @@
   ],
   "definitions": {
     "CumulusMetaType": {
-      "description": "External resources accessible to the Task. Tasks should generally prefer to be passed resources explicitly in their configuration rather than looking up paths here. The paths being present here, however allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{cumulus_meta.buckets.private}\", which instructs the Task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
+      "description": "External resources accessible to the Task. The paths being present here allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{cumulus_meta.buckets.private}\", which instructs the task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
       "type": "object",
       "properties": {
         "stack": {
-          "description": "The name of the Task's CloudFormation Task, useful as a prefix",
+          "description": "The name of the task's CloudFormation Task, useful as a prefix",
           "type": "string",
           "minLength": 1
         },
@@ -80,17 +80,17 @@
               "minLength": 1
             },
             "private": {
-              "description": "The name of the bucket which holds internal platform data",
+              "description": "The name of the bucket holding internal platform data",
               "type": "string",
               "minLength": 1
             },
             "protected": {
-              "description": "The name of the bucket which holds protected data",
+              "description": "The name of the bucket holding protected data",
               "type": "string",
               "minLength": 1
             },
             "public": {
-              "description": "The name of the bucket which holds data to be served publicly",
+              "description": "The name of the bucket holding data to be served publicly",
               "type": "string",
               "minLength": 1
             }
@@ -102,15 +102,15 @@
           ]
         },
         "state_machine": {
-          "description": "(Step-Function only) The ARN of the state machine being run",
+          "description": "(when message_source is sfn) The ARN of the state machine being run",
           "type": "string"
         },
         "execution_name": {
-          "description": "(Step-Function only) The name of the execution being run",
+          "description": "(when message_source is sfn) The name of the execution being run",
           "type": "string"
         },
         "workflow_name": {
-          "description": "(Step-Function only) The name of the workflow being run",
+          "description": "(when message_source is sfn) The name of the workflow being run",
           "type": "string"
         },
         "message_source": {
@@ -149,7 +149,7 @@
     },
     "ProviderType": {
       "title": "Provider",
-      "description": "Defines a provider configuration for ingest. Any fields are allowed.",
+      "description": "Defines a provider configuration for ingest. Any field from the provider is allowed.",
       "type": "object",
       "properties": {
         "id": {
