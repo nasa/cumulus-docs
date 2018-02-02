@@ -49,9 +49,9 @@ URL template variables replace dotted paths inside curly brackets with their cor
 
 ### Configuration JSON Schema and Example
 
-[Download Configuration Schema](/schemas/collections_config_schema.json)
+<a href="/schemas/collections_config_schema.json" target="_blank">Download Configuration Schema</a>
 
-[Download Example Configuration](/schemas/example-data/example-collection.json)
+<a href="/schemas/example-data/example-collection.json" target="_blank">Download Example Configuration</a>
 
 ## Message Protocol
 
@@ -75,9 +75,9 @@ The input to a workflow is generated from the Configuration and some other sourc
 
 ### Message Protocol Schema and Example
 
-[Download Message Schema](/schemas/message_schema.json)
+<a href="/schemas/message_schema.json" target="_blank">Download Message Schema</a>
 
-[Download Example Message](/schemas/example-data/example-message-envelope.json)
+<a href="/schemas/example-data/example-message-envelope.json" target="_blank">Download Example Message</a>
 
 #### Generated Schema Documentation
 
@@ -85,4 +85,4 @@ The input to a workflow is generated from the Configuration and some other sourc
 
 The Ingest Common JSON Schema defines common types for other JSON schemas.
 
-[Download Common Schema](/schemas/ingest_common_schema.json)
+<a href="/schemas/ingest_common_schema.json" target="_blank">Download Common Schema</a>
