@@ -222,15 +222,15 @@ AWS Step Functions scale up as needed and aren't limited by a set of number of s
 
 The Ingest Common JSON Schema defines common types for other JSON schemas.
 
-[ingest_common_schema.json](/schemas/ingest_common_schema.json)
+<a href="/schemas/ingest_common_schema.json" target="_blank">ingest_common_schema.json</a>
 
 #### Collection Configuration JSON Schema
 
 The Collection Configuration JSON Schema defines the Ingest configured workflows and tasks.
 
-[collections_config_schema.json](/schemas/collections_config_schema.json)
+<a href="/schemas/collections_config_schema.json" target="_blank">collections_config_schema.json</a>
 
-[Example Collection Config](/schemas/example-data/example-collection.json)
+<a href="/schemas/example-data/example-collection.json" target="_blank">Example Collection Config</a>
 
 #### Message JSON Schema
 
