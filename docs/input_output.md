@@ -196,7 +196,7 @@ The Cumulus Message Adapter will resolve the task input, instead of send the who
 
 ### 4. Resolve task output
 
-By default, the task's return value is the next payload.  However, the workflow task configuration can specify a portion of it is interpreted as the next payload, and also augument values to other fields.  Based on the task configuration about the output under cumulus_message.outputs, the Message Adapter applies a task's return value to an output message, from source to destination. If the destination already exists, its value would be updated.  For example, a task specifies cumulus_message.output in its workflow configuration:
+By default, the task's return value is the next payload.  However, the workflow task configuration can specify a portion of the return value as the next payload, and can also augment values to other fields.  Based on the task configuration under cumulus_message.outputs, the Message Adapter applies a task's return value to an output message, from source to destination. If the destination already exists, its value would be updated.  For example, a task specifies cumulus_message.output in its workflow configuration:
     
     ExampleTask:
       config:
@@ -274,7 +274,7 @@ So the message would be like this after the adapter resolves the output:
     
 ### 5. Validate task input, output and configuration messages against the schemas provided.
 
-If the task has schemas for input, output and configuration messages, the Message Adapter validates each of the messages against it corresponding schema after a message is generated.
+If the task has schemas for input, output and configuration messages, the Message Adapter validates each of the messages against its corresponding schema after a message is generated.
 
 ## Specific Payload Formats
 
