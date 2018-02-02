@@ -9,7 +9,7 @@ Cumulus uses a common format for all inputs and outputs to workflows. The same f
 Below is the input format, annotated inline:
 
     {
-      "cumulus_meta": {          // External resources accessible to the Task. The paths being present here allows 
+      "cumulus_meta": {          // External resources accessible to the task. The paths being present here allows 
                                  // configuration to parameterize values that are not known until the stack 
                                  // is created.  For instance, a configuration field have the value 
                                  // "{cumulus_meta.buckets.private}", which instructs the task to look up the 
@@ -88,9 +88,9 @@ Input to task application code is a json object with keys:
 Output of the task application code:
 * `Task output`: By default, the task's return value is the next payload, or a portion of it is interpreted as the next payload as specified in the task configuration.
 
-**Cumulus Message Adapter has the following steps:**
+### Cumulus Message Adapter has the following steps:
 
-### 1. Retrieve a Cumulus message from S3 Bucket, or store a Cumulus message to a S3 Bucket.
+#### 1. Retrieve a Cumulus message from S3 Bucket, or store a Cumulus message to a S3 Bucket.
 
 Because of the potential size of a Cumulus message, mainly the `"payload"` field, if the message size is greater than 10000 bytes, the full message will be stored to S3 Bucket.  The message may contain a reference to an S3 Bucket and Key, as follows:
 
@@ -102,9 +102,9 @@ Because of the potential size of a Cumulus message, mainly the `"payload"` field
         }
     }
 
-When a workflow receives a large message, the Cumulus Message Adapter is responsible for fetching the JSON message document and passing it to the task.  When a task output message is too big, the Cumulus Message Adapter will store the message to S3 Bucket under $.cumulus_meta.buckets.internal, and return a new message with an S3 reference as in the above example.
+When a workflow receives a large message, the Cumulus Message Adapter is responsible for fetching the JSON message document and passing it to the task.  When a task output message is too big, the Cumulus Message Adapter will store the message to S3 Bucket under `$.cumulus_meta.buckets.internal`, and return a new message with an S3 reference as in the above example.
 
-### 2. Resolve URL templates in the task configuration
+#### 2. Resolve URL templates in the task configuration
 
 In the workflow configuration, each task has its own configuration, and it can use URL template as a value to achieve simplicity or for values only available at execution time. The Cumulus Message Adapter resolves the URL templates and then passes message to next task. For example, given a task which has the following configuration:
 
@@ -162,7 +162,7 @@ The message sent to the task would be:
             
 URL template variables replace dotted paths inside curly brackets with their corresponding value. If the Cumulus Message Adapter cannot resolve a value, it will ignore the template, leaving it verbatim in the string.  While seemingly complex, this allows significant decoupling of Tasks from one another and the data that drives them. Tasks are able to easily receive runtime configuration produced by previously run tasks and domain data.
 
-### 3. Resolve task input
+#### 3. Resolve task input
 
 By default, the incoming payload is the payload from the previous task.  The task can also be configured to use a portion of the payload its input message.  For example, given a task specifies cumulus_message.input:
     
@@ -197,7 +197,7 @@ The Cumulus Message Adapter will resolve the task input, instead of sending the 
       "config": {...}
     }
 
-### 4. Resolve task output
+#### 4. Resolve task output
 
 By default, the task's return value is the next payload.  However, the workflow task configuration can specify a portion of the return value as the next payload, and can also augment values to other fields. Based on the task configuration under `cumulus_message.outputs`, the Message Adapter uses a task's return value to output a message as configured by the task-specific config defined under `workflow_config`. The Message Adapter dispatches a "source" to a "destination" as defined by URL templates stored in the task-specific `cumulus_message.outputs`. The value of the task's return value at the "source" URL is used to create or replace the value of the task's return value at the "destination" URL. For example, given a task specifies cumulus_message.output in its workflow configuration as follows:
     
@@ -275,7 +275,7 @@ The Cumulus Message Adapter would output the following Cumulus Message:
       }
     }
     
-### 5. Validate task input, output and configuration messages against the schemas provided.
+#### 5. Validate task input, output and configuration messages against the schemas provided.
 
 The Cumulus Message Adapter has the capability to validate task input, output and configuration messages against their schemas.  The default location of the schemas is the schemas folder in the top level of the task and the default filenames are input.json, output.json, and config.json. The task can also configure a different schema location.  If no schema can be found, the Cumulus Message Adapter will not validate the messages.
 
