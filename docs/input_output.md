@@ -77,12 +77,20 @@ The Scheduler service creates the initial event by combining the collection conf
 
 Cumulus Message Adapter implements an AWS Lambda handler that adapts incoming messages in the Cumulus protocol to a format more easily consumable by Cumulus tasks, invokes the tasks, and then adapts their response back to the Cumulus message protocol to be sent to the next task.  
 
-The task Lambda function should take two inputs `input` and `config` in the event message:
-#### 1. `input`: The incoming payload or a portion of it as specified in the task configuration.
-#### 2. `config`: Task-specific configuration object with URL templates resolved.
-#### 3. The task's return value is interpreted as the next payload as specified in the task configuration.
+A task Lambda function can be configured to use Cumulus Message Adapter to help construct the input/output messages and resolve task configurations. In the Lambda function configuration file, a task Lambda function can be configured to use Cumulus Message Adapter, for example,
 
-Cumulus Message Adapter has the following capabilities:
+    DiscoverPdrs:
+      handler: index.handler
+      useMessageAdapter: true  
+
+A task Lambda function using the Message Adapter shall take a event message which contains two fields, `"input"` and `"config"`.
+> `input`: By default, the incoming payload is the payload from previous task, or it can be a portion of the payload as specified in the task configuration.
+
+> `config`: Task-specific configuration object with URL templates resolved.
+
+> `Task output`: By default, the task's return value is the next payload, or a portion of it is interpreted as the next payload as specified in the task configuration.
+
+**Cumulus Message Adapter has the following capabilities:**
 
 ### 1. Retrieve a Cumulus message from S3 Bucket, or store a cumulus message to a S3 Bucket.
 
@@ -104,7 +112,7 @@ In the workflow configuration, each task has its own configuration, and it can u
 
     Discovery:
         config:
-          useQueue: false
+          useQueue: true
           stack: '$.cumulus_meta.stack'
           provider: '$.meta.provider'
           inlinestr: 'prefix{meta.foo}suffix',
@@ -128,7 +136,7 @@ The task configuration in the message (only partial message is shown here):
       },
       "workflow_config": {
         "Discovery": {
-          "useQueue": false,
+          "useQueue": true,
           "stack": "{{$.cumulus_meta.stack}}",
           "object": "{{$.meta.provider}}",
           "inlinestr": "prefix{meta.foo}suffix",
@@ -142,7 +150,7 @@ Into this as part of the message passed to task:
 
     {
       "config" : {
-        "useQueue": false,
+        "useQueue": true,
         "stack": "foo-cumulus",
         "object": {
           "id": "FOO_DAAC",
@@ -156,12 +164,12 @@ URL template variables replace dotted paths inside curly brackets with their cor
 
 ### 3. Resolve task input
 
-Generally, the Cumulus Message Adapter uses the data from `"payload"` of the previous message as input to the next task.  However, the task can configure what input data it should get.  For example, a task specifies cumulus_message.input in its workflow configuration:
+By default, the incoming payload is the payload from previous task.  The task can also be configured to use a portion of the payload its input message.  For example, a task specifies cumulus_message.input in its workflow configuration:
     
     ExampleTask:
       config:
         cumulus_message:
-            input: '$.payload.input'
+            input: '$.payload.foo'
             
 The task configuration in the message:
 
@@ -169,33 +177,31 @@ The task configuration in the message:
       "workflow_config": {
         "ExampleTask": {
           "cumulus_message": {
-            "input": "{{$.payload.input}}"
+            "input": "{{$.payload.foo}}"
           }
         }
       },
       "payload": {
-        "input": {
+        "foo": {
           "anykey": "anyvalue"
         }
       }
     }
 
 The Cumulus Message Adapter will resolve the task input, instead of send the whole `"payload"` as task input, the task input would be:
-
-    {
+    
       "input" : {
         "anykey": "anyvalue"
       }
-    }
 
 ### 4. Resolve task output
 
-The workflow task can configure about what to do with its output.  Based on the task configuration about the output under cumulus_message.outputs, the Message Adapter applies a task's return value to an output message, from source to destination. If the destination already exists, its value would be updated.  For example, a task specifies cumulus_message.output in its workflow configuration:
+By default, the task's return value is the next payload.  However, the workflow task configuration can specify a portion of it is interpreted as the next payload, and also augument values to other fields.  Based on the task configuration about the output under cumulus_message.outputs, the Message Adapter applies a task's return value to an output message, from source to destination. If the destination already exists, its value would be updated.  For example, a task specifies cumulus_message.output in its workflow configuration:
     
     ExampleTask:
       config:
         cumulus_message:
-            output: 
+            outputs: 
               - source: '$'
                 destination: '$.payload'
               - source: '$.output.anykey'
@@ -268,7 +274,7 @@ So the message would be like this after the adapter resolves the output:
     
 ### 5. Validate task input, output and configuration messages against the schemas provided.
 
-If the task has schemas for input, output and configuration, the Message Adapter validates the task input, output and configuration messages against the schemas before the message is sent to next step.
+If the task has schemas for input, output and configuration messages, the Message Adapter validates each of the messages against it corresponding schema after a message is generated.
 
 ## Specific Payload Formats
 
