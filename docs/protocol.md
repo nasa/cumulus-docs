@@ -57,25 +57,21 @@ URL template variables replace dotted paths inside curly brackets with their cor
 
 The Message Protocol defines the the data that is used as input to individual workflow tasks. This includes:
 
-* **Ingest Metadata** - Information about the current running ingest like what time it started and the name of the workflow.
-* **Meta** - The `meta` element copied from the collection configuration. This will usually contain information about the collection like its id.
-* **Provider** - Settings specific to the current provider.
-* **Workflow Task Configuration** - Templates that specify the configurations for each of the tasks that run within a workflow.
-* **Resources** - The set of external resources accessible to the task like S3 buckets to use or table names.
-* **Exception** - A field to indicate a task failure.
-* **Payload** - The main data produced by a task or used as input to the next task would go in this element.
+* **cumulus_meta** - External resources accessible to the task. Tasks should generally prefer to be passed resources explicitly in their configuration rather than looking up paths here.
+* **meta** - Metadata taken from the collection configuration and other configuration settings. Tasks may add fields to the 'meta' object at will (in their returned output) in order to pass data to future tasks.
+* **workflow_config** - Configurations for each of the tasks that run within a workflow.
+* **exception** - A field to indicate a task failure. Information in **exception** can be used by the workflow to determine next steps.
+* **payload** - The main data produced by a task or used as input to the next task would go in this element.
 
 ### Creating the Workflow Input from the Configuration
 
 The input to a workflow is generated from the Configuration and some other sources. This details the sources of the top level fields for the input.
 
-* **Ingest Metadata** - Generated at the beginning of a new ingest.
-* **Meta** - Copied from the collection configuration.
-* **Provider** - Copied from the collection configuration.
-* **Workflow Task Configuration** - Copied from the collection configuration.
-* **Resources** - The resources are defined during the deployment of Cumulus and specified in the Scheduler configuration.
-* **Exception** - Set to `'None'` initially.
-* **Payload** - Set to `null` initially.
+* **cumulus_meta** - Generated at workflow deployment time from workflow configuration.
+* **meta** - Metadata taken from the collection configuration and other configuration settings.
+* **workflow_config** - Generated at workflow deployment time from workflow configuration.
+* **exception** - Set to `'None'` initially.  A task can set this field.
+* **payload** - Set to `null` initially.  It is the main data produced by a task.
 
 ### Message Protocol Schema and Example
 
