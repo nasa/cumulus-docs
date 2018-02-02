@@ -7,7 +7,7 @@
       "$ref": "#/definitions/CumulusMetaType"
     },
     "meta": {
-      "description": "Metadata taken from the collection configuration and other configuration settings. Tasks may add fields to the 'meta' object at will (in their returned output) in order to pass data to future tasks. Tasks should avoid assuming that fields are present in the meta object and avoid naming fields to put in the meta object, preferring instead to let configuration decide what goes into the object. See VIIRS discovery in collections.json for an example.",
+      "description": "Metadata taken from the collection configuration and other configuration settings. Tasks may add fields to the 'meta' object at will (in their returned output) in order to pass data to future tasks. Tasks should avoid assuming that fields are present in the meta object and avoid naming fields to put in the meta object, preferring instead to let configuration decide what goes into the object.",
       "type": "object",
       "properties": {
         "cmr": {
@@ -62,7 +62,7 @@
   ],
   "definitions": {
     "CumulusMetaType": {
-      "description": "External resources accessible to the Task. Tasks should generally prefer to be passed resources explicitly in their configuration rather than looking up paths here. The paths being present here, however allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{resources.buckets.private}\", which instructs the Task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
+      "description": "External resources accessible to the Task. Tasks should generally prefer to be passed resources explicitly in their configuration rather than looking up paths here. The paths being present here, however allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{cumulus_meta.buckets.private}\", which instructs the Task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
       "type": "object",
       "properties": {
         "stack": {
