@@ -30,7 +30,7 @@ Output of the task application code:
 In the workflow configuration, each task has its own configuration, and it can use URL template as a value to achieve simplicity or for values only available at execution time. The Cumulus Message Adapter resolves the URL templates and then passes message to next task. For example, given a task which has the following configuration:
 
     Discovery:
-        config:
+        CumulusConfig:
           useQueue: true
           provider: '$.meta.provider'
           inlinestr: 'prefix{meta.foo}suffix',
@@ -51,7 +51,6 @@ The corresponding Cumulus Message would be:
       "workflow_config": {
         "Discovery": {
           "useQueue": true,
-          "stack": "{{$.cumulus_meta.stack}}",
           "object": "{{$.meta.provider}}",
           "inlinestr": "prefix{meta.foo}suffix",
           "array": "{[$.meta.foo]}"
