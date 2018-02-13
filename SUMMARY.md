@@ -3,7 +3,7 @@
 * [Introduction](README.md)
 * [Architecture](docs/architecture.md)
 * [Protocol](docs/protocol.md)
-* [Input & Ouptut](docs/input_output.md)
+* [Input & Output](docs/input_output.md)
 * [Cumulus Task Message Flow](docs/cumulus-task-message-flow.md)
 * [API](docs/api.md)
 * [Deployment](docs/deployment.md)

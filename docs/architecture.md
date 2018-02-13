@@ -92,14 +92,6 @@ A workflow is composed of tasks. Each task is responsible for performing a discr
 
 AWS Step Functions permit [tasks](http://docs.aws.amazon.com/step-functions/latest/dg/concepts-tasks.html#concepts-tasks) to be code running anywhere, even on premise. We expect most tasks will be written as Lambda functions in order to take advantage of the easy deployment, scalability, and cost benefits provided by AWS Lambda.
 
-#### Task Input and Output Messages
-
-Ingest uses a common format for all inputs and outputs from Tasks consisting of a JSON object which holds all necessary information about the task execution and AWS environment. Ingest defines a schema for the input and output messages using the [Message JSON schema](#envelope-json-schema). See the embedded HTML documentation generated from the schema below. Tasks return objects identical in format to their input with the exception of a task-specific `"payload"` field. Tasks may also augment their execution metadata.
-
-### Collection Configuration File
-
-The workflows, schedule, tasks, and configuration for ingesting data are configured via a JSON configuration file. The configuration file allows an operator to compose the different runtime components and set them in AWS.
-
 * **Leverages Existing Work**
   * The design leverages the existing work of Amazon by defining workflows using the [AWS Step Function State Language](http://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language.html#amazon-states-language). This is the language that was created for describing the state machines used in AWS Step Functions.
 * **Open for Extension**
@@ -216,21 +208,6 @@ AWS Step Functions scale up as needed and aren't limited by a set of number of s
 * How do we version the workflows?
 
 ### Schemas
-
-
-#### Common JSON Schema Types
-
-The Ingest Common JSON Schema defines common types for other JSON schemas.
-
-<a href="/schemas/ingest_common_schema.json" target="_blank">ingest_common_schema.json</a>
-
-#### Collection Configuration JSON Schema
-
-The Collection Configuration JSON Schema defines the Ingest configured workflows and tasks.
-
-<a href="/schemas/collections_config_schema.json" target="_blank">collections_config_schema.json</a>
-
-<a href="/schemas/example-data/example-collection.json" target="_blank">Example Collection Config</a>
 
 #### Message JSON Schema
 
