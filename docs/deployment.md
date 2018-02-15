@@ -79,10 +79,6 @@ Build the Cumulus application
 
 _If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Prepare AWS configuration. ](#prepare-config)_
 
-Go to the same directory level as the cumulus repo download (e.g. `cumulus/..`)
-
-    $ cd ..
-
 Clone template-deploy repo and name appropriately for your DAAC or organization
 
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
@@ -96,7 +92,6 @@ Install packages with npm
     $ npm install
 
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
-
 
 The [`Cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configuration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your Cumulus app.
 
@@ -132,13 +127,12 @@ If you don't want to set environment variables, [access keys can be stored local
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
-The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
+The following s3 bucket should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
 
 
 * `<prefix>-internal`
-* `<prefix>-private`
-* `<prefix>-protected`
-* `<prefix>-public`
+
+You can create additional s3 buckets based on the needs of your workflows.
 
 These buckets do not need any non-default permissions to function with Cumulus, however your local security requirements may vary.
 
@@ -254,9 +248,6 @@ The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
       stackName: <stack-name> # name of this iam stack in CloudFormation (e.g. <prefix>-iams)
       buckets:
         internal: <prefix>-internal  # Note: these are the bucket names, not the prefix from above
-        private: <prefix>-private
-        protected: <prefix>-protected
-        public: <prefix>-public
 
 **Deploy `iam` stack**[^1]
 
@@ -382,9 +373,6 @@ List of EarthData users you wish to have access to your dashboard application.  
 
   buckets:
     internal: <prefix>-internal
-    private: <prefix>-private
-    protected: <prefix>-protected
-    public: <prefix>-public
 
   iams:
     ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
@@ -428,8 +416,8 @@ For security it is highly recommended that you prevent `apps/.env` from being ac
 
 Once the preceding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
 
-    $ kes cf deploy --kes-folder app --region <region> \
-      --template ../cumulus/packages/deployment/app \
+    $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> \
+      --template node_modules/@cumulus/deployment/app \
       --deployment <cumulus-deployment-name> --role <arn:deployerRole>
 
 
@@ -439,7 +427,7 @@ You can monitor the progess of the stack deployment from the [AWS CloudFormation
 A successful completion will result in output similar to:
 
 	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region>
-       --template ../cumulus/packages/deployment/app --deployment daac
+       --template node_modules/@cumulus/deployment/app --deployment daac
        --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
 	Generating keys. It might take a few seconds!
 	Keys Generated
