@@ -79,10 +79,6 @@ Build the Cumulus application
 
 _If you already are working with an existing `<daac>-deploy` repository that is configured appropriately for the version of Cumulus you intend to deploy or update, skip to [Prepare AWS configuration. ](#prepare-config)_
 
-Go to the same directory level as the cumulus repo download (e.g. `cumulus/..`)
-
-    $ cd ..
-
 Clone template-deploy repo and name appropriately for your DAAC or organization
 
     $ git clone https://github.com/cumulus-nasa/template-deploy <daac>-deploy
@@ -96,7 +92,6 @@ Install packages with npm
     $ npm install
 
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
-
 
 The [`Cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configuration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your Cumulus app.
 
@@ -132,90 +127,17 @@ If you don't want to set environment variables, [access keys can be stored local
 
 See [creating s3 buckets](./create_bucket.md) for more information on how to create a bucket.
 
-The following s3 buckets should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
+The following s3 bucket should be created (replacing prefix with whatever you'd like, generally your organization/DAAC's name):
 
 
 * `<prefix>-internal`
-* `<prefix>-private`
-* `<prefix>-protected`
-* `<prefix>-public`
+
+You can create additional s3 buckets based on the needs of your workflows.
 
 These buckets do not need any non-default permissions to function with Cumulus, however your local security requirements may vary.
 
 
 **Note**: s3 bucket object names are global and must be unique across all accounts/locations/etc.
-
-
-#### Create a deployer role
-
-##### Add new deployment to `<daac>-deploy/deployer/config.yml`
-
-The `deployer` configuration sets up an IAM role with permissions for deploying the Cumulus stack.
-
-__All deployments in the various config.yml files inherit from the `default` deployment, and new deployments only need to override relevant settings.__
-
-The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values:
-
-------
-
-###### deployer-deployment-name:
-
-The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
-
-###### prefix:
-
-This value will prefix CloudFormation-created deployer resources and permissions.
-
-**This value must match the prefix used in the IAM role creation and the Cumulus application stack name must start with `<prefix>`**[^5]
-
-###### stackName:
-
-The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
-
-###### stackNameNoDash:
-
-A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier.
-
-###### internal
-
-The internal bucket name previously created in the [Create S3 Buckets](#create-s3-buckets) step.  Preferably <prefix>-internal for ease of identification.
-
-###### shared_data_bucket
-
-Devseed-managed shared bucket (contains custom ingest lambda functions/common ancillary files)
-
-------
-
-**Sample new deployment added to config.yml**:
-
-    <deployer-deployment-name>:
-      prefix: <stack-prefix>
-      stackName: <stack-name>
-      stackNameNoDash: <DashlessStackName>
-      buckets:
-        internal: <prefix>-internal
-        shared_data_bucket: cumulus-data-shared
-
-
-##### Deploy `deployer` stack**[^1]
-
-Use the kes utility installed with Cumulus to deploy your configurations to AWS. This must be done from the <daac>-deploy repository root
-
-    $ cd ..
-    $ kes cf deploy --kes-folder deployer --deployment <deployer-deployment-name> --region <region>
-
-**Note**: If the `kes` command does not work, `npm install` has installed a local copy at `./node_modules/.bin/kes` that can be used. i.e. you would run `./node_modules/.bin/kes` instead of `kes` in all example commands.
-
-A successful completion will result in output similar to:
-
-    $ kes cf deploy --kes-folder deployer --deployment default --region us-east-1
-
-    Template saved to deployer/cloudformation.yml
-    Uploaded: s3://<bucket-name>/<stack-name>/cloudformation.yml
-    Waiting for the CF operation to complete
-    CF operation is in state of CREATE_COMPLETE
-
-This creates a new DeployerRole [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) in the [IAM Console](https://console.aws.amazon.com/iam/home) named `<deployer-stack-name>-DeployerRole-<generatedhashvalue>`. **Note its `Role ARN` for later.**
 
 #### Create IAM roles
 
@@ -235,7 +157,7 @@ The name (e.g. dev) of the the 'deployment' - this key tells kes which configura
 
 This value will prefix CloudFormation-created deployer resources and permissions.
 
-**This value must match the prefix used in the [Deployer](#create-a-deployer-role) role creation and the cumulus stack name must start with `<prefix>`** [^6]
+**The cumulus stack name must start with `<prefix>`** [^5]
 
 ###### stackName:
 
@@ -250,13 +172,10 @@ The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
 **Sample new deployment added to config.yml**:
 
     <iam-deployment-name>:          # e.g. dev (Note: Omit brackets, i.e. NOT <dev>)
-      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions, MUST MATCH prefix in deployer stack
+      prefix: <stack-prefix>  # prefixes CloudFormation-created iam resources and permissions
       stackName: <stack-name> # name of this iam stack in CloudFormation (e.g. <prefix>-iams)
       buckets:
         internal: <prefix>-internal  # Note: these are the bucket names, not the prefix from above
-        private: <prefix>-private
-        protected: <prefix>-protected
-        public: <prefix>-public
 
 **Deploy `iam` stack**[^1]
 
@@ -275,31 +194,12 @@ The same information can be obtained from the AWS CLI command: `aws iam list-rol
 
 The `iam` deployment also creates an instance profile named `<stack-name>-ecs` that can be viewed from the AWS CLI command: `aws iam list-instance-profiles`.
 
-##### Assign an `sts:AssumeRole` policy to a new or existing user:
-
-Using the [command line interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-iam-policy.html) or [IAM console](https://console.aws.amazon.com/iam/home) create and assign a policy to a user who will deploy Cumulus.
-
-This AssumeRole policy, when applied to a user, allows the user to act with the permissions described by the DeployerRole. You can paste this into the "JSON" tab of the policy creator interface.
-
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": "sts:AssumeRole",
-                "Resource": "<arn:DeployerRole>"
-            }
-        ]
-    }
-
-Replace the `<arn:DeployerRole>` with Role ARN value created when you deployed the deployer stack. The AWS CLI command `aws iam list-roles | grep Arn` will show you the ARNs.
-
 #### Update AWS Access Keys
 
-Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM (the same user you just assigned the AssumeRole policy to), then export the access keys, replacing the previous values in your environment:
+Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM, then export the access keys, replacing the previous values in your environment:
 
-    $ export AWS_ACCESS_KEY_ID=<AWS access key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
-    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> (User with sts:AssumeRole Permission for <arn:DeployerRole>)
+    $ export AWS_ACCESS_KEY_ID=<AWS access key> 
+    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> 
     $ export AWS_REGION=<region>
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
@@ -326,7 +226,7 @@ The name (e.g. dev) of the the 'deployment' - this key tells kes which configura
 
 ###### stackName:
 
-The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).    **This stack name must start with the prefix listed in the [IAM](#create-iam-roles)  and [Deployer](#create-a-deployer-role) role configurations, or the deployment will fail.**
+The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).    **This stack name must start with the prefix listed in the [IAM](#create-iam-roles) role configuration, or the deployment will fail.**
 
 ###### stackNameNoDash:
 
@@ -382,9 +282,6 @@ List of EarthData users you wish to have access to your dashboard application.  
 
   buckets:
     internal: <prefix>-internal
-    private: <prefix>-private
-    protected: <prefix>-protected
-    public: <prefix>-public
 
   iams:
     ecsRoleArn: arn:aws:iam::<aws-account-id>:role/<iams-prefix>-ecs
@@ -428,9 +325,9 @@ For security it is highly recommended that you prevent `apps/.env` from being ac
 
 Once the preceding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
 
-    $ kes cf deploy --kes-folder app --region <region> \
-      --template ../cumulus/packages/deployment/app \
-      --deployment <cumulus-deployment-name> --role <arn:deployerRole>
+    $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region> \
+      --template node_modules/@cumulus/deployment/app \
+      --deployment <cumulus-deployment-name>
 
 
 You can monitor the progess of the stack deployment from the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home); this step takes a few minutes.
@@ -439,8 +336,7 @@ You can monitor the progess of the stack deployment from the [AWS CloudFormation
 A successful completion will result in output similar to:
 
 	 $ ./node_modules/.bin/kes cf deploy --kes-folder app --region <region>
-       --template ../cumulus/packages/deployment/app --deployment daac
-       --role arn:aws:iam::<userIDnumbers>:role/<deployer-name>-DeployerRole-<HASHNUMBERS>
+       --template node_modules/@cumulus/deployment/app --deployment daac
 	Generating keys. It might take a few seconds!
 	Keys Generated
 	keys uploaded to S3
@@ -557,8 +453,6 @@ Once deployed for the first time, any future updates to the role/stack configura
 
 ## Update roles
 
-    $ kes cf deploy --kes-folder deployer \
-      --deployment <deployment-name> --region <region> # e.g. us-east-1
     $ kes cf deploy --kes-folder iam --deployment <deployment-name> \
       --region <region> # e.g. us-east-1
 
@@ -577,16 +471,15 @@ To specify the level of change for the new version
 ## Update Cumulus
 
     $ kes cf deploy --kes-folder config --region <region> \
-      --deployment <deployment-name> --role <arn:deployerRole>
+      --deployment <deployment-name> 
 
 
 ### Footnotes:
 
-[^1]: Creating the deployer role and the iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
+[^1]: The iam  actions require more permissions than a typical AWS user will have and should be run by an administrator.
 
 [^2]: The API root can be found a number of ways. The easiest is to note it in the output of the app deployment step. But you can also find it from the `AWS console -> Amazon API Gateway -> APIs -> <prefix>-cumulus-backend -> Dashboard`, and reading the url at the top "invoke this API"
 
 [^3]: To add another redirect URIs to your application. On EarthData home page, select "My Applications" Scroll down to "Application Administration" and use the edit icon for your application.  Then Manage -> Redirect URIs.
 [^4]: This value is used by kes only to identify the configuration set to use and should not appear in any AWS object
-[^5]: For more on the AWS objects this impacts, you can look through deployer/cloudformation.template.yml
-[^6]: For more on the AWS objects this impacts, you can look through iam/cloudformation.template.yml
+[^5]: For more on the AWS objects this impacts, you can look through iam/cloudformation.template.yml
