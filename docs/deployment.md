@@ -87,9 +87,13 @@ Enter repository root directory
 
     $ cd <daac>-deploy
 
-Packages are installed with npm. If you're trying to work with a certain version of a cumulus package or task, the version can be specified in `package.json` under dependencies. For example:
+Packages are installed with npm. To view packages on npm, visit:
 
-    "@cumulus/sync-granule": "1.0.0"
+    "https://www.npmjs.com/package/@cumulus/<package-name>"
+
+If you're trying to work with a certain version of a cumulus package or task, the version can be specified in `package.json` under dependencies. We use semantic versioning (major/minor/patch). You can also configure for automatic updates. Use `^` to update minor/patch versions automatically and `~` to automatically update patch versions. For example:
+
+    "@cumulus/sync-granule": "^1.0.0"
 
 Then run:
 
