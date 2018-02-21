@@ -87,7 +87,11 @@ Enter repository root directory
 
     $ cd <daac>-deploy
 
-Install packages with npm
+Packages are installed with npm. If you're trying to work with a certain version of a cumulus package or task, the version can be specified in `package.json` under dependencies. For example:
+
+    "@cumulus/sync-granule": "1.0.0"
+
+Then run:
 
     $ npm install
 
