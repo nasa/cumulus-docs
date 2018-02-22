@@ -87,11 +87,28 @@ Enter repository root directory
 
     $ cd <daac>-deploy
 
-Install packages with npm
+Packages are installed with npm. To view packages on npm, visit:
+
+    "https://www.npmjs.com/search?q=%40cumulus"
+
+If you're trying to work with a certain version of a cumulus package or task, the version can be specified in `package.json` under dependencies. We use semantic versioning (major/minor/patch). You can also configure for automatic updates. Use `^` to update minor/patch versions automatically and `~` to automatically update patch versions. For example:
+
+    "@cumulus/sync-granule": "^1.0.0"
+
+Then run:
 
     $ npm install
 
+To add a new package, install via npm. Without a version specified, it will automatically install the latest version. For example:
+
+    $ npm install @cumulus/deployment
+
 **Note**: The npm install command will add the [kes](http://devseed.com/kes/) utility to the `<daac>-deploy`'s `node_packages` directory and will be utilized later for most of the AWS deployment commands
+
+To use the specific version of the package installed during deployment, point the `source` key in the lambda config to `node_modules/@cumulus/<package-name>/dist`. This location may vary between packages, so consult the README in each. For example:
+
+    SyncGranule:
+      source: 'node_modules/@cumulus/sync-granule/dist/'
 
 The [`Cumulus`](https://github.com/cumulus-nasa/cumulus) project contains default configuration values in `cumulus/packages/deployment/app.example`, however these need to be customized for your Cumulus app.
 
