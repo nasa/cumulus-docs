@@ -31,11 +31,10 @@ In the workflow configuration, each task has its own configuration, and it can u
 
     Discovery:
         CumulusConfig:
-          useQueue: true
-          provider: '$.meta.provider'
-          inlinestr: 'prefix{meta.foo}suffix',
-          array: '{[$.meta.foo]}',
-          object: '{{$.meta}}'
+          provider: '{$.meta.provider}'
+          inlinestr: 'prefix{meta.foo}suffix'
+          array: '[$.meta.foo]'
+          object: '{$.meta}'
 
 The corresponding Cumulus Message would be:
 
@@ -50,7 +49,6 @@ The corresponding Cumulus Message would be:
       },
       "workflow_config": {
         "Discovery": {
-          "useQueue": true,
           "object": "{{$.meta.provider}}",
           "inlinestr": "prefix{meta.foo}suffix",
           "array": "{[$.meta.foo]}"
@@ -81,9 +79,9 @@ URL template variables replace dotted paths inside curly brackets with their cor
 By default, the incoming payload is the payload from the previous task.  The task can also be configured to use a portion of the payload its input message.  For example, given a task specifies cumulus_message.input:
     
     ExampleTask:
-      config:
+      CumulusConfig:
         cumulus_message:
-            input: '$.payload.foo'
+            input: '{$.payload.foo}'
             
 The task configuration in the message would be:
 
@@ -116,13 +114,13 @@ The Cumulus Message Adapter will resolve the task input, instead of sending the 
 By default, the task's return value is the next payload.  However, the workflow task configuration can specify a portion of the return value as the next payload, and can also augment values to other fields. Based on the task configuration under `cumulus_message.outputs`, the Message Adapter uses a task's return value to output a message as configured by the task-specific config defined under `workflow_config`. The Message Adapter dispatches a "source" to a "destination" as defined by URL templates stored in the task-specific `cumulus_message.outputs`. The value of the task's return value at the "source" URL is used to create or replace the value of the task's return value at the "destination" URL. For example, given a task specifies cumulus_message.output in its workflow configuration as follows:
     
     ExampleTask:
-      config:
+      CumulusConfig:
         cumulus_message:
             outputs: 
-              - source: '$'
-                destination: '$.payload'
-              - source: '$.output.anykey'
-                destination: '$.meta.baz'
+              - source: '{$}'
+                destination: '{$.payload}'
+              - source: '{$.output.anykey}'
+                destination: '{$.meta.baz}'
                 
 The corresponding Cumulus Message would be:
 
