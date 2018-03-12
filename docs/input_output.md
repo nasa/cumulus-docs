@@ -32,8 +32,8 @@ In the workflow configuration, each task has its own configuration, and it can u
     Discovery:
         CumulusConfig:
           provider: '{$.meta.provider}'
-          inlinestr: 'prefix{meta.foo}suffix',
-          array: '[$.meta.foo]',
+          inlinestr: 'prefix{meta.foo}suffix'
+          array: '[$.meta.foo]'
           object: '{$.meta}'
 
 The corresponding Cumulus Message would be:
