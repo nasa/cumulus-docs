@@ -4,6 +4,7 @@
 * [Architecture](docs/architecture.md)
 * [Protocol](docs/protocol.md)
 * [Input & Output](docs/input_output.md)
+* [Tasks](docs/tasks.md)
 * [Cumulus Task Message Flow](docs/cumulus-task-message-flow.md)
 * [API](docs/api.md)
 * [Deployment](docs/deployment.md)

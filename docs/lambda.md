@@ -1,4 +1,4 @@
-## Develop Lambda functions
+# Develop Lambda functions
 
 ### Develop a new Lambda
 

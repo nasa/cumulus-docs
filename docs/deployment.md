@@ -1,4 +1,3 @@
-
 # How to Deploy Cumulus
 
 ## Overview
@@ -213,8 +212,8 @@ The `iam` deployment also creates an instance profile named `<stack-name>-ecs` t
 
 Create or obtain [Access Keys](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) for the user who will assume the DeployerRole in IAM, then export the access keys, replacing the previous values in your environment:
 
-    $ export AWS_ACCESS_KEY_ID=<AWS access key> 
-    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key> 
+    $ export AWS_ACCESS_KEY_ID=<AWS access key>
+    $ export AWS_SECRET_ACCESS_KEY=<AWS secret key>
     $ export AWS_REGION=<region>
 
 If you don't want to set environment variables, [access keys can be stored locally via the AWS CLI.](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
@@ -486,7 +485,7 @@ To specify the level of change for the new version
 ## Update Cumulus
 
     $ kes cf deploy --kes-folder config --region <region> \
-      --deployment <deployment-name> 
+      --deployment <deployment-name>
 
 
 ### Footnotes:

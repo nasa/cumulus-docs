@@ -1,9 +1,15 @@
-### Cumulus Docs
+# Cumulus Docs
 
-### Local Setup
+# Local Setup
 
-    $ npm install
-    $ npm run serve
+```sh
+git clone git@github.com:cumulus-nasa/cumulus-nasa.github.io.git
+cd cumulus-nasa.github.io
+npm install
+npm start
+```
+
+
 
 ### Add a new page
 
