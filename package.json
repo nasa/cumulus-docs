@@ -6,7 +6,7 @@
   "scripts": {
     "build-tasks": "./bin/build-tasks-doc.js",
     "build": "npm run build-tasks && gitbook build",
-    "start": "npm run build && gitbook-serve"
+    "start": "npm run build && gitbook serve"
   },
   "repository": {
     "type": "git",

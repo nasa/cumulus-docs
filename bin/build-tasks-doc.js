@@ -31,15 +31,16 @@ function createTaskResourceLinks (packageName, sourceUrl, homepage) {
 }
 
 function createTaskMarkdown (pkg) {
-  var name = pkg.name
-  var sourceUrl = pkg.repository && pkg.repository.url;
+  const name = pkg.name;
+  const homepage = pkg.homepage;
+  const sourceUrl = pkg.repository && pkg.repository.url;
 
   return dedent`
-    ### ${name}
+    ### [${name}](${homepage})
     ${pkg.description}
 
     - Schemas: See this module's [schema definitions](${sourceUrl + 'schemas'}).
-    - Resources: ${createTaskResourceLinks(name, sourceUrl, pkg.homepage)}
+    - Resources: ${createTaskResourceLinks(name, sourceUrl, homepage)}
 
     ---
   `;

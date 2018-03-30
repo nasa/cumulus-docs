@@ -4,7 +4,7 @@ Description.
 
 ## Tasks
 
-### @cumulus/discover-granules
+### [@cumulus/discover-granules](https://github.com/cumulus-nasa/cumulus#readme)
 Discover Granules in FTP/HTTP/SFTP endpoints
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -12,7 +12,7 @@ Discover Granules in FTP/HTTP/SFTP endpoints
 
 ---
 
-### @cumulus/discover-pdrs
+### [@cumulus/discover-pdrs](https://github.com/cumulus-nasa/cumulus#readme)
 Discover PDRs in FTP and HTTP endpoints
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -20,7 +20,7 @@ Discover PDRs in FTP and HTTP endpoints
 
 ---
 
-### @cumulus/parse-pdr
+### [@cumulus/parse-pdr](https://github.com/cumulus-nasa/cumulus#readme)
 Download and Parse a given PDR
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -28,7 +28,7 @@ Download and Parse a given PDR
 
 ---
 
-### @cumulus/pdr-status-check
+### [@cumulus/pdr-status-check](https://github.com/cumulus-nasa/cumulus#readme)
 Checks execution status of granules in a PDR
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -36,7 +36,7 @@ Checks execution status of granules in a PDR
 
 ---
 
-### @cumulus/post-to-cmr
+### [@cumulus/post-to-cmr](https://github.com/cumulus-nasa/cumulus#readme)
 Post a given granule to CMR
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -44,7 +44,7 @@ Post a given granule to CMR
 
 ---
 
-### @cumulus/queue-granules
+### [@cumulus/queue-granules](https://github.com/cumulus-nasa/cumulus#readme)
 Add discovered granules to the queue
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -52,7 +52,7 @@ Add discovered granules to the queue
 
 ---
 
-### @cumulus/queue-pdrs
+### [@cumulus/queue-pdrs](https://github.com/cumulus-nasa/cumulus#readme)
 Add discovered PDRs to a queue
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -60,7 +60,7 @@ Add discovered PDRs to a queue
 
 ---
 
-### @cumulus/sf-sns-report
+### [@cumulus/sf-sns-report](https://github.com/cumulus-nasa/cumulus#readme)
 Broadcasts an incoming Cumulus message to SNS
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
@@ -68,7 +68,7 @@ Broadcasts an incoming Cumulus message to SNS
 
 ---
 
-### @cumulus/sync-granule
+### [@cumulus/sync-granule](https://github.com/cumulus-nasa/cumulus#readme)
 Download a given granule
 
 - Schemas: See this module's [schema definitions](git+https://github.com/cumulus-nasa/cumulus.gitschemas).
