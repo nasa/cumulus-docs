@@ -54,7 +54,7 @@ function createTasksDoc (tasks) {
   });
 }
 
-const taskDataRequests = taskList.map(getTaskPkg);
+const taskDataRequests = taskList.sort().map(getTaskPkg);
 
 Promise.all(taskDataRequests)
   .then(createTasksDoc)

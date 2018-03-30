@@ -10,6 +10,12 @@ This documentation includes both guidelines, examples and source code docs.
 
 The documentation is accessible at https://cumulus-nasa.github.io/
 
+## Cumulus tasks list
+
+Learn about available [reusable tasks](docs/tasks.md) that you can use in your workflows.
+
+Have a Cumulus task you want to add to the list? [Learn how](docs/adding-a-task.md).
+
 ## Contributing
 
 Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTING.md for information
