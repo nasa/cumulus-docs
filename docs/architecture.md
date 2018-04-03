@@ -9,7 +9,6 @@ Cumulus is a collection of resources for Cumulus developers. These resources are
 
 <img src="/images/cumulus-arch-diagram.png">
 
-
 ## Cloudformation Stacks
 
 1. **IAM:** Sets up IAM roles for AWS services deployed by the Cumulus stack to be assigned the required policies.

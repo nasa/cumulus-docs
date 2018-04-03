@@ -3,23 +3,44 @@
   "description": "Describes the structure of data that is used to pass information between steps of the workflow. It contains information about the configuration of the entire run, the item being processed, resources in AWS, and payload information from the previous step.",
   "type": "object",
   "properties": {
-    "ingest_meta": {
-      "$ref": "#/definitions/IngestMetaType"
+    "cumulus_meta": {
+      "$ref": "#/definitions/CumulusMetaType"
     },
     "meta": {
-      "description": "Metadata taken from the 'meta' attribute of the collection (or the empty object). Tasks may add fields to the 'meta' object at will (in their returned output) in order to pass data to future tasks. Tasks should avoid assuming that fields are present in the meta object and avoid naming fields to put in the meta object, preferring instead to let configuration decide what goes into the object. See VIIRS discovery in collections.json for an example.",
-      "type": "object"
+      "description": "Metadata taken from the collection configuration and other configuration settings. Tasks may add fields to the 'meta' object at will (in their returned output) in order to pass data to future tasks. Tasks should avoid assuming that fields are present in the meta object and avoid naming fields to put in the meta object, preferring instead to let configuration decide what goes into the object.",
+      "type": "object",
+      "properties": {
+        "cmr": {
+          "description": "(optinal) CMR credential for exporting metadata to CMR",
+          "$ref": "#/definitions/CmrType"
+        },
+        "provider": {
+          "description": "Provider configuration information taken from the 'providers' of collection configuration.",
+          "$ref": "#/definitions/ProviderType"
+        },
+        "collection": {
+          "description": "Metadata taken from the 'meta' attribute of the collection. These can contain any data that is specific to the collection.",
+          "type": "object"
+        },
+        "queues": {
+          "description": "List of SQS queues that are used by the cumulus-api",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "patternProperties": {
+          "^_.*$": {
+            "description": "Any fields starting with _ are ignored."
+          }
+      },
+      "required": [
+        "provider",
+        "collection",
+        "queues"
+      ]
     },
-    "provider": {
-      "description": "Provider configuration information taken from the 'providers' of collection configuration.",
-      "$ref": "ingest_common_schema.json#/definitions/ProviderType"
-    },
-    "workflow_config_template": {
-      "description": "Task configuration templates taken from the workflow_config_template element of the collection configuration.",
-      "$ref": "ingest_common_schema.json#/definitions/WorkflowConfigTemplateType"
-    },
-    "resources": {
-      "$ref": "#/definitions/ResourcesType"
+    "workflow_config": {
+      "description": "Defines configuration for tasks that are part of a workflow as a map of task name to a JSON object containing configuration settings",
+      "$ref": "#/definitions/WorkflowConfigType"
     },
     "exception": {
       "description": "An optional field that a task can return with any valid as a signal that the task aborted for a reason. Information in this can be used by the workflow to determine next steps."
@@ -34,57 +55,18 @@
     }
   },
   "additionalProperties": false,
-  "required": ["meta", "provider", "workflow_config_template", "resources"],
+  "required": [
+    "cumulus_meta",
+    "meta",
+    "workflow_config"
+  ],
   "definitions": {
-    "IngestMetaType": {
-      "description": "Fields set by ingest about the current ingest run.",
-      "type": "object",
-      "properties": {
-        "start_date": {
-          "description": "The date ingest started",
-          "format": "date-time",
-          "type": "string"
-        },
-        "id": {
-          "description": "Unique ID identifying the ingest",
-          "type": "string"
-        },
-        "task": {
-          "description": "(Non-Step-Function only) The task to run",
-          "type": "string"
-        },
-        "state_machine": {
-          "description": "(Step-Function only) The ARN of the state machine being run",
-          "type": "string"
-        },
-        "execution_name": {
-          "description": "(Step-Function only) The name of the execution being run",
-          "type": "string"
-        },
-        "event_source": {
-          "description": "A string describing the source that caused ingest to start.",
-          "type": "string",
-          "enum": ["sfn", "stdin", "local"]
-        }
-      },
-      "patternProperties": {
-        "^_.*$": {
-          "description": "Any fields starting with _ are ignored."
-        }
-      },
-      "additionalProperties": false
-    },
-    "ResourcesType": {
-      "description": "External resources accessible to the Task. Tasks should generally prefer to be passed resources explicitly in their configuration rather than looking up paths here. The paths being present here, however allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{resources.buckets.private}\", which instructs the Task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
+    "CumulusMetaType": {
+      "description": "External resources accessible to the Task. The paths being present here allows configuration to parameterize values that are not known until the stack is created.  For instance, a configuration field have the value \"{cumulus_meta.buckets.private}\", which instructs the task to look up the private bucket while allowing the Task to remain ignorant of what buckets are available.",
       "type": "object",
       "properties": {
         "stack": {
-          "description": "The name of the Task's CloudFormation Task, useful as a prefix",
-          "type": "string",
-          "minLength": 1
-        },
-        "state_machine_prefix": {
-          "description": "The prefix applied to all state machine names",
+          "description": "The name of the task's CloudFormation Task, useful as a prefix",
           "type": "string",
           "minLength": 1
         },
@@ -92,49 +74,142 @@
           "description": "Names of S3 buckets available to the app",
           "type": "object",
           "properties": {
-            "config": {
+            "internal": {
               "description": "The name of the bucket holding configuration and deployment data",
               "type": "string",
               "minLength": 1
             },
             "private": {
-              "description": "The name of the bucket which holds internal platform data",
+              "description": "The name of the bucket holding internal platform data",
+              "type": "string",
+              "minLength": 1
+            },
+            "protected": {
+              "description": "The name of the bucket holding protected data",
               "type": "string",
               "minLength": 1
             },
             "public": {
-              "description": "The name of the bucket which holds data to be served publicly",
+              "description": "The name of the bucket holding data to be served publicly",
               "type": "string",
               "minLength": 1
             }
           },
-          "required": ["config", "private", "public"]
+          "required": [
+            "internal",
+            "private",
+            "public"
+          ]
         },
-        "tables": {
-          "description": "Configured table information in AWS.",
-          "type": "object",
-          "properties": {
-            "connections": {
-              "description": "The name of table keeping track of connections used.",
-              "type": "string",
-              "minLength": 1
-            },
-            "locks": {
-              "description": "The name of the table keeping track of locks used during ingest.",
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "required": ["connections", "locks"],
-          "patternProperties": {
-            "^_.*$": {
-              "description": "Any fields starting with _ are ignored."
-            }
-          },
-          "additionalProperties": false
+        "state_machine": {
+          "description": "(when message_source is sfn) The ARN of the state machine being run",
+          "type": "string"
+        },
+        "execution_name": {
+          "description": "(when message_source is sfn) The name of the execution being run",
+          "type": "string"
+        },
+        "workflow_name": {
+          "description": "(when message_source is sfn) The name of the workflow being run",
+          "type": "string"
+        },
+        "message_source": {
+          "description": "A string describing the source that caused ingest to start.",
+          "type": "string",
+          "enum": [
+            "sfn",
+            "stdin",
+            "local"
+          ]
+        },
+        "createdAt": {
+          "description": "When the execution was created",
+          "type": "number"
+        },
+        "id": {
+          "description": "Unique ID identifying the ingest",
+          "type": "string"
+        },
+        "task": {
+          "description": "(Non-Step-Function only) The task to run. It must be specified when message_source is local",
+          "type": "string"
         }
       },
-      "required": ["stack", "buckets", "tables"],
+      "required": [
+        "stack",
+        "buckets",
+        "message_source"
+      ],
+      "patternProperties": {
+        "^_.*$": {
+          "description": "Any fields starting with _ are ignored."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProviderType": {
+      "title": "Provider",
+      "description": "Defines a provider configuration for ingest. Any field from the provider is allowed.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "An id used to identify this provider",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "patternProperties": {
+        "^_.*$": {
+          "description": "Any fields starting with _ are ignored."
+        }
+      }
+    },
+    "WorkflowConfigType": {
+      "title": "Workflow Config",
+      "description": "Defines configuration for tasks that are part of a workflow as a map of task name to a JSON object containing configuration settings.",
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9a-zA-Z_\\-.]+$": {
+          "description": "Any configuration properties are permitted here for the task.",
+          "type": "object"
+        },
+        "^_.*$": {
+          "description": "Any fields starting with _ are ignored."
+        }
+      },
+      "additionalProperties": false
+    },
+    "CmrType": {
+      "description": "CMR credential for exporting metadata to CMR",
+      "type": "object",
+      "properties": {
+        "username": {
+          "description": "CMR user name",
+          "type": "string"
+        },
+        "password": {
+          "description": "CMR encrypted password",
+          "type": "string"
+        },
+        "clientId": {
+          "description": "Earthdata client ID",
+          "type": "string"
+        },
+        "provider": {
+          "description": "CMR provide ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password",
+        "clientId",
+        "provider"
+      ],
       "patternProperties": {
         "^_.*$": {
           "description": "Any fields starting with _ are ignored."
