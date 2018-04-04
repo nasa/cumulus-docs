@@ -23,22 +23,3 @@ Cumulus is a collection of resources for Cumulus developers. These resources are
 ## Cumulus Dashboard
 
 Uses S3 static website hosting built using the [cumulus-dashboard](https://github.com/cumulus-nasa/cumulus-dashboard) repository.
-
-## API Lambda Tasks
-
-There are a set of lambdas which are defined by `@cumulus/api` which drive operation and monitoring of Cumulus workflows. These lambdas are defined in [packages/deployment/app/api.yml](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/config/lambdas.yml) and deployed as part of `@cumulus/deployment`.
-
-* **sqs2sf** starts a consumer for queueUrl. When the consumer receives a message from the queue, the message payload is expected to contain data used to start the execution of a step function ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/lambdas/sf-starter.js)).
-
-* **sns2elasticsearch** inserts step execution metadata into elasticsearch, including name, arn, execution, error, etc ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/es/indexer.js)).
-
-* **log2elasticsearch** inserts AWS logs into elasticsearch ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/es/indexer.js)).
-
-* **sf2snsStart** and **sf2snsEnd** Broadcasts step functions' start or completed events to an SNS topic. The SNS Topic ARN should be defined in the input to the Step Function ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/lambdas/sf-sns-broadcast.js)).
-
-* **ScheduleSF** sends an event message to the SQS queue detailed in message body ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/lambdas/sf-scheduler.js)). ScheduleSF is invoked by scheduled rules created via the Cumulus API.
-
-* **dbIndexer** replicates DynamoDB operations in Elasticsearch. ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/lambdas/db-indexer.js))
-
-* **kinesisConsumer** consumes messages from one or more kinesis streams and enqueues messages to the schedule SF queue, used to start workflows ([lambda function code](https://github.com/cumulus-nasa/cumulus/blob/master/packages/api/lambdas/kinesis-consumer.js)). What workflows are triggered is defined by a "kinesis"-type rule.
-

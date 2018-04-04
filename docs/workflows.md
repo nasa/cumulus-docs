@@ -199,16 +199,6 @@ AWS Step Functions scale up as needed and aren't limited by a set of number of s
 
 ## Appendix
 
-### Schemas
-
-#### Message JSON Schema
-
-The Message JSON schema defines the structure of the message sent to and returned from tasks.
-
-<a href="/schemas/message_schema.json" target="_blank">message_schema.json</a>
-
-<a href="/schemas/example-data/example-message-envelope.json" target="_blank">Example Message Message</a>
-
 ### Example GIBS Ingest Architecture
 
 This shows the GIBS Ingest Architecture as an example of the use of the Ingest Workflow Architecture.
