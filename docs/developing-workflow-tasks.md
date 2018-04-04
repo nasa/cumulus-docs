@@ -8,7 +8,7 @@ You can use one of the many `@cumulus` node modules to take advantage of common 
 
 A full set of available lambda functions can be found in [cumulus/tasks](https://github.com/cumulus-nasa/cumulus/tree/master/tasks).
 
-You can als develop your own lambda function, read more on the [Lambda Functions](./lambda.md) page.
+You can also develop your own lambda function, read more on the [Lambda Functions](./lambda.md) page.
 
 ## ECS Activities
 
