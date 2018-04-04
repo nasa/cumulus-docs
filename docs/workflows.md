@@ -199,12 +199,6 @@ AWS Step Functions scale up as needed and aren't limited by a set of number of s
 
 ## Appendix
 
-### Open Questions
-
-* How does each step know which configuration element to use?
-  * The configuration for an individual step is located in the configuration details passed in through the message. The executer needs to know which step it is so it can retrieve the correct details from the full config. The problem is unless it is hard coded in the step it does not know what it's name is. This makes it difficult to reuse a step in multiple locations.
-* How do we version the workflows?
-
 ### Schemas
 
 #### Message JSON Schema
