@@ -1,13 +1,26 @@
 # Cumulus Architecture
 
+Below, find a diagram with the components that comprise an instance of Cumulus.
+
+<img src="/images/cumulus-arch-diagram.png">
+
+While the internals are complex, the boxes represent components which are easy to understand:
+
+* Every Cumulus application requires it's own Cumulus deployment (lower left corner)
+* Every Cumulus deployment comes with:
+    * DynamoDB and ElasticSearch datastores
+    * an API Gateway for managing collections, providers, granules and other Cumulus resources, and,
+    * internal lambda functions and queues for managing Cumulus workflows
+* Every Cumulus application should define a set of workflows, which are deployed as AWS Step Functions along with all other AWS Cumulus resources.
+
+## Developing a Cumulus Application
+
 Cumulus is a collection of resources for Cumulus developers. These resources are:
 
 * `@cumulus/deployment`: A node module for creating a Cumulus deployment. A Cumulus deployment is comprised of 4 AWS Cloudformation stacks. Each Cumulus application will have it's own cloudformation stacks.
 * `@cumulus/api`: A node module for deploying the Cumulus API and other AWS resources required to run Cumulus workflows.
 * Node modules for tasks to be run as part of Cumulus Workflows, for example `@cumulus/parse-pdr`
 * [`cumulus-dashboard`](https://github.com/cumulus-nasa/cumulus-dashboard): Code to generate and deploy the dashboard for the Cumulus API.
-
-<img src="/images/cumulus-arch-diagram.png">
 
 ## Cloudformation Stacks
 
