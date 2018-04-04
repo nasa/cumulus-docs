@@ -93,35 +93,13 @@ AWS Step Functions permit [tasks](http://docs.aws.amazon.com/step-functions/late
 * **Leverages Existing Work**
   * The design leverages the existing work of Amazon by defining workflows using the [AWS Step Function State Language](http://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language.html#amazon-states-language). This is the language that was created for describing the state machines used in AWS Step Functions.
 * **Open for Extension**
-  * Both `meta` and `task_config` which are used for configuring at the collection and task levels do not dictate the fields and structure of the configuration. Additional task specific JSON schemas can be used for extending the validation of individual steps.  
+  * Both `meta` and `workflow_config` which are used for configuring at the collection and task levels do not dictate the fields and structure of the configuration. Additional task specific JSON schemas can be used for extending the validation of individual steps.
 * **Data-centric Configuration**
   * The use of a single JSON configuration file allows this to be added to a workflow. We build additional support on top of the configuration file for simpler domain specific configuration or interactive GUIs.
 
 See the [Configuration File Schema](#collection-configuration-json-schema).
 
 For more details on Task Messages and Configuration, visit [Cumulus Configuration and Message Protocol](cumulus_configuration_and_message_protocol.md).
-
-#### URL Templating
-
-When each task executes, it is expected to resolve URL templates found in its collection configuration against the entire collection configuration. For example, tasks should resolve the following collection:
-
-```JSON
-{
-  "meta": { "name": "Hello" },
-  "config" : { "output" : "{meta.name} World!" }
-}
-```
-
-Into this:
-
-```JSON
-{
-  "meta": { "name": "Hello" },
-  "config" : { "output" : "Hello World!" }
-}
-```
-
-URL template variables replace dotted paths inside curly brackets with their corresponding value. If a Task cannot resolve a value, it should ignore the template, leaving it verbatim in the string.  This allows decoupling tasks from one another and the data that drives them. Tasks are able to easily receive runtime configuration produced by previously run Tasks and domain data.
 
 ### Ingest Deploy
 
