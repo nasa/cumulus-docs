@@ -84,7 +84,7 @@ All of the processing is managed through a handler, which is called when the doc
 
 ### Py-cumulus
 
-THe py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Currently, there are three modules:
+The py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Currently, there are three modules:
 
     import cumulus.logutils
     import cumulus.metadata
