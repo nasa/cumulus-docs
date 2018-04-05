@@ -7,9 +7,9 @@ This is a guide for deploying a new instance of Cumulus.
 
 The deployment  documentation is current for the following component versions:
 
-* [Cumulus](https://github.com/cumulus-nasa/cumulus)  ([v1.0.0-beta1](https://github.com/cumulus-nasa/cumulus/tree/v1.0.0-beta1))
-* [Deployment Template](https://github.com/cumulus-nasa/template-deploy) ([7a547dd](https://github.com/cumulus-nasa/template-deploy/commit/7a547ddc1113330fb33428562291375e0eb7eafd))
-* [Cumulus Dashboard](https://github.com/cumulus-nasa/cumulus-dashboard) ([c6e5c05](https://github.com/cumulus-nasa/cumulus-dashboard/commit/c6e5c05a1c04b1996366ae3a9fe660bd439f0fb3))
+* [Cumulus](https://github.com/cumulus-nasa/cumulus)
+* [Deployment Template](https://github.com/cumulus-nasa/template-deploy)
+* [Cumulus Dashboard](https://github.com/cumulus-nasa/cumulus-dashboard)
 
 The process involves:
 
@@ -68,6 +68,7 @@ Optionally, If you are deploying a particular version(tag), ref or branch of Cum
 
 Install and configure the local build environment and dependencies using npm
 
+    $ nvm use
     $ npm install
     $ npm run ybootstrap
 
@@ -116,7 +117,7 @@ Begin by copying the template directory to your project. You will modify it for 
 
     $ cp -r ../cumulus/packages/deployment/app.example ./app
 
-[Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track your DAAC's configuration changes:
+**Optional:** [Create a new repository](https://help.github.com/articles/creating-a-new-repository/) `<daac>-deploy` so that you can track your DAAC's configuration changes:
 
     $ git remote set-url origin https://github.com/cumulus-nasa/<daac>-deploy
     $ git push origin master
@@ -160,23 +161,23 @@ These buckets do not need any non-default permissions to function with Cumulus, 
 
 The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
-The various config fields are described below with a sample `config.yml` at the end.   All items in `<` `>` brackets are intended to be configured with user-set values:
+The various config fields are described below with a sample `config.yml` at the end.
 
 ------
 
-###### iam-deployment-name
+###### iam-deployment-name:
 
 The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
 
 ###### prefix:
 
-This value will prefix CloudFormation-created deployer resources and permissions.
+This value will prefix CloudFormation-created IAM resources and permissions.
 
 **The cumulus stack name must start with `<prefix>`** [^5]
 
 ###### stackName:
 
-The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).
+The name of this iam stack in CloudFormation (e.g. <prefix>-iam).
 
 ###### buckets:
 
@@ -235,17 +236,17 @@ The various configuration sections are described below with a sample `config.yml
 
 -----
 
-###### deployer-deployment-name:
+###### cumulus-deployment-name:
 
 The name (e.g. dev) of the the 'deployment' - this key tells kes which configuration set (in addition to the default values) to use when creating the cloud formation template[^4]
 
 ###### stackName:
 
-The name of this deployer stack in CloudFormation (e.g. <prefix>-deployer).    **This stack name must start with the prefix listed in the [IAM](#create-iam-roles) role configuration, or the deployment will fail.**
+The name of this stack in CloudFormation (e.g. <prefix>).    **This stack name must start with the prefix listed in the [IAM](#create-iam-roles) role configuration, or the deployment will fail.**
 
 ###### stackNameNoDash:
 
-A representation of the stack name that has dashes removed.   This will be used for components that should be associated with the stack but do not allow dashes in the identifier.
+A representation of the stack name that has dashes removed. This will be used for components that should be associated with the stack but do not allow dashes in the identifier.
 
 ###### vpc
 
@@ -256,6 +257,8 @@ Configure your virtual private cloud.  You can find `<vpc-id>` and `<subnet-id>`
 
 Configuration for the Amazon EC2 Container Service (ECS) instance.  Update `availabilityZone` with information from [VPC Dashboard](https://console.aws.amazon.com/vpc/home?region=us-east-1#)
 note `instanceType` and `desiredInstances` have been selected for a sample install.  You will have to specify appropriate values to deploy and use ECS machines.   See [EC2 Instance Types](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html) for more information.
+
+Also note, if you dont specify the `amiid`, it will try to use a default, which may or may not exist.
 
 ###### buckets
 
@@ -294,6 +297,7 @@ List of EarthData users you wish to have access to your dashboard application.  
     instanceType: t2.micro
     desiredInstances: 0
     availabilityZone: <subnet-id-zone>
+    amiid: <some-ami-id>
 
   buckets:
     internal: <prefix>-internal
