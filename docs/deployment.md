@@ -18,10 +18,8 @@ The process involves:
 *  Before deploying the Cumulus software, CloudFormation stacks are deployed that create necessary [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) via the `deployer` and `iams` stacks.
 *  The Cumulus software is configured and deployed via the `app` stack.
 
-----
-## Deploy Cumulus
-
-### Requirements
+--------------
+## Requirements
 
 #### Linux/MacOS software requirements:
 
@@ -50,7 +48,7 @@ The process involves:
 - [Deployment Template](https://github.com/cumulus-nasa/template-deploy)
 
 
-### Installation
+## Installation
 
 #### Make local copy of `Cumulus` Repo and prepare it.
 
@@ -155,9 +153,10 @@ These buckets do not need any non-default permissions to function with Cumulus, 
 
 **Note**: s3 bucket object names are global and must be unique across all accounts/locations/etc.
 
-#### Create IAM roles
+--------------
+## Configure and Deploy the IAM stack
 
-##### Add new deployment to `<daac>-deploy/iam/config.yml`
+##### Configure deployment with `<daac>-deploy/iam/config.yml`
 
 The `iam` configuration creates 4 [roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) and an [instance profile](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) used internally by the Cumulus stack.
 
@@ -222,7 +221,8 @@ If you don't want to set environment variables, [access keys can be stored local
 
 _Make sure you've updated your actual environment variables before proceeding (e.g., if sourcing from a file, re-source the file)._
 
-#### Configure Cumulus stack
+--------------
+## Configure and Deploy the Cumulus stack
 
 These updates configure the [copied template](#copy-template) from the cumulus repository for your DAAC.
 
@@ -339,8 +339,7 @@ Copy `app/.env.sample to app/.env` and add CMR/earthdata client [credentials](#C
 
 For security it is highly recommended that you prevent `apps/.env` from being accidentally committed to the repository by keeping it in the `.gitignore` file at the root of this repository.
 
-----
-#### Deploy the Cumulus Stack
+#### Deploy
 
 Once the preceding configuration steps have completed, run the following to deploy Cumulus from your `<daac>-deploy` root directory:
 
