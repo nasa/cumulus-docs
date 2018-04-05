@@ -1,10 +1,10 @@
 # Dockerizing Data Processing
 
-The software used for processing data amongst DAAC's is developed in a variety of languages, and with different sets of dependencies and build environments. To standardize processing, Docker allows us to provide an environment (called an image) to meet the needs of any processing software, while running on the kernel of the host server (in this case, an EC2 instance). Thi lightweight virtualization does not carry the overhead of any additional VM, providing near-instant startup and the ability run any dockerized process as a command-line call.
+The software used for processing data amongst DAAC's is developed in a variety of languages, and with different sets of dependencies and build environments. To standardize processing, Docker allows us to provide an environment (called an image) to meet the needs of any processing software, while running on the kernel of the host server (in this case, an EC2 instance). This lightweight virtualization does not carry the overhead of any additional VM, providing near-instant startup and the ability to run any dockerized process as a command-line call.
 
 ## Using Docker
 
-Docker iamges are run using the `docker` command and can be used to build a Docker image from a Dockerfile, fetch an existing image from a remote repository, or run an existing image. In Cumulus, `docker-compose` is used to help developers by making it easy to build images locally and test them.
+Docker images are run using the `docker` command and can be used to build a Docker image from a Dockerfile, fetch an existing image from a remote repository, or run an existing image. In Cumulus, `docker-compose` is used to help developers by making it easy to build images locally and test them.
 
 To run a command using docker-compose use:
 
@@ -84,7 +84,7 @@ All of the processing is managed through a handler, which is called when the doc
 
 ### Py-cumulus
 
-THe py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Currently, there are three modules:
+The py-cumulus library provides some helper functions that can be used for logging, writing metadata, and testing. Py-cumulus is installed in the docker-base image. Currently, there are three modules:
 
     import cumulus.logutils
     import cumulus.metadata
