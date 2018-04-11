@@ -33,13 +33,18 @@ function createTaskResourceLinks (packageName, sourceUrl, homepage) {
 function createTaskMarkdown (pkg) {
   const name = pkg.name;
   const homepage = pkg.homepage;
-  const sourceUrl = pkg.repository && pkg.repository.url;
+  const description = pkg.description;
+  let sourceUrl = pkg.repository && pkg.repository.url;
+  const match = sourceUrl.match(/git\+(.*?)\.git?/);
+  if (match) {
+    sourceUrl = match[1]
+  }
 
   return dedent`
     ### [${name}](${homepage})
-    ${pkg.description}
+    ${description}
 
-    - Schemas: See this module's [schema definitions](${sourceUrl + 'schemas'}).
+    - Schemas: See this module's [schema definitions](${homepage + '/schemas'}).
     - Resources: ${createTaskResourceLinks(name, sourceUrl, homepage)}
 
     ---
