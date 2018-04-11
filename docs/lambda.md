@@ -4,14 +4,14 @@
 
 To develop a new lambda from a sample, create a new folder in `cumulus/tasks/` and run `npm init`:
 
-    $ cd ../cumulus/cumulus/tasks
+    $ cd ../cumulus/tasks
     $ mkdir new-lambda
     $ cd new-lambda
     $ npm init
 
 Or copy an existing lambda function to customize:
 
-    $ cd ../cumulus/cumulus/tasks
+    $ cd ../cumulus/tasks
     $ cp discover-pdrs new-lambda
 
 Modify package.json:
@@ -39,14 +39,14 @@ For non-node lambdas not included in Cumulus repo, upload .zip to s3 and modify 
 For new lambdas, update `<daac>-deploy/lambdas.yml` by adding a new entry.
 E.g.: node.js sample for '../cumulus/cumulus/tasks/sample-lambda' in the Cumulus repo):
 
-    - name: <LambdaName>                                       # eg:  LambdaSample (does not need to conform to dirname)
+    <LambdaName>:                                       # eg:  LambdaSample (does not need to conform to dirname)
       handler: <dir>.<function>                                # eg:  sample-lambda.handler (assuming file has module.exports.handler = <someFunc>)
       timeout: <ms>                                            # eg:  300
-      source: '../cumulus/cumulus/tasks/<dir>/dist/<file.js>'  # eg:  '../cumulus/cumulus/tasks/sample-lambda/dist/index.js'
+      source: 'node_modules/@cumulus/<dir>/dist/'  # eg:  '../cumulus/cumulus/tasks/sample-lambda/dist/index.js'
 
 For non-node.js lambda code (e.g. python) uploaded as a .zip to an S3 bucket:
 
-    - name: PyLambda
+    PyLambda:
       handler: <file.py>.<function>               # eg:  lambda_handler.handler for lambda_handler.py with:  def handler(event, context):
       timeout: <ms>
       s3Source:
