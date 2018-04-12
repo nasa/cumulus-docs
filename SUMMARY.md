@@ -13,6 +13,7 @@
   * [Developing Workflow Tasks](docs/developing-workflow-tasks.md)
     * [Lambda Functions](docs/lambda.md)
     * [Dockerization](docs/docker.md)
+  * [Workflow Configuration How-to's](doc/worklow-configuration-how-to.md)
 * [Cumulus API](docs/api.md)
 * [Local Docs](docs/doc_installation.md)
 * [Team](docs/team.md)
