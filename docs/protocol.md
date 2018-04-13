@@ -2,7 +2,7 @@
 
 <img src="/images/cumulus_configuration_and_message_schema_diagram.png">
 
-* **Configuration** - The Cumulus workflow configuration defines everything needed to describe an instance of Cumulus. 
+* **Configuration** - The Cumulus workflow configuration defines everything needed to describe an instance of Cumulus.
 * **Scheduler** - This starts ingest of a collection on configured intervals.
 * **Input to Step Functions** - The Scheduler uses the Configuration as source data to construct the input to the Workflow.
 * **AWS Step Functions** - Run the workflows as kicked off by the scheduler or other processes.
