@@ -16,4 +16,5 @@
 * [Tasks](docs/tasks.md)
 * [Cumulus API](docs/api.md)
 * [Local Docs](docs/doc_installation.md)
+  * [Adding a task](docs/adding-a-task.md)
 * [Team](docs/team.md)

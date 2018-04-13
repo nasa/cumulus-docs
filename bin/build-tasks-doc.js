@@ -23,7 +23,7 @@ function getTaskPkg (taskName) {
 }
 
 function createTaskResourceLinks (packageName, sourceUrl, homepage) {
-  let resources = `[npm](https://npmjs.com/packages/${packageName}) `
+  let resources = `[npm](https://npmjs.com/package/${packageName}) `
   resources += `${sourceUrl ? `| [source](${sourceUrl})` : ''} `
   resources += `${homepage ? `| [web](${homepage})` : ''}`
 
