@@ -85,7 +85,6 @@ function createTaskMarkdown (pkg) {
  * @returns {undefined} - none
  */
 function createTasksDoc (tasks) {
-  console.log(tasks);
   const tasksMarkdown = tasks.map(createTaskMarkdown).join('\n\n');
   const markdown = tasksHeader + tasksMarkdown;
 
