@@ -14,6 +14,8 @@
     * [Lambda Functions](docs/lambda.md)
     * [Dockerization](docs/docker.md)
   * [Workflow Configuration How-to's](docs/worklow-configuration-how-to.md)
+* [Tasks](docs/tasks.md)
 * [Cumulus API](docs/api.md)
 * [Local Docs](docs/doc_installation.md)
+  * [Adding a task](docs/adding-a-task.md)
 * [Team](docs/team.md)
