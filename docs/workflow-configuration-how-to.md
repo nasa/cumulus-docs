@@ -168,4 +168,13 @@ The following examples of `url_path` could be used.
 
 `{extractHour(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull the hour: `0`.
 
-Different values can be combined to create the `url_path`. For example to organize granules into folders by year and month, this `url_path`, `{extractYear(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)/extractMonth(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}`, will be `2003/2`.
+Different values can be combined to create the `url_path`. For example
+
+```
+"bucket": "sample-protected-bucket",
+"name": "MOD09GQ.A2017025.h21v00.006.2017034065104.hdf",
+"url_path": "{cmrMetadata.Granule.Collection.ShortName}/{extractYear(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)/extractDate(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}"
+
+```
+
+The final file location for the above would be `s3://sample-protected-bucket/MOD09GQ/2003/19/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf`.
