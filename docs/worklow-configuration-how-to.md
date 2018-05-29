@@ -7,7 +7,26 @@ How to configure `workflows.yml` workflow configurations for specifying buckets.
 
 ### Point to buckets in the configuration
 
-Buckets specified in `app/config.yml` will become part of the `meta` object of the Cumulus message and can be accessed in your workflow configuration.
+Buckets specified in `app/config.yml` will become part of the `meta` object of the Cumulus message and can be accessed in your workflow configuration. Consider this `app/config.yml` for the following examples:
+
+```
+buckets:
+  internal:
+    name: sample-internal-bucket
+    type: internal
+  private:
+    name: sample-private-bucket
+    type: private
+  protected:
+    name: sample-protected-bucket
+    type: protected
+  public:
+    name: sample-public-bucket
+    type: public
+  protected-2:
+    name: sample-protected-bucket-2
+    type: protected
+```
 
 To use the buckets specified in your config, you can do the following:
 
@@ -16,6 +35,13 @@ DiscoverGranules:
       CumulusConfig:
         provider: '{$.meta.provider}'
         collection: '{$.meta.collection}'
+        buckets: '{$.meta.buckets}'
+```
+
+```
+MoveGranules:
+      CumulusConfig:
+        bucket: '{$.meta.buckets.internal.name}'
         buckets: '{$.meta.buckets}'
 ```
 
@@ -30,6 +56,7 @@ DiscoverGranules:
         collection: '{$.meta.collection}'
         buckets:
           internal: 'sample-internal-bucket'
+          protected: 'sample-protected-bucket-2'
 ```
 Or you can do a combination of meta buckets and hardcoded:
 
@@ -40,7 +67,7 @@ DiscoverGranules:
         collection: '{$.meta.collection}'
         buckets:
           internal: 'sample-internal-bucket'
-          private: '{$.meta.buckets.private}'
+          private: '{$.meta.buckets.private.name}'
 ```
 
 ### Using meta and hardcoding 
@@ -84,7 +111,8 @@ A file path can be added as the `url_path` in the collection configuration to sp
 }
 ```
 
-The first file, `MOD09GQ.A2017025.h21v00.006.2017034065104.hdf` has its own `url_path` so the resulting file path might look like `s3://cumulus-test-sandbox-protected/file-example-path/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf`. The second file, `MOD09GQ.A2017025.h21v00.006.2017034065104.hdf.met`, does not have it's own `url_path` so it will use the collection `url_path` and have a final file path of `s3://cumulus-test-sandbox-protected/example-path/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf.met`.
+The first file, `MOD09GQ.A2017025.h21v00.006.2017034065104.hdf` has its own `url_path` so the resulting file path might look like `s3://cumulus-test-sandbox-protected/file-example-path/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf`.
+The second file, `MOD09GQ.A2017025.h21v00.006.2017034065104.hdf.met`, does not have it's own `url_path` so it will use the collection `url_path` and have a final file path of `s3://cumulus-test-sandbox-protected/example-path/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf.met`.
 
 ### Using a template for file placement
 
@@ -120,12 +148,12 @@ There are a number of options to pull dates from the CMR file metadata. With thi
 }
 ```
 
-`{extractYear(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull out the year of the metedata: `2003`.
+The following examples of `url_path` could be used.
 
-`{extractMonth(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull out the month of the metedata: `2`.
+`{extractYear(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull the year from the full date: `2003`.
 
-`{extractDate(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull out the month of the metedata: `19`.
+`{extractMonth(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull the month: `2`.
 
-`{extractHour(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull out the month of the metedata: `0`.
+`{extractDate(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull the day: `19`.
 
-
+`{extractHour(cmrMetadata.Granule.Temporal.RangeDateTime.BeginningDateTime)}` will pull the hour: `0`.
