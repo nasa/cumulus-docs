@@ -62,9 +62,11 @@ function createTaskMarkdown (pkg) {
   const homepage = pkg.homepage;
   const description = pkg.description;
   let sourceUrl = pkg.repository && pkg.repository.url;
-  const match = sourceUrl.match(/git\+(.*?)\.git?/);
-  if (match) {
-    sourceUrl = match[1]
+  if (sourceUrl) {
+    const match = sourceUrl.match(/git\+(.*?)\.git?/);
+    if (match) {
+      sourceUrl = match[1]
+    }
   }
 
   return dedent`
