@@ -50,7 +50,7 @@ For non-node.js lambda code (e.g. python) uploaded as a .zip to an S3 bucket:
       handler: <file.py>.<function>               # eg:  lambda_handler.handler for lambda_handler.py with:  def handler(event, context):
       timeout: <ms>
       s3Source:
-        bucket: '{{buckets.internal}}'            # refers to bucket set in config.yml
+        bucket: '{{buckets.internal.name}}'       # refers to bucket set in config.yml
         key: deploy/cumulus-process/<dir>/<file>  # eg: deploy/cumulus-process/modis/0.3.0b3.zip
       runtime: python2.7                          # Node is default, otherwise specify.
 
