@@ -4,27 +4,24 @@ A list of reusable Cumulus tasks. [Add your own.](adding-a-task.md)
 
 ## Tasks
 
-### [@cumulus/discover-granules](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules)
-Discover Granules in FTP/HTTP/SFTP endpoints
+### @cumulus/discover-granules
+Discover Granules in FTP/HTTP/HTTPS/SFTP/S3 endpoints
 
-- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules/schemas).
-- Resources: [npm](https://npmjs.com/package/@cumulus/discover-granules) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules)
+- Resources: [npm](https://npmjs.com/package/@cumulus/discover-granules)
 
 ---
 
-### [@cumulus/discover-pdrs](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs)
+### @cumulus/discover-pdrs
 Discover PDRs in FTP and HTTP endpoints
 
-- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs/schemas).
-- Resources: [npm](https://npmjs.com/package/@cumulus/discover-pdrs) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs)
+- Resources: [npm](https://npmjs.com/package/@cumulus/discover-pdrs)
 
 ---
 
-### [@cumulus/parse-pdr](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr)
+### @cumulus/parse-pdr
 Download and Parse a given PDR
 
-- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr/schemas).
-- Resources: [npm](https://npmjs.com/package/@cumulus/parse-pdr) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr)
+- Resources: [npm](https://npmjs.com/package/@cumulus/parse-pdr)
 
 ---
 
@@ -73,5 +70,3 @@ Download a given granule
 
 - Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/sync-granule/schemas).
 - Resources: [npm](https://npmjs.com/package/@cumulus/sync-granule) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/sync-granule)
-
----
