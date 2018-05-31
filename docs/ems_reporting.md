@@ -5,7 +5,15 @@ Two types of reports are generated: ingest and distribution.
 
 ## Ingest
 
-TODO - add content here
+Cumulus creates three ingest related reports to EMS, they are Ingest, Archive and Archive Delete reports.
+
+The Ingest report contains records of all granules, products, or files that have been ingested into CUMULUS.
+
+The Archive report contains recors of all granules, products, or files that have been archived into CUMULUS.  It's similar to Ingest report.
+
+Archive Delete report lists granules, products, or files that were reported to the EMS and now have been deleted from the CUMULUS.
+
+A scheduled Lambda task will run nightly that generates Ingest, Archive and Archive Delete reports.
 
 ## Distribution
 
