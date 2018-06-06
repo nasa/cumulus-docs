@@ -193,7 +193,7 @@ The buckets created in the [Create S3 Buckets](#create-s3-buckets) step.
 
 **Deploy `iam` stack**[^1]
 
-    $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --region <region>
+    $ kes cf deploy --kes-folder iam --deployment <iam-deployment-name> --template node_modules/@cumulus/deployment/iam --region <region>
 
 **Note**: If this deployment fails check the deployment details in the AWS Cloud Formation Console for information. Permissions may need to be updated by your AWS administrator.
 
