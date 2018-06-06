@@ -1,0 +1,11 @@
+[
+  "@cumulus/discover-granules",
+  "@cumulus/discover-pdrs",
+  "@cumulus/parse-pdr",
+  "@cumulus/pdr-status-check",
+  "@cumulus/post-to-cmr",
+  "@cumulus/queue-granules",
+  "@cumulus/queue-pdrs",
+  "@cumulus/sf-sns-report",
+  "@cumulus/sync-granule"
+]

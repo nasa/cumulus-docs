@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6.10
+    working_directory: ~/cumulus-nasa.github.io
+    
+    branches:
+      ignore:
+        - master
+
+    steps:
+      - checkout
+
+      - run:
+          name: Installing Dependencies
+          command: |
+            npm install
+
+      - run:
+          name: Build Docs
+          command: |
+            npm run build
+
+      - add_ssh_keys:
+          fingerprints:
+            - "4f:b0:f5:25:8e:17:07:ec:28:2d:88:93:00:8f:92:5b"
+      
+      - run:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              cd _book
+              git init
+              git config user.name "Devseed"
+              git config user.email "info@developmentseed.org"
+              git add -A
+              git commit -m "Automated build in circleci"
+              git push --force --quiet git@github.com:cumulus-nasa/cumulus-nasa.github.io.git master
+              rm -rf .git
+            fi
