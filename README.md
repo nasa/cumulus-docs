@@ -1,4 +1,4 @@
-# Cumulus
+# Cumulus Documentation
 
 [![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io.svg?style=svg)](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io)
 
