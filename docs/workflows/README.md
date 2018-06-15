@@ -49,7 +49,7 @@ The Ingest Workflow Architecture is defined by two entity types, [Workflows](#wo
 
 Workflows and tasks are configured via a [JSON configuration file](#collection-configuration-file). A scheduler initiates workflows as configured by that JSON file.
 
-<img src="/images/ingest_diagram.png">
+<img src="../images/ingest_diagram.png">
 
 See the [Example GIBS Ingest Architecture](#example-gibs-ingest-architecture) showing how workflows and tasks are used to define the GIBS Ingest Architecture.
 
@@ -186,11 +186,11 @@ This shows the GIBS Ingest Architecture as an example of the use of the Ingest W
 
 #### GIBS Ingest Workflows
 
-<img src="/images/ingest_diagram_gibs.png">
+<img src="../images/ingest_diagram_gibs.png">
 
 #### GIBS Ingest Granules Workflow
 
 This shows a visualization of an execution of the ingets granules workflow in step functions. The steps highlighted in green are the ones that executed and completed successfully.
 
-<img src="/images/gibs_ingest_granules_workflow.png">
+<img src="../images/gibs_ingest_granules_workflow.png">
 
