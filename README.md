@@ -2,20 +2,32 @@
 
 [![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io.svg?style=svg)](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io)
 
-## Project Description
+- [HTML Documentation](https://cumulus-nasa.github.io/)
+- [Markdown Documentation](docs)
 
-This Cumulus project seeks to address the existing need for a “native” cloud-based data ingest, archive, distribution, and management system that can be used for all future Earth Observing System Data and Information System (EOSDIS) data streams via the development and implementation of Cumulus. The term “native” implies that the system will leverage all components of a cloud infrastructure provided by the vendor for efficiency (in terms of both processing time and cost). Additionally, Cumulus will operate on future data streams involving satellite missions, aircraft missions, and field campaigns. 
+## Local Installation
 
-This documentation includes both guidelines, examples and source code docs.
+     $ npm install
 
-The documentation is accessible at https://cumulus-nasa.github.io/
+## Local Build and Serve
 
-## Contributing
+     $ npm run serve
 
-Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTING.md for information
+## Add a new page
+Add a `.md` file to `docs` folder and then a new item to `docs/SUMMARY.md`.
 
--------
+## Add a new task
+The tasks list in docs/tasks.md is generated from the list of task package names in tasks.json. Do not edit the docs/tasks.md file directly. Instead, add the package name to tasks.json.
 
-### Run the Documentation Locally
+[Read more about adding a new task.](adding-a-task.md)
 
-To run the documentation [read this](docs/doc_installation.md).
+## Editing the tasks.md header or template
+
+Look at the `bin/build-tasks-doc.js` and `bin/tasks-header.md` files to edit the output of the tasks build script.
+
+## Deployment
+The `develop` branch is automatically built and deployed to master. The `master` branch is served by Github Pages. Do not make edits to the `master` branch.
+
+## Warning
+
+Do NOT merge `master` branch to any other branch. `master` branch is auto generated and does not follow the same git history.
