@@ -29,6 +29,7 @@ Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTIN
   * [Workflow Configuration How-to's](workflows/workflow-configuration-how-to.md)
 * [Tasks](tasks.md)
 * [Cumulus API](https://cumulus-nasa.github.io/cumulus-api)
+* [Backup and Restore](backup_and_restore.md)
 * [EMS Reporting](ems_reporting.md)
 * [Local Docs](doc_installation.md)
   * [Adding a task](adding-a-task.md)
