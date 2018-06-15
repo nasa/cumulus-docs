@@ -1,6 +1,6 @@
 # Cumulus
 
-[![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io/tree/develop.svg?style=svg&circle-token=b0aa3c46ecea8015bb49b19fdf2434d534425895)](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io/tree/develop)
+[![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io.svg?style=svg)](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io)
 
 ## Project Description
 
