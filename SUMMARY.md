@@ -25,4 +25,8 @@
 
 ### Data Cookbook
 
+* [About Cookbooks](docs/about-cookbooks.md)
 * [HelloWorld](docs/hello-world.md)
+* Configuring CNM (A general overview)
+  * Configuring the CNM to send a success/failure message
+  * Situation `x`
