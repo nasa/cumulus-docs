@@ -12,6 +12,10 @@ The goal with this specific cookbook, to somewhat reiterate from above, is to pr
 
 As shown in detail on in the relevant documentation(1), you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the `SUMMARY.md` structure.
 
+### Basic workflow configuration
+
+General documentation on workflow configuration can be found [here](docs/documentation/workflow-configuration-how-to.md).
+
 
 #### References
 1. [gitbook documentation](https://toolchain.gitbook.com/pages.html)
