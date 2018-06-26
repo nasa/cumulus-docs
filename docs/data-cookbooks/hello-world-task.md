@@ -65,6 +65,16 @@ HelloWorld:
 
 ### Execution
 
+There are a couple ways to run an execution of the HelloWorld step-function.
+* Through the AWS Console in the Step Functions page:
+  1. Navigate to the AWS console.
+  2. Under the `Services` drop down find and click `Step Functions`.
+  3. Find and click on the ${stack-name}HelloWorldWorkflowStateMachine-...
+  4. Click on the `Start execution` button.
+  5. 
+
+* Using aws-cli (or some sdk):
+
 ### Debugging
 
 ### Summary

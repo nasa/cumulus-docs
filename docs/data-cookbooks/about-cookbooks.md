@@ -12,9 +12,12 @@ The goal with this specific cookbook, to somewhat reiterate from above, is to pr
 
 As shown in detail on in the relevant documentation(1), you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the `SUMMARY.md` structure.
 
-### Basic workflow configuration
+### More about workflows
 
-General documentation on workflow configuration can be found [here](docs/documentation/workflow-configuration-how-to.md).
+[Workflow general information](docs/documentation/workflows.md)
+[Input & Output](docs/documentation/input_output.md)
+[Developing Workflow Tasks](docs/documentation/developing-workflow-tasks.md)
+[Workflow Configuration How-to's](docs/documentation/workflow-configuration-how-to.md)
 
 
 #### References
