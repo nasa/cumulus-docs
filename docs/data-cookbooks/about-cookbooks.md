@@ -14,10 +14,13 @@ As shown in detail on in the relevant documentation(1), you can add a new page t
 
 ### More about workflows
 
-[Workflow general information](docs/documentation/workflows.md)
-[Input & Output](docs/documentation/input_output.md)
-[Developing Workflow Tasks](docs/documentation/developing-workflow-tasks.md)
-[Workflow Configuration How-to's](docs/documentation/workflow-configuration-how-to.md)
+[Workflow general information](../documentation/workflows.md)
+
+[Input & Output](../documentation/input_output.md)
+
+[Developing Workflow Tasks](../documentation/developing-workflow-tasks.md)
+
+[Workflow Configuration How-to's](../documentation/workflow-configuration-how-to.md)
 
 
 #### References
