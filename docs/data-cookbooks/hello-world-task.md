@@ -1,4 +1,4 @@
-# HelloWorld Task
+# HelloWorld Workflow
 
 Example task meant to be a sanity check/introduction to the Cumulus workflows.
 
@@ -47,12 +47,9 @@ HelloWorldWorkflow:
       Cause: 'Workflow failed'
 ```
 
-![](/images/hello-world_workflow.png)
-*Workflow as seen in AWS Console*
-
 ### Task Configuration
 
-The [task itself](https://github.com/cumulus-nasa/cumulus/blob/master/example/lambdas.yml#L1) is defined in `lambdas.yml` under `HelloWorld:`
+The HelloWorld [task itself](https://github.com/cumulus-nasa/cumulus/blob/master/example/lambdas.yml#L1) is defined in `lambdas.yml` under `HelloWorld:`
 
 ```
 HelloWorld:
@@ -65,15 +62,24 @@ HelloWorld:
 
 ### Execution
 
-There are a couple ways to run an execution of the HelloWorld step-function.
-* Through the AWS Console in the Step Functions page:
-  1. Navigate to the AWS console.
-  2. Under the `Services` drop down find and click `Step Functions`.
-  3. Find and click on the ${stack-name}HelloWorldWorkflowStateMachine-...
-  4. Click on the `Start execution` button.
-  5. 
+We will focus on using the Cumulus dashboard to schedule the execution of a HelloWorld workflow. In this section, we will look at collections, providers, workflows, and rules.
 
-* Using aws-cli (or some sdk):
+Our goal here is to create a rule through the Cumulus dashboard that will define the scheduling and execution of our HelloWorld workflow. First, let's navigate to the `Rules` page and click `Add a rule`.
+
+```
+name: helloworld_rule
+Workflow Name: HelloWorldWorkflow # This can be found on the Workflows page
+Provider ID: # Optional, found on the Providers page
+collection - Collection Name: ${collection_name} # set in the Collections page
+collection - Collection Version: ${collection_version} # set in the Collections page
+rule - type: onetime # This determines the schedule for workflow execution
+rule - value:
+Rule State: ENABLED
+```
+
+![](/images/hello-world_workflow.png)
+*Workflow as seen in AWS Console*
+Note that in the image above, all states are defined in the `workflow.yml` snippet.
 
 ### Debugging
 
