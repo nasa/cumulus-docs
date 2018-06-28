@@ -26,8 +26,13 @@
 ### Data Cookbook
 
 * [About Cookbooks](docs/data-cookbooks/about-cookbooks.md)
-* Ingest Workflow
-  * [HelloWorld](docs/data-cookbooks/hello-world-task.md)
-* Configuring CNM (A general overview)
-  * Configuring the CNM to send a success/failure message
-  * Situation `x`
+* [HelloWorldWorkflow](docs/data-cookbooks/hello-world.md)
+#* EcsHelloWorldWorkflow
+#* IngestGranuleWorkflow
+#* DiscoverGranules
+#* DiscoverAndQueuePdrs
+#* ParsePdr
+#* SyncGranule
+#* Configuring CNM (A general overview)
+#* Collection: Creation and Configuration
+#* Provider: Creation and Configuration

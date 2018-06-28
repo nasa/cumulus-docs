@@ -64,14 +64,14 @@ HelloWorld:
 
 We will focus on using the Cumulus dashboard to schedule the execution of a HelloWorld workflow. In this section, we will look at collections, providers, workflows, and rules.
 
-Our goal here is to create a rule through the Cumulus dashboard that will define the scheduling and execution of our HelloWorld workflow. First, let's navigate to the `Rules` page and click `Add a rule`.
+Our goal here is to create a rule through the Cumulus dashboard that will define the scheduling and execution of our HelloWorld workflow. Let's navigate to the `Rules` page and click `Add a rule`.
 
 ```
 name: helloworld_rule
 Workflow Name: HelloWorldWorkflow # This can be found on the Workflows page
-Provider ID: # Optional, found on the Providers page
-collection - Collection Name: ${collection_name} # set in the Collections page
-collection - Collection Version: ${collection_version} # set in the Collections page
+Provider ID: ${provider_id} # Optional, found on the Providers page
+collection - Collection Name: ${collection_name} # Optional, set in the Collections page
+collection - Collection Version: ${collection_version} # Optional, set in the Collections page
 rule - type: onetime # This determines the schedule for workflow execution
 rule - value:
 Rule State: ENABLED
@@ -79,9 +79,14 @@ Rule State: ENABLED
 
 ![](/images/hello-world_workflow.png)
 *Workflow as seen in AWS Console*
+
 Note that in the image above, all states are defined in the `workflow.yml` snippet.
 
-### Debugging
+### Output/Results
+
+The execution page presents a list of all executions, their status (running, failed, or completed), to which workflow the execution belongs, along with other information. The rule defined in the previous section should start an execution of its own accord, and the status of that execution can be tracked here.
+
+To get some deeper information on the execution, click on the value in the `Name` column of your execution of interest. This should bring up a visual representation of the worklfow similar to that shown above, execution details, and a list of events.
 
 ### Summary
 
