@@ -27,5 +27,3 @@
 
 * [About Cookbooks](docs/data-cookbooks/about-cookbooks.md)
 * [HelloWorldWorkflow](docs/data-cookbooks/hello-world.md)
-* Provider: Create and Configure
-* Collection: Create and Configure
