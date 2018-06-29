@@ -27,12 +27,5 @@
 
 * [About Cookbooks](docs/data-cookbooks/about-cookbooks.md)
 * [HelloWorldWorkflow](docs/data-cookbooks/hello-world.md)
-#* EcsHelloWorldWorkflow
-#* IngestGranuleWorkflow
-#* DiscoverGranules
-#* DiscoverAndQueuePdrs
-#* ParsePdr
-#* SyncGranule
-#* Configuring CNM (A general overview)
-#* Collection: Creation and Configuration
-#* Provider: Creation and Configuration
+* Provider: Create and Configure
+* Collection: Create and Configure

@@ -2,6 +2,8 @@
 
 Example task meant to be a sanity check/introduction to the Cumulus workflows.
 
+## Pre-Deployment Configuration
+
 ### Workflow Configuration
 
 The [workflow definition](https://github.com/cumulus-nasa/cumulus/blob/master/example/workflows.yml#L1) can be found in `workflow.yml` under `HelloWorldWorkflow:`
@@ -60,7 +62,7 @@ HelloWorld:
   useMessageAdapter: true
 ```
 
-### Execution
+## Execution
 
 We will focus on using the Cumulus dashboard to schedule the execution of a HelloWorld workflow. In this section, we will look at collections, providers, workflows, and rules.
 
@@ -78,9 +80,7 @@ Rule State: ENABLED
 ```
 
 ![](/images/hello-world_workflow.png)
-*Workflow as seen in AWS Console*
-
-Note that in the image above, all states are defined in the `workflow.yml` snippet.
+*Executed workflow as seen in AWS Console*
 
 ### Output/Results
 
@@ -88,6 +88,6 @@ The execution page presents a list of all executions, their status (running, fai
 
 To get some deeper information on the execution, click on the value in the `Name` column of your execution of interest. This should bring up a visual representation of the worklfow similar to that shown above, execution details, and a list of events.
 
-### Summary
+## Summary
 
 
