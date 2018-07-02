@@ -33,4 +33,8 @@ Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTIN
 * [EMS Reporting](ems_reporting.md)
 * [Local Docs](doc_installation.md)
   * [Adding a task](adding-a-task.md)
+* [Upgrade Instructions](upgrade/README.md)
+  * [1.6.0](upgrade/1.6.0.md)
+  * [1.7.0](upgrade/1.7.0.md)
+* [Changelog](https://github.com/cumulus-nasa/cumulus/blob/master/CHANGELOG.md)
 * [Team](team.md)

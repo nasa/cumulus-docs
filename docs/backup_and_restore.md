@@ -1,20 +1,20 @@
 # Backup and Restore
 
-Cumulus-api uses a number of methods to preserve the metadata generated in a Cumulus instance.
+[@cumulus/api](https://www.npmjs.com/package/@cumulus/api) uses a number of methods to preserve the metadata generated in a Cumulus instance.
 
 ## Data in DynamoDB
 
-All configurations and system generated metadata is stored in DynamoDB tables except the logs. System logs are stored in the AWS CloudWatch service.
+All configurations and system-generated metadata is stored in DynamoDB tables except the logs. System logs are stored in the AWS CloudWatch service.
 
 Cumulus-api creates the following DynamoDB tables:
 
-- **Users:** list of the api/dashboard users
-- **Collections:** list of all the collection records 
-- **Providers:** list of all the provider records
-- **Rules:** list of all the rules for managing and running workflows
-- **Executions:** list of all the workflow executions (step function executions)
-- **Granules:** list of the granules processed by the Cumulus instance
-- **PDRs:** list of all the PDRs processed in Cumulus
+- **Users:** api/dashboard users
+- **Collections:** collection records 
+- **Providers:** provider records
+- **Rules:** rules for managing and running workflows
+- **Executions:** workflow executions (step function executions)
+- **Granules:** granules processed by the Cumulus instance
+- **PDRs:** PDRs processed in Cumulus
 
 Amazon DynamoDB stores three geographically distributed replicas of each table to enable high availability and data durability. Amazon DynamoDB runs exclusively on solid-state drives (SSDs). SSDs help AWS achieve the design goals of predictable low-latency response times for storing and accessing data at any scale.
 
@@ -40,14 +40,14 @@ default:
     enablePointInTime: true
 ```
 
-**Imoprtant Note:** Configuring Point-in-time recovery is not supported by the CloudFormation (as of June 2018). We enable this feature deployment using AWS API. However, due to a limitation of AWS API, the feature fails to be enabled if it is running against newly created tables.
+**Imoprtant Note:** Configuring point-in-time recovery is not supported by the CloudFormation (as of June 2018). We enable this feature deployment using AWS API. However, due to a limitation of AWS API, the feature fails to be enabled if it is running against newly created tables.
 
 Therefore, if you are deploying a new stack, make sure the feature is turned off on your first deployment. You can turn it on and enable about an hour after your tables are created.
 
 
 ## Backup and Restore with cumulus-api CLI
 
-cumulus-api CLI also includes a backup and restore command. The backup command, download the content of any of your DynamoDB tables to single `.json` files. You can use these `.json` files to upload the the records to another DynamoDB table.
+cumulus-api CLI also includes a backup and restore command. The CLI backup command downloads the content of any of your DynamoDB tables to `.json` files. You can also use these `.json` files to restore the records to another DynamoDB table.
 
 ### Backup with the CLI
 
