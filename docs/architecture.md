@@ -2,7 +2,7 @@
 
 Below, find a diagram with the components that comprise an instance of Cumulus.
 
-<img src="/images/cumulus-arch-diagram.png">
+<img src="images/cumulus-arch-diagram.png">
 
 While the internals are complex, the boxes represent components which are easy to understand:
 

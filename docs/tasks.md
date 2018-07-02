@@ -4,24 +4,27 @@ A list of reusable Cumulus tasks. [Add your own.](adding-a-task.md)
 
 ## Tasks
 
-### @cumulus/discover-granules
+### [@cumulus/discover-granules](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules)
 Discover Granules in FTP/HTTP/HTTPS/SFTP/S3 endpoints
 
-- Resources: [npm](https://npmjs.com/package/@cumulus/discover-granules)
+- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules/schemas).
+- Resources: [npm](https://npmjs.com/package/@cumulus/discover-granules) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-granules)
 
 ---
 
-### @cumulus/discover-pdrs
+### [@cumulus/discover-pdrs](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs)
 Discover PDRs in FTP and HTTP endpoints
 
-- Resources: [npm](https://npmjs.com/package/@cumulus/discover-pdrs)
+- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs/schemas).
+- Resources: [npm](https://npmjs.com/package/@cumulus/discover-pdrs) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/discover-pdrs)
 
 ---
 
-### @cumulus/parse-pdr
+### [@cumulus/parse-pdr](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr)
 Download and Parse a given PDR
 
-- Resources: [npm](https://npmjs.com/package/@cumulus/parse-pdr)
+- Schemas: See this module's [schema definitions](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr/schemas).
+- Resources: [npm](https://npmjs.com/package/@cumulus/parse-pdr) | [source](https://github.com/cumulus-nasa/cumulus) | [web](https://github.com/cumulus-nasa/cumulus/tree/master/tasks/parse-pdr)
 
 ---
 
