@@ -2,11 +2,11 @@
 
 ### What is a data cookbook?
 
-A data cookbook is a document that helps unify an institution/user group on a set of terms. Additionally, a data cookbook can be a hub of examples and explanations for workflows.
+The following data cookbooks are documents containing examples and explanations of workflows in the Cumulus framework. Additionally, the following data cookbooks should serve to help unify an institution/user group on a set of terms.
 
 ### Adding a page
 
-As shown in detail on in the relevant documentation(1), you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the `SUMMARY.md` structure.
+As shown in detail on in the relevant [documentation][^1], you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the glossaries shown in `SUMMARY.md` and `README.md`.
 
 ### More about workflows
 
@@ -20,4 +20,4 @@ As shown in detail on in the relevant documentation(1), you can add a new page t
 
 
 #### References
-1. [gitbook documentation](https://toolchain.gitbook.com/pages.html)
+[^1]: https://toolchain.gitbook.com/pages.html

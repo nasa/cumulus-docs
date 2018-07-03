@@ -6,7 +6,7 @@ Example task meant to be a sanity check/introduction to the Cumulus workflows.
 
 ### Workflow Configuration
 
-The [workflow definition](https://github.com/cumulus-nasa/cumulus/blob/master/example/workflows.yml#L1) can be found in `workflow.yml` under `HelloWorldWorkflow:`
+The [workflow definition](../workflows/README.md) can be found in `cumulus/example/workflows.yml` under `HelloWorldWorkflow:`
 
 ```
 HelloWorldWorkflow:
@@ -51,7 +51,7 @@ HelloWorldWorkflow:
 
 ### Task Configuration
 
-The HelloWorld [task itself](https://github.com/cumulus-nasa/cumulus/blob/master/example/lambdas.yml#L1) is defined in `lambdas.yml` under `HelloWorld:`
+The HelloWorld [task itself](../workflows/developing-workflow-tasks.md) is defined in `cumulus/example/lambdas.yml` under `HelloWorld:`
 
 ```
 HelloWorld:
@@ -79,15 +79,15 @@ rule - value:
 Rule State: ENABLED
 ```
 
-![](/images/hello-world_workflow.png)
+![](../images/hello_world_workflow.png)
 *Executed workflow as seen in AWS Console*
 
 ### Output/Results
 
-The execution page presents a list of all executions, their status (running, failed, or completed), to which workflow the execution belongs, along with other information. The rule defined in the previous section should start an execution of its own accord, and the status of that execution can be tracked here.
+The `Executions` page presents a list of all executions, their status (running, failed, or completed), to which workflow the execution belongs, along with other information. The rule defined in the previous section should start an execution of its own accord, and the status of that execution can be tracked here.
 
 To get some deeper information on the execution, click on the value in the `Name` column of your execution of interest. This should bring up a visual representation of the worklfow similar to that shown above, execution details, and a list of events.
 
 ## Summary
 
-
+Setting up the HelloWorld workflow on the Cumulus dashboard is the tip of the iceberg, so to speak. The task and step-function need to be configured before Cumulus deployment. A compatible collection and provider can be applied to the rule, but aren't required. Finally, workflow execution status can be viewed via the workflows tab on the dashboard.
