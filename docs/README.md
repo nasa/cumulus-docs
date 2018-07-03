@@ -12,7 +12,9 @@ The documentation is accessible at https://cumulus-nasa.github.io/
 
 Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTING.md for information
 
-## Content
+# Content
+
+### Documentation
 
 * [Architecture](architecture.md)
 * [Cumulus Deployment](deployment/README.md)
@@ -31,6 +33,7 @@ Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTIN
 * [Cumulus API](https://cumulus-nasa.github.io/cumulus-api)
 * [Backup and Restore](backup_and_restore.md)
 * [EMS Reporting](ems_reporting.md)
+
 * [Local Docs](doc_installation.md)
   * [Adding a task](adding-a-task.md)
 * [Upgrade Instructions](upgrade/README.md)
@@ -38,3 +41,9 @@ Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTIN
   * [1.7.0](upgrade/1.7.0.md)
 * [Changelog](https://github.com/cumulus-nasa/cumulus/blob/master/CHANGELOG.md)
 * [Team](team.md)
+
+
+### Data Cookbook
+
+* [About Cookbooks](data-cookbooks/about-cookbooks.md)
+* [HelloWorldWorkflow](data-cookbooks/hello-world.md)
