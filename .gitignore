@@ -1,6 +1,10 @@
 site
 node_modules
+<<<<<<< HEAD
 _book
 *.html
 gitbook
 search_index.json
+=======
+_book
+>>>>>>> d295ba07430131bcefaf3483d107f25ba225df15

@@ -6,7 +6,10 @@
   "scripts": {
     "build-tasks": "./bin/build-tasks-doc.js",
     "build": "npm run build-tasks && gitbook build",
+<<<<<<< HEAD
     "serve": "npm run build && gitbook serve",
+=======
+>>>>>>> d295ba07430131bcefaf3483d107f25ba225df15
     "start": "npm run build && gitbook serve"
   },
   "repository": {
