@@ -6,7 +6,7 @@ The following data cookbooks are documents containing examples and explanations 
 
 ### Adding a page
 
-As shown in detail on in the relevant [documentation][^1], you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the glossaries shown in `SUMMARY.md` and `README.md`.
+As shown in detail on in the relevant [documentation](https://toolchain.gitbook.com/pages.html), you can add a new page to the data cookbook by creating a markdown (`.md`) file in the `docs/` directory. The new page can then be linked to the webpage itself by adding it to the glossaries shown in `SUMMARY.md` and `README.md`.
 
 ### More about workflows
 
@@ -18,6 +18,3 @@ As shown in detail on in the relevant [documentation][^1], you can add a new pag
 
 [Workflow Configuration How-to's](../workflows/workflow-configuration-how-to.md)
 
-
-#### References
-[^1]: https://toolchain.gitbook.com/pages.html
