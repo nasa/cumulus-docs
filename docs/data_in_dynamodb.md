@@ -128,6 +128,6 @@ A fully customized `app/config.yml` for DynamoDB auto scaling might look somethi
     WriteMaxCapacity: 100
 ```
 
-### !!!Important Note
+### Important Note!
 
 DynamoDB Auto Scaling does not happen instantaneously. Delays of up to 10 minutes in auto scaling were experienced when load testing, and some requests failed. If application owners expect a high volume of throughput (for example, when doing a re-processing campaign), they should deploy tables with min capacity set at the required levels for meeting the expected request load.

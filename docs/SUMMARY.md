@@ -17,7 +17,9 @@
     * [Dockerization](workflows/docker.md)
   * [Workflow Configuration How-to's](workflows/workflow-configuration-how-to.md)
 * Additional Cumulus Features
-  * [Cumulus Metadata in DynamoDB](data_in_dynamodb.md)
+  * [Cumulus Metadata in DynamoDB](data_in_dynamodb.md#cumulus-metadata-in-dynamodb)
+  * [DynamoDB Backup and Restore](data_in_dynamodb.md#backup-and-restore-with-aws)
+  * [DynamoDB Auto Scaling](data_in_dynamodb.md#dynamodb-auto-scaling)
   * [EMS Reporting](ems_reporting.md)
 * [Cumulus API Docs](https://cumulus-nasa.github.io/cumulus-api)
 * [Contributing to documentation](doc_installation.md)
