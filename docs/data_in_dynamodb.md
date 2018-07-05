@@ -66,7 +66,7 @@ To restore data from a json file run the following command:
 
 ## DynamoDB Auto Scaling
 
-`@cumulus/deployment` enables auto scaling of DyanmoDB tables. Auto scaling is configurable by table. `@cumulus/deployment` will setup autoscaling with some default values by simply adding the following lines to an `app/config.yml` file:
+`@cumulus/deployment` enables auto scaling of DyanmoDB tables. Auto scaling is configurable by table. `@cumulus/deployment` will setup auto scaling with some default values by simply adding the following lines to an `app/config.yml` file:
 
 ```
 <deployment_name>:
