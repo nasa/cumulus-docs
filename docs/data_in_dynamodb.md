@@ -88,7 +88,7 @@ Tables are launched with `Min Capacity` provisioned. To determine when to scale 
 * **`TargetValue`:** A numeric value between 0 and 100 representing a percentage. When request througput exceeds or falls below `TargetValue` percent of the current provisioned value, DynamoDB scales up or down to `TargetValue` of current throughput.
 * **`TargetValue`** defaults to 30, but can also be overriden in `app/config.yml`.
 * **`ScaleInCooldown`** and **`ScaleOutCooldown`:** A numeric value representing the number of seconds DynamoDB Auto Scaling throughput should exhibit exceeding or subceeding the `TargetValue` percent of provisioned throughput before scaling up or down.
-* **`ScaleInCooldown` and `ScaleOutCooldown`** default to 0 but can be overriden in `app/config.yml`
+* **`ScaleInCooldown`** and **`ScaleOutCooldown`** default to 0 but can be overriden in `app/config.yml`
 
 **Read more on the AWS Blog:** [How to use AWS CloudFormation to configure auto scaling for Amazon DynamoDB](https://aws.amazon.com/blogs/database/how-to-use-aws-cloudformation-to-configure-auto-scaling-for-amazon-dynamodb-tables-and-indexes/)
 
