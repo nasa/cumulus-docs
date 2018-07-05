@@ -64,17 +64,17 @@ HelloWorld:
 
 ## Execution
 
-We will focus on using the Cumulus dashboard to schedule the execution of a HelloWorld workflow. In this section, we will look at collections, providers, workflows, and rules.
+We will focus on using the Cumulus dashboard to schedule the execution of a HelloWorld workflow.
 
 Our goal here is to create a rule through the Cumulus dashboard that will define the scheduling and execution of our HelloWorld workflow. Let's navigate to the `Rules` page and click `Add a rule`.
 
 ```
 name: helloworld_rule
 Workflow Name: HelloWorldWorkflow # This can be found on the Workflows page
-Provider ID: ${provider_id} # Optional, found on the Providers page
-collection - Collection Name: ${collection_name} # Optional, set in the Collections page
-collection - Collection Version: ${collection_version} # Optional, set in the Collections page
-rule - type: onetime # This determines the schedule for workflow execution
+Provider ID: ${provider_id} # found on the Providers page
+collection - Collection Name: ${collection_name} # configured and found in the Collections page
+collection - Collection Version: ${collection_version} # configured and found in the Collections page
+rule - type: onetime # this determines the schedule for workflow execution
 rule - value:
 Rule State: ENABLED
 ```
@@ -90,4 +90,4 @@ To get some deeper information on the execution, click on the value in the `Name
 
 ## Summary
 
-Setting up the HelloWorld workflow on the Cumulus dashboard is the tip of the iceberg, so to speak. The task and step-function need to be configured before Cumulus deployment. A compatible collection and provider can be applied to the rule, but aren't required. Finally, workflow execution status can be viewed via the workflows tab on the dashboard.
+Setting up the HelloWorld workflow on the Cumulus dashboard is the tip of the iceberg, so to speak. The task and step-function need to be configured before Cumulus deployment. A compatible collection and provider must be configured and applied to the rule. Finally, workflow execution status can be viewed via the workflows tab on the dashboard.
