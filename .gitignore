@@ -1,3 +1,6 @@
 site
 node_modules
 _book
+*.html
+gitbook
+search_index.json
