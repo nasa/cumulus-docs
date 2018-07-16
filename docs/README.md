@@ -47,3 +47,4 @@ Please refer to: https://github.com/cumulus-nasa/cumulus/blob/master/CONTRIBUTIN
 
 * [About Cookbooks](data-cookbooks/about-cookbooks.md)
 * [HelloWorldWorkflow](data-cookbooks/hello-world.md)
+* [SNS Configuration](data-cookbooks/sns.md)
