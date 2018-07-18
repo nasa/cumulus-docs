@@ -1,6 +1,6 @@
 # Cumulus Documentation
 
-[![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io.svg?style=svg)](https://circleci.com/gh/cumulus-nasa/cumulus-nasa.github.io)
+**Note:** This Repository is deprecated. The documentation is moved to the main [Cumulus repo](https://github.com/nasa/cumulus/tree/master/docs)
 
 - [HTML Documentation](https://cumulus-nasa.github.io/)
 - [Markdown Documentation](docs)
